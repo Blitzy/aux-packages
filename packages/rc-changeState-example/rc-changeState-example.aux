@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "state": {
+    "rc-changeState-example.bot": {
+      "id": "rc-changeState-example.bot",
+      "space": "shared",
+      "tags": {
+        "color": "green",
+        "home": true,
+        "homeX": -1,
+        "homeY": 5,
+        "onClick": "@if (tags.state === 'Red') {\n    changeState(thisBot, 'Green');\n} else {\n    changeState(thisBot, 'Red');\n}",
+        "state": "Green",
+        "stateGreenOnEnter": "@tags.color = 'green';",
+        "stateRedOnEnter": "@tags.color = 'red';",
+        "system": "rc-changeState-example.bot"
+      }
+    }
+  }
+}
