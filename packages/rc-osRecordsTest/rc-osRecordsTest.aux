@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "state": {
+    "rc-osRecordsTest.setRecordAddress": {
+      "id": "rc-osRecordsTest.setRecordAddress",
+      "space": "shared",
+      "tags": {
+        "color": "#F44E3B",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -4,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "set record address",
+        "onClick": "@let prevValue = configBot.tags.recordAddress;\n\nlet inputValue = await os.showInput(prevValue, { title: 'Record Address' });\n\nif (prevValue != inputValue) {\n    configBot.tags.recordAddress = inputValue;\n}\n\nthisBot.updateLabel();",
+        "onInitialize": "@thisBot.updateLabel();",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-osRecordsTest.setRecordAddress",
+        "updateLabel": "@if (configBot.tags.recordAddress) {\n    masks.label = `record address:\\n${configBot.tags.recordAddress}`;\n    masks.color = '#A4DD00';\n} else {\n    masks.label = null;\n    masks.color = null;\n}"
+      }
+    },
+    "rc-osRecordsTest.init": {
+      "id": "rc-osRecordsTest.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@shout('onInitialize');",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-osRecordsTest.init"
+      }
+    },
+    "rc-osRecordsTest._packageInfo": {
+      "id": "rc-osRecordsTest._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-osRecordsTest._packageInfo",
+        "version": "0.3",
+        "versionDate": "📅2024-01-08T14:15:40.394-05:00 local"
+      }
+    },
+    "rc-osRecordsTest.setRecordName": {
+      "id": "rc-osRecordsTest.setRecordName",
+      "space": "shared",
+      "tags": {
+        "color": "#F44E3B",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -4,
+        "homeY": 3,
+        "homeZ": 0,
+        "label": "set record name",
+        "onClick": "@let prevValue = configBot.tags.recordName;\n\nlet inputValue = await os.showInput(prevValue, { title: 'Record Name' });\n\nif (prevValue != inputValue) {\n    configBot.tags.recordName = inputValue;\n}\n\nthisBot.updateLabel();",
+        "onInitialize": "@thisBot.updateLabel();",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-osRecordsTest.setRecordName",
+        "updateLabel": "@if (configBot.tags.recordName) {\n    masks.label = `record name:\\n${configBot.tags.recordName}`;\n    masks.color = '#A4DD00';\n} else {\n    masks.label = null;\n    masks.color = null;\n}"
+      }
+    },
+    "rc-osRecordsTest.listUserStudios": {
+      "id": "rc-osRecordsTest.listUserStudios",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 4,
+        "homeY": 3,
+        "homeZ": 0,
+        "label": "list user studios",
+        "onClick": "@let startingAddress;\n\nmasks.label = 'please wait...';\nmasks.pointable = false;\n\ntry {\n    const result = await os.listUserStudios();\n\n    if (result.success) {\n        const studios = result.studios ?? [];\n\n        let html = `<h1>User Studios</h1>`;\n        html += `<p><b>Studio Count: ${studios.length}</b></p>`;\n        html += `<p style=\"white-space: pre;\">${JSON.stringify(studios, undefined, 2)}</p>`;\n\n        os.showHtml(html);\n    } else {\n        throw new Error(`${results.errorMessage} - Error Code: ${results.errorCode}`);\n    }\n\n    console.log('user studios:', result);\n} catch(e) {\n    console.error(e);\n}\n\nmasks.label = null;\nmasks.pointable = null;\n",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-osRecordsTest.listUserStudios"
+      }
+    },
+    "rc-osRecordsTest.listData": {
+      "id": "rc-osRecordsTest.listData",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 4,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "list all data",
+        "onClick": "@let data = [];\nlet startingAddress;\nlet totalCount;\n\nmasks.label = 'please wait...';\nmasks.pointable = false;\n\ntry {\n    while (totalCount !== data.length) {\n        let results = await os.listData(configBot.tags.recordName, startingAddress);\n\n        if (totalCount === undefined && typeof results.totalCount === 'number') {\n            totalCount = results.totalCount;\n        }\n\n        if (results.success) {\n            if (results.items && results.items.length > 0) {\n                data.push(...results.items);\n                startingAddress = results.items[results.items.length - 1].address;\n            } else {\n                throw new Error(`os.listData result returned no items but we havent finished collecting all the data yet.`);\n            }\n        } else {\n            throw new Error(`${results.errorMessage} - Error Code: ${results.errorCode}`);\n        }\n    }\n\n    console.log(`${configBot.tags.recordName} data:`, data);\n\n    let html = `<h1>Record Data</h1>`;\n    html += `<p><b>Record: ${configBot.tags.recordName}</b></p>`;\n    html += `<p><b>Data Count: ${data.length}</b></p>`;\n    html += `<p style=\"white-space: pre;\">${JSON.stringify(data, undefined, 2)}</p>`;\n\n    os.showHtml(html);\n} catch(e) {\n    console.error(e);\n}\n\nmasks.label = null;\nmasks.pointable = null;\n",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-osRecordsTest.listData"
+      }
+    }
+  }
+}
