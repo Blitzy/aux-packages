@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "state": {
+    "rc-remote-counter.count": {
+      "id": "rc-remote-counter.count",
+      "space": "shared",
+      "tags": {
+        "home": "true",
+        "label": "no remotes",
+        "labelFontSize": "4",
+        "onRemoteJoined": "@if (typeof masks.remoteCount !== 'number') {\n    masks.remoteCount = 0;\n}\n\nmasks.remoteCount += 1;\nmasks.label = 'remotes: ' + masks.remoteCount;",
+        "onRemoteLeave": "@if (typeof masks.remoteCount !== 'number') {\n    masks.remoteCount = 0;\n}\n\nmasks.remoteCount -= 1;\nmasks.label = 'remotes: ' + masks.remoteCount;",
+        "scaleX": "10",
+        "scaleY": "5",
+        "system": "rc-remote-counter.count"
+      }
+    }
+  }
+}
