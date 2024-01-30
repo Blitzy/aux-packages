@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "state": {
+    "rc-material-icon-font-test.appBot": {
+      "id": "rc-material-icon-font-test.appBot",
+      "space": "shared",
+      "tags": {
+        "color": "white",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": "0",
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "Compile App",
+        "onClick": "@os.registerApp('myApp', thisBot);\n\nconst App = ({}) => {\n    return (\n        <>\n            <style>{`\n                @font-face {\n                    font-family: 'Material Icons';\n                    font-style: normal;\n                    font-weight: 400;\n                }\n\n                .material-icons {\n                    font-family: 'Material Icons';\n                    font-weight: normal;\n                    font-style: normal;\n                    font-size: 24px;  /* Preferred icon size */\n                    display: inline-block;\n                    line-height: 1;\n                    text-transform: none;\n                    letter-spacing: normal;\n                    word-wrap: normal;\n                    white-space: nowrap;\n                    direction: ltr;\n\n                    /* Support for all WebKit browsers. */\n                    -webkit-font-smoothing: antialiased;\n                    /* Support for Safari and Chrome. */\n                    text-rendering: optimizeLegibility;\n\n                    /* Support for Firefox. */\n                    -moz-osx-font-smoothing: grayscale;\n\n                    /* Support for IE. */\n                    font-feature-settings: 'liga';\n                }\n\n                .material-icons.small {\n                    font-size: 24px;\n                }\n\n                .material-icons.medium {\n                    font-size: 36px;\n                }\n\n                .material-icons.large {\n                    font-size: 48px;\n                }\n\n                .material-icons.red {\n                    color: red;\n                }\n\n                .material-icons.blue {\n                    color: blue;\n                }\n\n                .material-icons.purple {\n                    color: purple;\n                }\n\n                .material-icons.orange {\n                    color: orange;\n                }\n\n                .material-icons.yellow {\n                    color: yellow;\n                }\n\n                .material-icons.green {\n                    color: green;\n                }\n\n                #custom-app-container {\n                    background-color: white;\n                    padding: 16px;\n                }\n            `}</style>\n\n            <div id='custom-app-container'>\n                <h1>Look At These Material</h1>\n                <h2>Small</h2>\n                <span class=\"material-icons small red\">home</span>\n                <span class=\"material-icons small blue\">settings</span>\n                <span class=\"material-icons small green\">favorite</span>\n                <span class=\"material-icons small purple\">shopping_cart</span>\n                <span class=\"material-icons small orange\">lock</span>\n                <span class=\"material-icons small\">alarm</span>\n                <br/>\n                <h2>Medium</h2>\n                <span class=\"material-icons medium red\">home</span>\n                <span class=\"material-icons medium blue\">settings</span>\n                <span class=\"material-icons medium green\">favorite</span>\n                <span class=\"material-icons medium purple\">shopping_cart</span>\n                <span class=\"material-icons medium orange\">lock</span>\n                <span class=\"material-icons medium\">alarm</span>\n                <br/>\n                <h2>Large</h2>\n                <span class=\"material-icons large red\">home</span>\n                <span class=\"material-icons large blue\">settings</span>\n                <span class=\"material-icons large green\">favorite</span>\n                <span class=\"material-icons large purple\">shopping_cart</span>\n                <span class=\"material-icons large orange\">lock</span>\n                <span class=\"material-icons large\">alarm</span>\n                <br/>\n            </div>\n        </>\n    )\n}\n\nos.compileApp('myApp', <App/>);",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-material-icon-font-test.appBot"
+      }
+    }
+  }
+}
