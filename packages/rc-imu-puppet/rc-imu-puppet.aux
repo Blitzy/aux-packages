@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "state": {
+    "rc-imu-puppet.imuPortalBotSheet": {
+      "id": "rc-imu-puppet.imuPortalBotSheet",
+      "space": "shared",
+      "tags": {
+        "home": true,
+        "homeX": -1,
+        "homeY": 5,
+        "homeZ": 0,
+        "label": "open imuPortalBot",
+        "onClick": "@configBot.tags.sheetPortal = imuPortalBot.id;",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-imu-puppet.imuPortalBotSheet"
+      }
+    },
+    "rc-imu-puppet.imuPuppet": {
+      "id": "rc-imu-puppet.imuPuppet",
+      "space": "shared",
+      "tags": {
+        "color": "#FCDC00",
+        "home": "true",
+        "onClick": "@tags.homeRotation = null;",
+        "onDeviceRotation": "@const { rotation, rotationX, rotationY, rotationZ, rotationW } = that;\n\ntags.homeRotation = rotation;",
+        "onIMUSupported": "@const { supported } = that;\n\nif (supported) {\n    os.toast(`This device supports IMU!`);\n} else {\n    os.toast(`This device does not support IMU`);\n}",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "2",
+        "system": "rc-imu-puppet.imuPuppet"
+      }
+    },
+    "rc-imu-puppet.imuStart": {
+      "id": "rc-imu-puppet.imuStart",
+      "space": "shared",
+      "tags": {
+        "onInstJoined": "@configBot.tags.imuPortal = true;\n\nwhile(typeof imuPortalBot.tags.imuSupported !== 'boolean') {\n    // Wait for CasualOS to determine if the IMU is supported.\n    console.log('wait');\n    await os.sleep(100);\n}\n\nconst supported = imuPortalBot.tags.imuSupported;\nshout('onIMUSupported', { supported });\n\nif (supported) {\n    imuPortalBot.tags.onBotChanged = `@\n        const changedTags = that.tags;\n        const rotationChanged = changedTags.some(t => t.startsWith('deviceRotation' ));\n\n        if (rotationChanged) {\n            shout('onDeviceRotation', {\n                rotation: tags.deviceRotation,\n                rotationX: tags.deviceRotationX,\n                rotationY: tags.deviceRotationY,\n                rotationZ: tags.deviceRotationZ,\n                rotationW: tags.deviceRotationW\n            });\n        }\n    `\n}",
+        "system": "rc-imu-puppet.imuStart"
+      }
+    }
+  }
+}
