@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "state": {
+    "rc-collaborativeCursors-test.vr": {
+      "id": "rc-collaborativeCursors-test.vr",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -7,
+        "homeY": 6,
+        "homeZ": 0,
+        "label": "vr",
+        "onClick": "@os.enableVR();",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.vr"
+      }
+    },
+    "rc-collaborativeCursors-test.cameraLabel": {
+      "id": "rc-collaborativeCursors-test.cameraLabel",
+      "space": "shared",
+      "tags": {
+        "home": true,
+        "homeX": -7,
+        "homeY": 9,
+        "homeZ": 0,
+        "label": "camera modes",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.5",
+        "system": "rc-collaborativeCursors-test.cameraLabel"
+      }
+    },
+    "rc-collaborativeCursors-test.cursorSettingsLabel": {
+      "id": "rc-collaborativeCursors-test.cursorSettingsLabel",
+      "space": "shared",
+      "tags": {
+        "home": true,
+        "homeX": 5,
+        "homeY": 8,
+        "homeZ": 0,
+        "label": "cursor settings",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.5",
+        "system": "rc-collaborativeCursors-test.cursorSettingsLabel"
+      }
+    },
+    "rc-collaborativeCursors-test.rateLimitExceededCounter": {
+      "id": "rc-collaborativeCursors-test.rateLimitExceededCounter",
+      "space": "shared",
+      "tags": {
+        "color": "#D33115",
+        "home": true,
+        "homeX": 0,
+        "homeY": 14,
+        "homeZ": 0,
+        "label": "cursor settings",
+        "labelColor": "white",
+        "onBotAdded": "@masks.errorCount = 0;",
+        "onBotChanged": "@if (that.tags.includes('errorCount')) {\n    if (tags.errorCount > 0) {\n        masks.color = '#D33115';\n    } else {\n        masks.color = '#808080';\n    }\n    \n    masks.label = `Local Rate Limit Exceeded Count:   ${tags.errorCount}`;\n}",
+        "onSpaceRateLimitExceeded": "@masks.errorCount = tags.errorCount + 1;",
+        "scaleX": "12",
+        "scaleY": "2",
+        "scaleZ": "0.5",
+        "system": "rc-collaborativeCursors-test.rateLimitExceededCounter"
+      }
+    },
+    "rc-collaborativeCursors-test.pov": {
+      "id": "rc-collaborativeCursors-test.pov",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -7,
+        "homeY": 3,
+        "homeZ": 0,
+        "label": "pov",
+        "onClick": "@os.enablePointOfView({ x: 0, y: 0, z: -2})",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.pov"
+      }
+    },
+    "rc-collaborativeCursors-test.portalTestingLabel": {
+      "id": "rc-collaborativeCursors-test.portalTestingLabel",
+      "space": "shared",
+      "tags": {
+        "home": true,
+        "homeX": 10,
+        "homeY": 8,
+        "homeZ": 0,
+        "label": "portal testing",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.5",
+        "system": "rc-collaborativeCursors-test.portalTestingLabel"
+      }
+    },
+    "rc-collaborativeCursors-test._packageInfo": {
+      "id": "rc-collaborativeCursors-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-collaborativeCursors-test._packageInfo",
+        "version": "0.7",
+        "versionDate": "📅2023-08-24T08:51:53.777-04:00 local"
+      }
+    },
+    "rc-collaborativeCursors-test.cursorName": {
+      "id": "rc-collaborativeCursors-test.cursorName",
+      "space": "shared",
+      "tags": {
+        "color": "#A4DD00",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 5,
+        "homeY": 2,
+        "homeZ": 0,
+        "label": "cursor name",
+        "onClick": "@const name = await os.showInput(configBot.tags.cursorName, { \n    type: 'text',\n    title: 'Cursor name',\n});\n\nconfigBot.tags.cursorName = name;",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.cursorName",
+        "test": "Hello\nWorld",
+        "test2": "Hello\\nWorld"
+      }
+    },
+    "rc-collaborativeCursors-test.ortho": {
+      "id": "rc-collaborativeCursors-test.ortho",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -7,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "ortho",
+        "onClick": "@gridPortalBot.tags.portalCameraType = 'orthographic';",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.ortho"
+      }
+    },
+    "rc-collaborativeCursors-test.goToHome": {
+      "id": "rc-collaborativeCursors-test.goToHome",
+      "space": "shared",
+      "tags": {
+        "color": "#73D8FF",
+        "cursor": "pointer",
+        "label": "go to home",
+        "onClick": "@configBot.tags.gridPortal = 'home';",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.goToHome",
+        "test": true,
+        "testX": 4,
+        "testY": 5,
+        "testZ": 0
+      }
+    },
+    "rc-collaborativeCursors-test.showCursorColors": {
+      "id": "rc-collaborativeCursors-test.showCursorColors",
+      "space": "shared",
+      "tags": {
+        "color": "#A4DD00",
+        "home": true,
+        "homeX": 5,
+        "homeY": -1,
+        "homeZ": 0,
+        "label": "show cursor colors",
+        "onClick": "@destroy(getBots('cursorColors', true));\n\nconfigBot.tags.gridPortal = 'cursorColors';\n\nconst colors = CollaborativeCursors.emitter.tags.cursorColors;\n\nconst COLUMNS = 10;\nconst CELL_SIZE = 1;\n\nlet row = 0;\nlet column = 0;\n\nfor (let color of colors) {\n    create({\n        space: 'tempLocal',\n        form: 'mesh',\n        formSubtype: 'gltf',\n        formAddress: CollaborativeCursors.receiver.tags.cursorModel,\n        color,\n        cursorColors: true,\n        cursorColorsX: CELL_SIZE * column,\n        cursorColorsY: CELL_SIZE * row,\n    });\n\n    column++;\n\n    if (column >= COLUMNS) {\n        column = 0;\n        row++;\n    }\n}\n\n",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.showCursorColors"
+      }
+    },
+    "rc-collaborativeCursors-test.cursorColor": {
+      "id": "rc-collaborativeCursors-test.cursorColor",
+      "space": "shared",
+      "tags": {
+        "color": "#A4DD00",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 5,
+        "homeY": 5,
+        "homeZ": 0,
+        "label": "cursor color",
+        "onClick": "@const color = await os.showInput(configBot.tags.cursorColor, { \n    type: 'color',\n    title: 'Cursor color',\n});\n\nconfigBot.tags.cursorColor = color",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.cursorColor"
+      }
+    },
+    "rc-collaborativeCursors-test.perspective": {
+      "id": "rc-collaborativeCursors-test.perspective",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -7,
+        "homeY": -3,
+        "homeZ": 0,
+        "label": "persp",
+        "onClick": "@gridPortalBot.tags.portalCameraType = 'perspective';",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.perspective"
+      }
+    },
+    "rc-collaborativeCursors-test.testBotPortal": {
+      "id": "rc-collaborativeCursors-test.testBotPortal",
+      "space": "shared",
+      "tags": {
+        "color": "#009CE0",
+        "form": "cube",
+        "home": true,
+        "homeX": 20,
+        "homeY": 2,
+        "homeZ": 0,
+        "system": "rc-collaborativeCursors-test.testBotPortal"
+      }
+    },
+    "rc-collaborativeCursors-test.showOwnCursor": {
+      "id": "rc-collaborativeCursors-test.showOwnCursor",
+      "space": "shared",
+      "tags": {
+        "color": "#A4DD00",
+        "home": true,
+        "homeX": 5,
+        "homeY": -4,
+        "homeZ": 0,
+        "label": "show own cursor",
+        "onClick": "@CollaborativeCursors.emitter.masks.selfVisible = !CollaborativeCursors.emitter.tags.selfVisible;\n\nif (CollaborativeCursors.emitter.masks.selfVisible) {\n    os.toast('showing own cursor');\n} else {\n    os.toast('hiding own cursor');\n}",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.showOwnCursor"
+      }
+    },
+    "rc-collaborativeCursors-test.goToTest": {
+      "id": "rc-collaborativeCursors-test.goToTest",
+      "space": "shared",
+      "tags": {
+        "color": "#73D8FF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 10,
+        "homeY": 5,
+        "homeZ": 0,
+        "label": "go to test",
+        "onClick": "@configBot.tags.gridPortal = 'test';",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.goToTest"
+      }
+    },
+    "rc-collaborativeCursors-test.toggleTestBotPortal": {
+      "id": "rc-collaborativeCursors-test.toggleTestBotPortal",
+      "space": "shared",
+      "tags": {
+        "color": "#73D8FF",
+        "cursor": "pointer",
+        "form": "cube",
+        "home": true,
+        "homeX": 10,
+        "homeY": 3,
+        "homeZ": 0,
+        "label": "toggle test bot portal",
+        "lineStyle": "arrow",
+        "lineTo": "98e7cecd-376b-414a-9429-e28c765e7ac6",
+        "onClick": "@const botPortal = getBot('id', tags.lineTo);\n\nif (botPortal.tags.form !== 'portal') {\n    botPortal.tags.form = 'portal';\n    botPortal.tags.formAddress = 'test';\n} else {\n    botPortal.tags.form = 'cube';\n    botPortal.tags.formAddress = null;\n}",
+        "onCreate": "@await os.sleep(500);\n\nconst testPortalBot = getBot('system', 'rc-collaborativeCursors-test.testBotPortal');\ntags.lineTo = testPortalBot.id;",
+        "scaleX": "2",
+        "system": "rc-collaborativeCursors-test.toggleTestBotPortal"
+      }
+    }
+  }
+}
