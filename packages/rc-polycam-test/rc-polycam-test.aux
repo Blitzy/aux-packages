@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "state": {
+    "rc-polycam-test.floor": {
+      "id": "rc-polycam-test.floor",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "center",
+        "draggable": "false",
+        "form": "sprite",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/fa154338e35a2ced32d40fa118b37c828380e8e396aa13aa2cea24b1615e12e5.png",
+        "home": true,
+        "homeX": "0",
+        "homeY": "0",
+        "homeZ": 0,
+        "pointable": "false",
+        "scaleX": "15",
+        "scaleY": "15",
+        "system": "rc-polycam-test.floor"
+      }
+    },
+    "rc-polycam-test.htmlApp": {
+      "id": "rc-polycam-test.htmlApp",
+      "space": "shared",
+      "tags": {
+        "onInitialize": "@const { useState, useEffect } = os.appHooks;\n\nconst modelManagerBot = getBot('system', 'rc-polycam-test.modelManager');\n\nconst App = () => {\n    const [ modelName, setModelName ] = useState(modelManagerBot.tags.config[0].name);\n\n    return (\n        <>\n            <style>{tags[\"style.css\"]}</style>\n            <div className='app'>\n                <h1 className='model-name'>{modelName}</h1>\n                <div className='bottom-panel'>\n                    <button\n                        id='previous-model'\n                        onClick={() => {\n                            shout('onPrevModel')[0][0].then((model) => {\n                                setModelName(model.name);\n                            });\n                        }}\n                    >⬅️</button>\n                    <button\n                        id='next-model'\n                        onClick={() => {\n                            shout('onNextModel')[0][0].then((model) => {\n                                setModelName(model.name);\n                            });\n                        }}\n                    >➡️</button>\n                </div>\n            </div>\n        </>\n    )\n}\n\nawait os.registerApp('htmlApp', thisBot);\nos.compileApp('htmlApp', <App/>);",
+        "style.css": ".app {\n\n}\n\n.model-name {\n    position: fixed;\n    left: 12px;\n    top: 0;\n    color: white;\n}\n\n.bottom-panel {\n    position: fixed;\n    bottom: 0;\n    left: 50%;\n    transform: translateX(-50%);\n    margin-bottom: 32px;\n    width: 255px;\n}\n\n.bottom-panel button {\n    width: 100px;\n    height: 60px;\n    font-size: 2em;\n    cursor: pointer;\n}\n\n.bottom-panel button#next-model {\n    margin-left: 50px;\n}",
+        "system": "rc-polycam-test.htmlApp"
+      }
+    },
+    "rc-polycam-test.main": {
+      "id": "rc-polycam-test.main",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\nshout('onInitialize');",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-polycam-test.main"
+      }
+    },
+    "rc-polycam-test.modelManager": {
+      "id": "rc-polycam-test.modelManager",
+      "space": "shared",
+      "tags": {
+        "config": "🧬[\n    {\n        \"name\": \"Nutcracker\",\n        \"url\": \"https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/4f95ed9815f337471aa05b67f5718b88e5f121dc73ed7b819cff51274282ff62.xml\",\n        \"scale\": 6\n    },\n    {\n        \"name\": \"Roses\",\n        \"url\": \"https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/cdd392589c5ee5c3057a8d30b47c2fd9c4f0cc2c852bd551070f17c6c14810aa.xml\",\n        \"scale\": 4\n    },\n    {\n        \"name\": \"Outdoor Chair\",\n        \"url\": \"https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/2f3bb2129e6d187f87421ec9529db4eb7a6dab8f0596a3406bbf69d341e19e00.xml\",\n        \"scale\": 8,\n        \"positionZ\": -2.9,\n        \"rotationZ\": -2.4\n    },\n    {\n        \"name\": \"Self Portrait\",\n        \"url\": \"https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/1e2f382d3d1dd8410d791bc1ccccb469c68e73ef97cc598267c184b648a90d6e.xml\",\n        \"scale\": 7,\n        \"rotationZ\": -1.2\n    }\n]",
+        "modelBot": "🔗94af2034-bc5c-4d9e-8ddb-48e9b27be657",
+        "onInitialize": "@// Show the first model automatically.\nawait os.sleep(250);\nshout('onShowModel', { index: 0 });",
+        "onNextModel": "@let index = masks.index;\n\nif (typeof masks.index === 'number') {\n    index++;\n    \n    // Wrap index to beginning.\n    if (index >= tags.config.length) {\n        index = 0;\n    }\n    \n    return shout('onShowModel', { index });\n}",
+        "onPrevModel": "@let index = masks.index;\n\nif (typeof masks.index === 'number') {\n    index--;\n    \n    // Wrap index to end.\n    if (index < 0) {\n        index = tags.config.length - 1;\n    }\n\n    return shout('onShowModel', { index });\n}",
+        "onShowModel": "@let { index } = that ?? {};\n\nassert(typeof index === 'number', `[onShowModel] index argument is required`);\nassert(index >= 0 && index < tags.config.length, `[onShowModel] index is out of range`);\n\nif (masks.index === index) {\n    // Index didnt change, no need to continue;\n    return;\n}\n\nmasks.index = index;\nconst model = tags.config[index];\nconsole.log(`[onshowModel] model:`, model);\n\n// Destroy previous model bot if it exists.\nlet modelBot = getBot('modelBot', true);\nif (modelBot) {\n    destroy(modelBot);\n}\n\n// Model scale.\nlet scale = 1;\nif (typeof model.scale === 'number') {\n    scale = model.scale;\n}\n\n// Model position.\nlet positionX = 0;\nlet positionY = 0;\nlet positionZ = 0;\nif (typeof model.positionX === 'number') {\n    positionX = model.positionX;\n}\nif (typeof model.positionY === 'number') {\n    positionY = model.positionY;\n}\nif (typeof model.positionZ === 'number') {\n    positionZ = model.positionZ;\n}\n\n// Model rotation.\nlet rotationX = 0;\nlet rotationY = 0;\nlet rotationZ = 0;\nif (typeof model.rotationX === 'number') {\n    rotationX = model.rotationX;\n}\nif (typeof model.rotationY === 'number') {\n    rotationY = model.rotationY;\n}\nif (typeof model.rotationZ === 'number') {\n    rotationZ = model.rotationZ;\n}\n\n// Create new model bot.\ncreate({\n    space: 'tempLocal',\n    modelBot: true,\n    home: true,\n    draggable: false,\n    pointable: false,\n    modelUrl: model.url,\n    modelScale: scale,\n    modelPositionX: positionX,\n    modelPositionY: positionY,\n    modelPositionZ: positionZ,\n    modelRotationX: rotationX,\n    modelRotationY: rotationY,\n    modelRotationZ: rotationZ,\n    label: 'Loading...',\n    orientationMode: 'billboard',\n    form: 'circle',\n    scale: 2,\n    homeZ: 2,\n    labelFontSize: 0.9,\n    onBotAdded: `@\n        await os.bufferFormAddressGLTF(tags.modelUrl);\n\n        tags.label = null;\n        tags.orientationMode = null;\n\n        tags.form = 'mesh';\n        tags.formAddress = tags.modelUrl;\n        tags.formSubtype = 'gltf';\n        tags.scale = tags.modelScale;\n        tags.homeX = tags.modelPositionX;\n        tags.homeY = tags.modelPositionY;\n        tags.homeZ = tags.modelPositionZ;\n        tags.homeRotationX = tags.modelRotationX;\n        tags.homeRotationY = tags.modelRotationY;\n        tags.homeRotationZ = tags.modelRotationZ;\n\n        await os.sleep(100);\n\n        os.focusOn(thisBot, {\n            duration: 0.333,\n        });\n    `,\n    onClick: `@\n        tags.homeRotationZ -= 0.1;\n        console.log(tags.homeRotationZ);\n    `\n});\n\nreturn model;",
+        "system": "rc-polycam-test.modelManager"
+      }
+    },
+    "rc-polycam-test.camera": {
+      "id": "rc-polycam-test.camera",
+      "space": "shared",
+      "tags": {
+        "onInitialize": "@gridPortalBot.tags.portalCameraType = 'perspective';\n\nos.focusOn({ x: 0, y: 0, z: 0 }, { \n    duration: 0, \n    portal: 'grid', \n    zoom: 4, \n    rotation: { x: 2, y: -Math.PI / 1.75 }\n});\n",
+        "system": "rc-polycam-test.camera"
+      }
+    }
+  }
+}
