@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "state": {
+    "rc-actionOpportunities-test.advanced.blue": {
+      "id": "rc-actionOpportunities-test.advanced.blue",
+      "space": "shared",
+      "tags": {
+        "actionOpportunities": "🧬[\n    {\n        \"name\": \"Get Info (Blue)\",\n        \"clickShout\": \"getInfoB\",\n        \"icon\": \"info\",\n        \"color\": \"#73D8FF\",\n        \"hoverColor\": \"#b7eaff\"\n    },\n    {\n        \"name\": \"Special Power (Blue)\",\n        \"clickShout\": \"specialPowerB\",\n        \"icon\": \"bolt\",\n        \"color\": \"#73D8FF\",\n        \"hoverColor\": \"#b7eaff\"\n    },\n    {\n        \"name\": \"Change Mode (Blue)\",\n        \"clickShout\": \"changeModeB\",\n        \"icon\": \"swap_horiz\",\n        \"color\": \"#73D8FF\",\n        \"hoverColor\": \"#b7eaff\"\n    }\n]",
+        "changeModeB": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nif (tags.form === 'sphere') {\n    tags.form = null;\n} else {\n    tags.form = 'sphere';\n}",
+        "color": "#73D8FF",
+        "getInfoB": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('blue bot id: ' + thisBot.id);",
+        "home": true,
+        "homeX": 13,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "B",
+        "specialPowerB": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('blue special power is water');",
+        "system": "rc-actionOpportunities-test.advanced.blue"
+      }
+    },
+    "rc-actionOpportunities-test.autoLoad": {
+      "id": "rc-actionOpportunities-test.autoLoad",
+      "space": "shared",
+      "tags": {
+        "onCreate": "@if (configBot.tags.demoMode) {\n    // Make sure that the core ab doesnt exist yet.\n    const managerBot = getBot('system', 'rc-actionOpportunities.manager');\n\n    if (!managerBot) {\n        // Load the rc-actionOpportunities ab.\n        await Promise.all( shout('onLookupABEggs', { \n            abID: 'rc-actionOpportunities',\n            autoHatch: true,\n        }));\n    }\n}",
+        "system": "rc-actionOpportunities-test.autoLoad"
+      }
+    },
+    "rc-actionOpportunities-test._packageInfo": {
+      "id": "rc-actionOpportunities-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-actionOpportunities-test._packageInfo",
+        "version": "0.5",
+        "versionDate": "📅2023-08-25T14:57:36.450-04:00 local"
+      }
+    },
+    "rc-actionOpportunities-test.simple.blue": {
+      "id": "rc-actionOpportunities-test.simple.blue",
+      "space": "shared",
+      "tags": {
+        "actionOpportunities": "🧬[\n    \"getInfoB\",\n    \"specialPowerB\",\n    \"changeModeB\"\n]",
+        "changeModeB": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nif (tags.form === 'sphere') {\n    tags.form = null;\n} else {\n    tags.form = 'sphere';\n}",
+        "color": "#73D8FF",
+        "getInfoB": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('blue bot id: ' + thisBot.id);",
+        "home": true,
+        "homeX": 1,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "B",
+        "specialPowerB": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('blue special power is water');",
+        "system": "rc-actionOpportunities-test.simple.blue"
+      }
+    },
+    "rc-actionOpportunities-test.simple.red": {
+      "id": "rc-actionOpportunities-test.simple.red",
+      "space": "shared",
+      "tags": {
+        "actionOpportunities": "🧬[\n    \"getInfoR\",\n    \"specialPowerR\",\n    \"changeModeR\"\n]",
+        "changeModeR": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nif (tags.form === 'sphere') {\n    tags.form = null;\n} else {\n    tags.form = 'sphere';\n}",
+        "color": "#F44E3B",
+        "getInfoR": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('red bot id: ' + thisBot.id);",
+        "home": true,
+        "homeX": -3,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "R",
+        "specialPowerR": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('red special power is fire');",
+        "system": "rc-actionOpportunities-test.simple.red"
+      }
+    },
+    "rc-actionOpportunities-test.otherMenu": {
+      "id": "rc-actionOpportunities-test.otherMenu",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -9,
+        "homeY": 6,
+        "homeZ": 0,
+        "label": "show other menu",
+        "onClick": "@shout('destroyOtherMenu');\n\nconst otherMenuDim = 'otherMenu';\nconfigBot.tags.menuPortal = otherMenuDim;\n\nfor (let i = 0; i < 4; i++) {\n\n    create({\n        space: 'tempLocal',\n        [otherMenuDim]: true,\n        [otherMenuDim + 'SortOrder']: i,\n        color: 'yellow',\n        label: i,\n        destroyOtherMenu: `@\n            destroy(thisBot);\n        `,\n        onClick: `@\n            shout('destroyOtherMenu');\n            configBot.tags.menuPortal = null;\n        `\n    })\n}",
+        "scaleX": "2",
+        "system": "rc-actionOpportunities-test.otherMenu"
+      }
+    },
+    "rc-actionOpportunities-test.advanced.changeModeRVisible02": {
+      "id": "rc-actionOpportunities-test.advanced.changeModeRVisible02",
+      "space": "shared",
+      "tags": {
+        "changeModeRIsVisible": "@return tags.value == true;",
+        "color": "#0f0",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 9,
+        "homeY": 3,
+        "homeZ": 0,
+        "label": "vis 02",
+        "onClick": "@tags.value = !tags.value;\ntags.color = tags.value ? '#0f0' : '#f00';",
+        "onPointerEnter": "@os.tip('changeModeR visiblity (2 of 2)');",
+        "scaleZ": "0.2",
+        "system": "rc-actionOpportunities-test.advanced.changeModeRVisible02",
+        "value": true
+      }
+    },
+    "rc-actionOpportunities-test.advanced.label": {
+      "id": "rc-actionOpportunities-test.advanced.label",
+      "space": "shared",
+      "tags": {
+        "home": true,
+        "homeX": 11,
+        "homeY": 10,
+        "homeZ": 0,
+        "label": "Advanced Action Opportunities",
+        "labelPadding": "0.5",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "system": "rc-actionOpportunities-test.advanced.label"
+      }
+    },
+    "rc-actionOpportunities-test.advanced.changeModeGLocked01": {
+      "id": "rc-actionOpportunities-test.advanced.changeModeGLocked01",
+      "space": "shared",
+      "tags": {
+        "changeModeGIsLocked": "@return tags.value == true;",
+        "color": "#0f0",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 11,
+        "homeY": 5,
+        "homeZ": 0.009000000000000001,
+        "label": "lock 01",
+        "onClick": "@tags.value = !tags.value;\ntags.color = tags.value ? '#0f0' : '#f00';",
+        "onPointerEnter": "@os.tip('changeModeG lock (1 of 2)');",
+        "scaleZ": "0.2",
+        "system": "rc-actionOpportunities-test.advanced.changeModeGLocked01",
+        "value": true
+      }
+    },
+    "rc-actionOpportunities-test.advanced.red": {
+      "id": "rc-actionOpportunities-test.advanced.red",
+      "space": "shared",
+      "tags": {
+        "actionOpportunities": "🧬[\n    {\n        \"name\": \"Get Info (Red)\",\n        \"clickShout\": \"getInfoR\",\n        \"icon\": \"info\",\n        \"color\": \"#F44E3B\",\n        \"hoverColor\": \"#fc8476\",\n        \"labelColor\": \"white\"\n    },\n    {\n        \"name\": \"Special Power (Red)\",\n        \"clickShout\": \"specialPowerR\",\n        \"icon\": \"bolt\",\n        \"color\": \"#F44E3B\",\n        \"hoverColor\": \"#fc8476\",\n        \"labelColor\": \"white\"\n    },\n    {\n        \"name\": \"Change Mode (Red)\",\n        \"clickShout\": \"changeModeR\",\n        \"isVisibleShout\": \"changeModeRIsVisible\",\n        \"icon\": \"swap_horiz\",\n        \"color\": \"#F44E3B\",\n        \"hoverColor\": \"#fc8476\",\n        \"labelColor\": \"white\"\n    }\n]",
+        "changeModeR": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nif (tags.form === 'sphere') {\n    tags.form = null;\n} else {\n    tags.form = 'sphere';\n}",
+        "color": "#F44E3B",
+        "getInfoR": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('red bot id: ' + thisBot.id);",
+        "home": true,
+        "homeX": 9,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "R",
+        "specialPowerR": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('red special power is fire');",
+        "system": "rc-actionOpportunities-test.advanced.red"
+      }
+    },
+    "rc-actionOpportunities-test.advanced.green": {
+      "id": "rc-actionOpportunities-test.advanced.green",
+      "space": "shared",
+      "tags": {
+        "actionOpportunities": "🧬[\n    {\n        \"name\": \"Get Info (Green)\",\n        \"clickShout\": \"getInfoG\",\n        \"icon\": \"info\",\n        \"color\": \"#A4DD00\",\n        \"hoverColor\": \"#c9f740\"\n    },\n    {\n        \"name\": \"Special Power (Green)\",\n        \"clickShout\": \"specialPowerG\",\n        \"icon\": \"bolt\",\n        \"color\": \"#A4DD00\",\n        \"hoverColor\": \"#c9f740\"\n    },\n    {\n        \"name\": \"Change Mode (Green)\",\n        \"clickShout\": \"changeModeG\",\n        \"isLockedShout\": \"changeModeGIsLocked\",\n        \"icon\": \"swap_horiz\",\n        \"color\": \"#A4DD00\",\n        \"hoverColor\": \"#c9f740\"\n    }\n]",
+        "changeModeG": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nif (tags.form === 'sphere') {\n    tags.form = null;\n} else {\n    tags.form = 'sphere';\n}",
+        "color": "#A4DD00",
+        "getInfoG": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('green bot id: ' + thisBot.id);",
+        "home": true,
+        "homeX": 11,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "G",
+        "specialPowerG": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('green special power is nature');",
+        "system": "rc-actionOpportunities-test.advanced.green"
+      }
+    },
+    "rc-actionOpportunities-test.refreshMenu": {
+      "id": "rc-actionOpportunities-test.refreshMenu",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -9,
+        "homeY": 4,
+        "homeZ": 0,
+        "label": "refresh menu",
+        "onClick": "@ActionOpportunities.manager.refreshActionOpportunitiesMenu();",
+        "scaleX": "2",
+        "system": "rc-actionOpportunities-test.refreshMenu"
+      }
+    },
+    "rc-actionOpportunities-test.simple.label": {
+      "id": "rc-actionOpportunities-test.simple.label",
+      "space": "shared",
+      "tags": {
+        "home": true,
+        "homeX": -1,
+        "homeY": 10,
+        "homeZ": 0,
+        "label": "Simple Action Opportunities",
+        "labelPadding": "0.5",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "system": "rc-actionOpportunities-test.simple.label"
+      }
+    },
+    "rc-actionOpportunities-test.simple.green": {
+      "id": "rc-actionOpportunities-test.simple.green",
+      "space": "shared",
+      "tags": {
+        "actionOpportunities": "🧬[\n    \"getInfoG\",\n    \"specialPowerG\",\n    \"changeModeG\"\n]",
+        "changeModeG": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nif (tags.form === 'sphere') {\n    tags.form = null;\n} else {\n    tags.form = 'sphere';\n}",
+        "color": "#A4DD00",
+        "getInfoG": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('green bot id: ' + thisBot.id);",
+        "home": true,
+        "homeX": -1,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "G",
+        "specialPowerG": "@if (that.actionBot !== thisBot) {\n    // Action is not from this bot.\n    return;\n}\n\nos.toast('green special power is nature');",
+        "system": "rc-actionOpportunities-test.simple.green"
+      }
+    },
+    "rc-actionOpportunities-test.advanced.changeModeGLocked02": {
+      "id": "rc-actionOpportunities-test.advanced.changeModeGLocked02",
+      "space": "shared",
+      "tags": {
+        "changeModeGIsLocked": "@return tags.value == true;",
+        "color": "#0f0",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 11,
+        "homeY": 3,
+        "homeZ": 0.009000000000000001,
+        "label": "lock 02",
+        "onClick": "@tags.value = !tags.value;\ntags.color = tags.value ? '#0f0' : '#f00';",
+        "onPointerEnter": "@os.tip('changeModeG lock (2 of 2)');",
+        "scaleZ": "0.2",
+        "system": "rc-actionOpportunities-test.advanced.changeModeGLocked02",
+        "value": true
+      }
+    },
+    "rc-actionOpportunities-test.advanced.changeModeRVisible01": {
+      "id": "rc-actionOpportunities-test.advanced.changeModeRVisible01",
+      "space": "shared",
+      "tags": {
+        "changeModeRIsVisible": "@return tags.value == true;",
+        "color": "#0f0",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 9,
+        "homeY": 5,
+        "homeZ": 0,
+        "label": "vis 01",
+        "onClick": "@tags.value = !tags.value;\ntags.color = tags.value ? '#0f0' : '#f00';",
+        "onPointerEnter": "@os.tip('changeModeR visiblity (1 of 2)');",
+        "scaleZ": "0.2",
+        "system": "rc-actionOpportunities-test.advanced.changeModeRVisible01",
+        "value": true
+      }
+    }
+  }
+}
