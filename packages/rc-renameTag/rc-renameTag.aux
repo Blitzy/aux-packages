@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "state": {
+    "rc-renameTag.codeButton": {
+      "id": "rc-renameTag.codeButton",
+      "space": "shared",
+      "tags": {
+        "form": "codeButton",
+        "label": "Rename Tag",
+        "onClick": "@let selectedBot = configBot.links.systemPortalBot;\nif (!selectedBot) {\n    selectedBot = configBot.links.editingBot;\n}\n\nlet selectedTag = configBot.tags.systemPortalTag;\nif (!selectedTag) {\n    selectedTag = configBot.tags.editingTag;\n}\n\nif (!selectedBot || !selectedTag) {\n    return;\n}\n\nconst input = await os.showInput(selectedTag, { title: 'Rename Tag', autoSelect: true });\n\nif (input && input !== selectedTag) {\n    const value = selectedBot.tags[selectedTag];\n\n    let performOperation = true;\n    const otherValue = selectedBot.tags[input];\n    const hasOtherTag = otherValue !== undefined && otherValue !== null && otherValue !== '';\n\n    if (hasOtherTag) {\n        performOperation = await os.showConfirm({\n            title: 'Overwrite Tag?',\n            content: `There is already a tag named ${input}, do you want to overwrite it?`,\n            confirmText: 'Yes',\n            cancelText: 'No'\n        });\n    }\n\n    if (performOperation) {\n        selectedBot.tags[input] = value; // Write value to other tag.\n        selectedBot.tags[selectedTag] = null; // Remove old tag.\n        configBot.tags.systemPortalTag = input; // Select other tag.\n    }\n}",
+        "system": "rc-renameTag.codeButton",
+        "true": "true"
+      }
+    }
+  }
+}
