@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "state": {
+    "rc-websocket-test.websocket": {
+      "id": "rc-websocket-test.websocket",
+      "space": "shared",
+      "tags": {
+        "connect": "@globalThis.socket = new WebSocket(tags.endpoint);\n\nmasks.label = 'connecting...';\nmasks.color = '#fff';\n\nsocket.onopen = (event) => {\n    masks.open = true;\n    masks.error = false;\n    masks.color = '#0f0';\n    masks.label = 'connected';\n    console.log(`[${tags.system}] on open`, event);\n    os.toast(`Connected to ${event.target.url}`);\n}\n\nsocket.onclose = (event) => {\n    masks.open = false;\n\n    if (!masks.error) {\n        masks.color = '#fff';\n        masks.label = 'closed';\n    } else {\n        masks.label = 'closed from error';\n    }\n\n    console.log(`[${tags.system}] on close`, event);\n    os.toast(`Disconnected from ${event.target.url}`);\n}\n\nsocket.onerror = (event) => {\n    masks.open = false;\n    masks.error = true;\n    masks.color = '#f00';\n    masks.label = 'error';\n\n    console.error(`[${tags.system}] on error`, event);\n}\n\nsocket.onmessage = (event) => {\n    console.log(`[${tags.system}] on message:`, event.data);\n    os.toast(`Message received: ${event.data}`);\n}",
+        "cursor": "pointer",
+        "disconnect": "@if (globalThis.socket) {\n    socket.close();\n    globalThis.socket = undefined;\n} ",
+        "endpoint": "wss://ws.postman-echo.com/raw",
+        "home": true,
+        "homeX": -1,
+        "homeY": 4,
+        "homeZ": 0,
+        "label": "connect to web socket",
+        "onClick": "@if (globalThis.socket) {\n    thisBot.disconnect();\n} else {\n    const url = await os.showInput(tags.endpoint, { autoSelect: true, title: 'Websocket URL' });\n\n    if (url) {\n        tags.endpoint = url;\n        thisBot.connect();\n    }\n}\n",
+        "scale": "2",
+        "scaleX": "2",
+        "scaleZ": "0.3",
+        "system": "rc-websocket-test.websocket"
+      }
+    },
+    "rc-websocket-test.send": {
+      "id": "rc-websocket-test.send",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -1,
+        "homeY": 10,
+        "homeZ": 0,
+        "label": "send",
+        "onClick": "@if (!globalThis.socket) {\n    os.toast('Websocket is not connected');\n    return;\n}\n\nconst message = await os.showInput(masks.prevMessage, { autoSelect: true, title: 'Message' });\n\nif (message !== undefined && message !== null) {\n    masks.prevMessage = message;\n    socket.send(message);\n}",
+        "scale": "2",
+        "scaleX": "2",
+        "scaleZ": "0.3",
+        "system": "rc-websocket-test.send"
+      }
+    },
+    "rc-websocket-test._packageInfo": {
+      "id": "rc-websocket-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-websocket-test._packageInfo",
+        "version": "0.2",
+        "versionDate": "📅2023-08-29T15:57:45.152-04:00 local"
+      }
+    }
+  }
+}
