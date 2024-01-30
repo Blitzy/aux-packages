@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "state": {
+    "rc-appUpdateComparison.app02": {
+      "id": "rc-appUpdateComparison.app02",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useEffect, useCallback } = os.appHooks;\n\nfunction randomColor() {\n    return `rgb(${math.randomInt(0, 255)}, ${math.randomInt(0, 255)}, ${math.randomInt(0, 255)})`;\n}\n\nconst ContentBox = ({\n    id,\n    backgroundColor = '#fff',\n    textColor = '#000',\n    children\n})     => {\nconst [ toggled, setToggled ] = useState(false);\n    \n    const onClick = useCallback(() => {\n        setToggled(!toggled);\n    }, [toggled, setToggled])\n\n    useEffect(() => {\n        console.log(`${id} updated`);\n    })\n\n    return (\n        <div \n            className='content-box'\n            style={{\n                backgroundColor: toggled ? 'red' : backgroundColor,\n                color: toggled ? 'white' : textColor,\n            }}\n            onClick={onClick}\n        >\n            {children}\n            <p>RenderId: {uuid()}</p>\n        </div>\n    )\n}\n\nconst boxColors = {\n    a: { backgroundColor: randomColor(), textColor: 'black' },\n    b: { backgroundColor: randomColor(), textColor: 'black' },\n    c: { backgroundColor: randomColor(), textColor: 'black' },\n    d: { backgroundColor: randomColor(), textColor: 'black' },\n}\n\n\nconst App = () => {\n    const [ update, _update ] = useState(false);\n    const forceUpdate = () => _update(!update);\n    globalThis.forceUpdateApp = forceUpdate;\n\n    const onUpdateClick = () => {\n        forceUpdateApp();\n    }\n\n    useEffect(() => {\n        console.log(`app updated`);\n    })\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div>\n                <h1>App 02 (using app hooks)</h1>\n                <ContentBox id='box-a' backgroundColor={boxColors.a.backgroundColor} textColor={boxColors.a.textColor}>\n                    Content Box A\n                </ContentBox>\n                <ContentBox id='box-b' backgroundColor={boxColors.b.backgroundColor} textColor={boxColors.b.textColor}>\n                    Content Box B\n                </ContentBox>\n                <ContentBox id='box-c' backgroundColor={boxColors.c.backgroundColor} textColor={boxColors.c.textColor}>\n                    Content Box C\n                </ContentBox>\n                <ContentBox id='box-d' backgroundColor={boxColors.d.backgroundColor} textColor={boxColors.d.textColor}>\n                    Content Box D\n                </ContentBox>\n                <button onClick={onUpdateClick}>Force Update</button>\n            </div>\n        </>\n    )\n}\n\nreturn App;",
+        "appId": "app",
+        "home": true,
+        "homeX": 3,
+        "homeY": 0,
+        "label": "app 02",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.appId, thisBot);\n}\n\nthisBot.update();",
+        "onClick": "@await thisBot.unmount();\nthisBot.mount();",
+        "style.css": ".content-box {\n    border-radius: 4px;\n    padding: 4px;\n    cursor: pointer;\n}",
+        "system": "rc-appUpdateComparison.app02",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = undefined;\n    await os.unregisterApp(tags.appId);\n}",
+        "update": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.appId, <App/>);\n}"
+      }
+    },
+    "rc-appUpdateComparison.app01": {
+      "id": "rc-appUpdateComparison.app01",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useEffect } = os.appHooks;\n\nfunction randomColor() {\n    return `rgb(${math.randomInt(0, 255)}, ${math.randomInt(0, 255)}, ${math.randomInt(0, 255)})`;\n}\n\nconst ContentBox = ({\n    id,\n    backgroundColor = '#fff',\n    textColor = '#000',\n    children\n}) => {\n    const onClick = () => {\n        const toggled = masks[`${id}_toggled`];\n        masks[`${id}_toggled`] = !toggled;\n        thisBot.update();\n    }\n\n    useEffect(() => {\n        console.log(`${id} updated`);\n    })\n\n    const toggled = masks[`${id}_toggled`] === true;\n\n    return (\n        <div \n            className='content-box'\n            style={{\n                backgroundColor: toggled ? 'red' : backgroundColor,\n                color: toggled ? 'white' : textColor,\n            }}\n            onClick={onClick}\n        >\n            {children}\n            <p>RenderId: {uuid()}</p>\n        </div>\n    )\n}\n\nconst boxColors = {\n    a: { backgroundColor: randomColor(), textColor: 'black' },\n    b: { backgroundColor: randomColor(), textColor: 'black' },\n    c: { backgroundColor: randomColor(), textColor: 'black' },\n    d: { backgroundColor: randomColor(), textColor: 'black' },\n}\n\nconst App = () => {\n\n    const onUpdateClick = () => {\n        thisBot.update();\n    }\n\n    useEffect(() => {\n        console.log(`app updated`);\n    })\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div>\n                <h1>App 01 (re-compiling app)</h1>\n                <ContentBox id='box-a' backgroundColor={boxColors.a.backgroundColor} textColor={boxColors.a.textColor}>\n                    Content Box A\n                </ContentBox>\n                <ContentBox id='box-b' backgroundColor={boxColors.b.backgroundColor} textColor={boxColors.b.textColor}>\n                    Content Box B\n                </ContentBox>\n                <ContentBox id='box-c' backgroundColor={boxColors.c.backgroundColor} textColor={boxColors.c.textColor}>\n                    Content Box C\n                </ContentBox>\n                <ContentBox id='box-d' backgroundColor={boxColors.d.backgroundColor} textColor={boxColors.d.textColor}>\n                    Content Box D\n                </ContentBox>\n                <button onClick={onUpdateClick}>Force Update</button>\n            </div>\n        </>\n    )\n}\n\nreturn App;",
+        "appId": "app",
+        "home": "true",
+        "label": "app 01",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.appId, thisBot);\n}\n\nthisBot.update();",
+        "onClick": "@await thisBot.unmount();\nthisBot.mount();",
+        "style.css": ".content-box {\n    border-radius: 4px;\n    padding: 4px;\n    cursor: pointer;\n}",
+        "system": "rc-appUpdateComparison.app01",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = undefined;\n    await os.unregisterApp(tags.appId);\n}",
+        "update": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.appId, <App/>);\n}"
+      }
+    },
+    "rc-appUpdateComparison._packageInfo": {
+      "id": "rc-appUpdateComparison._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-appUpdateComparison._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-01-30T13:15:07.395-05:00 local"
+      }
+    }
+  }
+}
