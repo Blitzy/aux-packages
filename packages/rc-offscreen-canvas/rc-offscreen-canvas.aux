@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "state": {
+    "rc-offscreen-canvas.rectangles": {
+      "id": "rc-offscreen-canvas.rectangles",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "enabled": "true",
+        "form": "sprite",
+        "home": true,
+        "homeX": "0",
+        "homeY": 0,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.update();",
+        "onClick": "@masks.enabled = !tags.enabled;",
+        "render": "@const canvas = new OffscreenCanvas(tags.resolutionWidth, tags.resolutionHeight);\nconst ctx = canvas.getContext('2d');\n\n// White background\nctx.fillStyle = 'white';\nctx.fillRect(0, 0, tags.resolutionWidth, tags.resolutionHeight);\n\nfor (let i = 0; i < tags.shapeCount; i++) {\n    ctx.fillStyle = `rgb(${math.randomInt(0, 255)}, ${math.randomInt(0, 255)}, ${math.randomInt(0, 255)})`;\n    ctx.fillRect(\n        math.random(0, tags.resolutionWidth),\n        math.random(0, tags.resolutionHeight),\n        math.random(0, tags.resolutionWidth / 2),\n        math.random(0, tags.resolutionWidth / 2),\n    )\n}\n\nconst fonts = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Brush Script MT']; \nconst randomFont = fonts[math.randomInt(0, fonts.length-1)];\nctx.fillStyle = 'black';\nctx.font = `50px ${randomFont}`;\nctx.fillText(\"Hello, World!\", 10, 50, tags.resolutionWidth - 10);\n\nconst blob = await canvas.convertToBlob({ type: 'image/png' });\nconst arrayBuffer = await blob.arrayBuffer();\nconst uint8array = new Uint8Array(arrayBuffer);\nconst base64 = bytes.toBase64String(uint8array);\n\nmasks.formAddress = `data:image/png;base64,${base64}?casualos-no-cors-cache=true`;",
+        "resolutionHeight": "512",
+        "resolutionWidth": "512",
+        "scaleX": "10",
+        "scaleY": "10",
+        "shapeCount": "20",
+        "system": "rc-offscreen-canvas.rectangles",
+        "update": "@if (tags.enabled) {\n    await thisBot.render();\n}\n\nawait os.sleep(tags.updateRateMS);\nthisBot.update();",
+        "updateRateMS": "500"
+      }
+    }
+  }
+}
