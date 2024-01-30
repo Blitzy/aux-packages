@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "state": {
+    "rc-camera-forward-test.camera": {
+      "id": "rc-camera-forward-test.camera",
+      "space": "shared",
+      "tags": {
+        "onInitialize": "@gridPortalBot.tags.portalCameraType = 'perspective';",
+        "system": "rc-camera-forward-test.camera"
+      }
+    },
+    "rc-camera-forward-test.init": {
+      "id": "rc-camera-forward-test.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (!masks.initialized) {\n    masks.initialized = true;\n    shout('onInitialize');\n}",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-camera-forward-test.init"
+      }
+    },
+    "rc-camera-forward-test.app": {
+      "id": "rc-camera-forward-test.app",
+      "space": "shared",
+      "tags": {
+        "onCreateClick": "@console.log(`==== Create Bot =====`);\nconst cameraPosition = {\n    x: gridPortalBot.tags.cameraPositionX,\n    y: gridPortalBot.tags.cameraPositionY,\n    z: gridPortalBot.tags.cameraPositionZ,\n}\nconsole.log(`cameraPosition: ${JSON.stringify(cameraPosition)}`);\n\nconst cameraRotation = {\n    x: gridPortalBot.tags.cameraRotationX,\n    y: gridPortalBot.tags.cameraRotationY,\n    z: gridPortalBot.tags.cameraRotationZ,\n}\nconsole.log(`cameraRotation: ${JSON.stringify(cameraRotation)}`);\n\nconst cameraForward = math.getForwardDirection(cameraRotation);\nconsole.log(`cameraForward: ${JSON.stringify(cameraForward)}`);\n\nconst dimension = configBot.tags.gridPortal;\n\nconst randomColor = { \n    r: math.randomInt(0, 255),\n    g: math.randomInt(0, 255),\n    b: math.randomInt(0, 255) \n}\n\nconst botPosition = math.addVectors(cameraPosition, math.scaleVector(cameraForward, 4));\nconsole.log(`botPosition: ${JSON.stringify(botPosition)}`);\n\nlet bot = create({\n    space: 'tempLocal',\n    color: `rgb(${randomColor.r}, ${randomColor.g}, ${randomColor.b})`,\n    recycleMe: true,\n    [dimension]: true,\n    [`${dimension}X`]: botPosition.x,\n    [`${dimension}Y`]: botPosition.y,\n    [`${dimension}Z`]: botPosition.z - 0.5,\n    strokeColor: 'white',\n});",
+        "onInitialize": "@os.registerApp('myApp', thisBot);\n\nconst App = () => {\n    return (\n        <div style={{\n            backgroundColor: 'white',\n            padding: '8px',\n            bottom: 0,\n        }}>\n            <p>Create bot in front of the grid portal camera.</p>\n            <button onClick={() => thisBot.onCreateClick()}>\n                Create\n            </button>\n            <button onClick={() => thisBot.onResetClick()}>\n                Reset\n            </button>\n        </div>\n    )\n}\n\nos.compileApp('myApp', <App/>);",
+        "onResetClick": "@destroy(getBots('recycleMe', true));",
+        "system": "rc-camera-forward-test.app"
+      }
+    },
+    "rc-camera-forward-test._packageInfo": {
+      "id": "rc-camera-forward-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-camera-forward-test._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-01-30T13:18:11.727-05:00 local"
+      }
+    }
+  }
+}
