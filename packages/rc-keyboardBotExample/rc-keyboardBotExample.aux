@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "state": {
+    "rc-keyboardBotExample.output": {
+      "id": "rc-keyboardBotExample.output",
+      "space": "shared",
+      "tags": {
+        "draggable": "false",
+        "home": true,
+        "homeX": "0",
+        "homeY": "10",
+        "onKeyboardBotClick": "@const { key } = that;\n\n/** @type {string} */\nlet label = tags.label ?? '';\nlabel = label.toString();\n\nif (key === 'Backspace') {\n    label = label.substring(0, label.length - 1);\n} else if (key === 'Shift') {\n    // Ignore, user is just shifting between upper and lower case.\n} else if (key === 'Enter') {\n    label += '\\n';\n} else {\n    label += key;\n}\n\ntags.label = label;",
+        "scaleX": "20",
+        "scaleY": "5",
+        "system": "rc-keyboardBotExample.output"
+      }
+    },
+    "rc-keyboardBotExample.keyboard": {
+      "id": "rc-keyboardBotExample.keyboard",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "center",
+        "color": "#7B64FF",
+        "draggable": "false",
+        "form": "keyboard",
+        "home": true,
+        "homeX": 0,
+        "homeY": 2,
+        "homeZ": 0,
+        "onKeyClick": "@shout(`onKeyboardBotClick`, that);",
+        "scale": "20",
+        "system": "rc-keyboardBotExample.keyboard"
+      }
+    }
+  }
+}
