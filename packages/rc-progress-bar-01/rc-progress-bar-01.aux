@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "state": {
+    "rc-progress-bar-01.bot": {
+      "id": "rc-progress-bar-01.bot",
+      "space": "shared",
+      "tags": {
+        "color": "#FFFFFF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": 4,
+        "homeZ": 0,
+        "label": "top",
+        "labelFontSize": "4",
+        "onBotAdded": "@// Animate the progress bar forward and back in an infinite loop.\nwhile(true) {\n    await animateTag(thisBot, 'progressBar', {\n        fromValue: 0,\n        toValue: 1,\n        duration: 1,\n        easing: 'sinusoidal',\n    });\n\n    await animateTag(thisBot, 'progressBar', {\n        fromValue: 1,\n        toValue: 0,\n        duration: 1,\n        easing: 'sinusoidal',\n    });\n}",
+        "onClick": "@const positions = [ 'top', 'front', 'back', 'left', 'right', 'floating' ];\n\nlet index = positions.indexOf(tags.progressBarPosition);\nindex++;\n\nif (index > positions.length - 1) {\n    index = 0;\n}\n\nconst position = positions[index];\n\ntags.progressBarPosition = position;\ntags.label = position;",
+        "progressBar": "0.5",
+        "progressBarBackgroundColor": "darkgrey",
+        "progressBarColor": "royalblue",
+        "progressBarPosition": "top",
+        "scale": "3",
+        "scaleX": "2",
+        "scaleZ": "0.3",
+        "system": "rc-progress-bar-01.bot"
+      }
+    }
+  }
+}
