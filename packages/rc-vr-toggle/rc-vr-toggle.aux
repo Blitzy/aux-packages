@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "state": {
+    "rc-vr-toggle.button": {
+      "id": "rc-vr-toggle.button",
+      "space": "shared",
+      "tags": {
+        "color": "#FFF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": "0",
+        "homeZ": 0,
+        "initialize": "@masks.label = configBot.tags.inVR ? 'Disable VR' : 'Enable VR';",
+        "onClick": "@const device = os.device();\n\nif (device.supportsVR) {\n    if (configBot.tags.inVR) {\n        os.disableVR();\n    } else {\n        os.enableVR();\n    }\n} else {\n    os.toast('This device does not support Web VR.', 3);\n}",
+        "onEggHatch": "@thisBot.initialize();",
+        "onEnterVR": "@configBot.tags.inVR = true;\nmasks.label = 'Disable VR';",
+        "onExitVR": "@configBot.tags.inVR = false;\nmasks.label = 'Enable VR';",
+        "onInstJoined": "@thisBot.initialize();",
+        "onPointerDown": "@masks.scaleZ = 0.1;",
+        "onPointerEnter": "@masks.color = '#FCC400';",
+        "onPointerExit": "@masks.color = null;",
+        "onPointerUp": "@masks.scaleZ = null;",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-vr-toggle.button"
+      }
+    },
+    "rc-vr-toggle._packageInfo": {
+      "id": "rc-vr-toggle._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-vr-toggle._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-01-30T15:15:26.914-05:00 local"
+      }
+    }
+  }
+}
