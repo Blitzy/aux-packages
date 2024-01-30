@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "state": {
+    "rc-collaborativeCursors-injectExample._packageInfo": {
+      "id": "rc-collaborativeCursors-injectExample._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-collaborativeCursors-injectExample._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2023-10-20T14:51:36.171-04:00 local"
+      }
+    },
+    "rc-collaborativeCursors-injectExample.injectButton": {
+      "id": "rc-collaborativeCursors-injectExample.injectButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "cursorColor": "cyan",
+        "cursorDimension": "home",
+        "cursorName": "Fake Cursor",
+        "cursorPortal": "grid",
+        "home": "true",
+        "label": "inject cursor data",
+        "onClick": "@/** @type {CollaborativeCursorData[]} */\nconst cursorData = [];\n\n// Randomly generate a point in 3d space for the cursor to point at.\nconst cursorPosition = {\n    x: math.random(-20, 20),\n    y: math.random(-20, 20),\n    z: math.random(-10, 10),\n}\n\ncursorData.push({\n    portal: tags.cursorPortal,\n    dimension: tags.cursorDimension,\n    color: tags.cursorColor,\n    name: tags.cursorName,\n    pointer: 'mouse',\n    position: cursorPosition,\n})\n\nlet remoteIds = await os.remotes();\nsendRemoteData(remoteIds, 'collaborative-cursor-remotedata', cursorData);",
+        "scaleX": "2",
+        "scaleZ": "1",
+        "system": "rc-collaborativeCursors-injectExample.injectButton"
+      }
+    }
+  }
+}
