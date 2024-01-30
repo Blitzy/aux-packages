@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "state": {
+    "rc-updateTickerTest.box04": {
+      "id": "rc-updateTickerTest.box04",
+      "space": "shared",
+      "tags": {
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/53c8a4b40d6c6ad5036040cae800c2204f91a3fb271c6b61a4773722128f7392.png",
+        "home": true,
+        "homeRotationZ": "-0.1",
+        "homeX": 0,
+        "homeY": -2,
+        "homeZ": 0,
+        "system": "rc-updateTickerTest.box04"
+      }
+    },
+    "rc-updateTickerTest.box03": {
+      "id": "rc-updateTickerTest.box03",
+      "space": "shared",
+      "tags": {
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/53c8a4b40d6c6ad5036040cae800c2204f91a3fb271c6b61a4773722128f7392.png",
+        "home": true,
+        "homeRotationZ": "-4",
+        "homeX": 4,
+        "homeY": 5,
+        "homeZ": 0,
+        "system": "rc-updateTickerTest.box03"
+      }
+    },
+    "rc-updateTickerTest.box07": {
+      "id": "rc-updateTickerTest.box07",
+      "space": "shared",
+      "tags": {
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/53c8a4b40d6c6ad5036040cae800c2204f91a3fb271c6b61a4773722128f7392.png",
+        "home": true,
+        "homeRotationZ": "0.2",
+        "homeX": 2,
+        "homeY": 1,
+        "homeZ": 0,
+        "system": "rc-updateTickerTest.box07"
+      }
+    },
+    "rc-updateTickerTest.camera": {
+      "id": "rc-updateTickerTest.camera",
+      "space": "shared",
+      "tags": {
+        "onBotAdded": "@masks.pawn = getBot('system', 'rc-updateTickerTest.pawn').link;",
+        "onUpdate": "@if (!links.pawn) {\n    return;\n}\n\nos.focusOn(links.pawn, {\n    duration: 0,\n    zoom: 30,\n    rotation: {\n        x: Math.PI,\n        y: 0,\n    }\n})\n\n// console.log('hi');",
+        "system": "rc-updateTickerTest.camera"
+      }
+    },
+    "rc-updateTickerTest._packageInfo": {
+      "id": "rc-updateTickerTest._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-updateTickerTest._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-01-30T15:13:30.655-05:00 local"
+      }
+    },
+    "rc-updateTickerTest.box02": {
+      "id": "rc-updateTickerTest.box02",
+      "space": "shared",
+      "tags": {
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/53c8a4b40d6c6ad5036040cae800c2204f91a3fb271c6b61a4773722128f7392.png",
+        "home": true,
+        "homeRotationZ": "1",
+        "homeX": 6,
+        "homeY": 0,
+        "homeZ": 0,
+        "system": "rc-updateTickerTest.box02",
+        "undefined": true
+      }
+    },
+    "rc-updateTickerTest.updateTicker": {
+      "id": "rc-updateTickerTest.updateTicker",
+      "space": "shared",
+      "tags": {
+        "onBotAdded": "@thisBot.update();",
+        "system": "rc-updateTickerTest.updateTicker",
+        "ticksPerSecond": "60",
+        "update": "@const prevTime = thisBot.vars.prevTime;\nconst time = performance.now() / 1000;\nlet deltaTime;\n\nif (prevTime) {\n    deltaTime = time - prevTime;\n} else {\n    deltaTime = time;\n}\n\nthisBot.vars.prevTime = time;\n\nshout('onUpdate', { deltaTime, time })\n\nawait os.sleep(1000 / tags.ticksPerSecond);\nthisBot.update();"
+      }
+    },
+    "rc-updateTickerTest.box05": {
+      "id": "rc-updateTickerTest.box05",
+      "space": "shared",
+      "tags": {
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/53c8a4b40d6c6ad5036040cae800c2204f91a3fb271c6b61a4773722128f7392.png",
+        "home": true,
+        "homeRotationZ": "0.1",
+        "homeX": 0,
+        "homeY": -2,
+        "homeZ": 1,
+        "system": "rc-updateTickerTest.box05"
+      }
+    },
+    "rc-updateTickerTest.box06": {
+      "id": "rc-updateTickerTest.box06",
+      "space": "shared",
+      "tags": {
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/53c8a4b40d6c6ad5036040cae800c2204f91a3fb271c6b61a4773722128f7392.png",
+        "home": true,
+        "homeRotationZ": ".2",
+        "homeX": 0,
+        "homeY": -2,
+        "homeZ": 2,
+        "system": "rc-updateTickerTest.box06"
+      }
+    },
+    "rc-updateTickerTest.instructions": {
+      "id": "rc-updateTickerTest.instructions",
+      "space": "shared",
+      "tags": {
+        "onBotAdded": "@await os.registerApp('instructions', thisBot);\n\nconst App = () => {\n    return (\n        <>\n            <style>{`${tags['style.css']}`}</style>\n            <div>\n                <p>{tags.text}</p>\n            </div>\n        </>\n    )\n}\n\nos.compileApp('instructions', <App/>);",
+        "style.css": "p { \n    color: white;\n    white-space: pre-wrap;\n}",
+        "system": "rc-updateTickerTest.instructions",
+        "text": "Use the keyboard's arrow keys to move the pawn around the screen.\n\nThis aux is utilizing simple input polling and a custom update ticker that is attempting to tick at 60hz.\nThe camera is tracking the pawn by using os.focusOn, a hacky but workable solution."
+      }
+    },
+    "rc-updateTickerTest.pawn": {
+      "id": "rc-updateTickerTest.pawn",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "back",
+        "form": "sprite",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/fd199dc4d0b6178155c7cedba50269958ba5c1f3ccbc193de684bcf0ecf18356.png",
+        "home": true,
+        "homePosition": {
+          "x": 0.5190000021457797,
+          "y": 1.0150000000000015
+        },
+        "homeX": 3,
+        "homeY": -2,
+        "homeZ": 0,
+        "onBotAdded": "@if (!tags.homePosition) {\n    tags.homePosition = new Vector2(0, 0);\n}",
+        "onUpdate": "@const { deltaTime, time } = that;\n\nconst left = os.getInputState('keyboard', 'ArrowLeft');\nconst right = os.getInputState('keyboard', 'ArrowRight');\nconst up = os.getInputState('keyboard', 'ArrowUp');\nconst down = os.getInputState('keyboard', 'ArrowDown');\nconst reset = os.getInputState('keyboard', 'Escape');\n\nlet prevPosition = tags.homePosition ?? new Vector2(0, 0);\nlet position = new Vector2(prevPosition.x, prevPosition.y, prevPosition.z);\n\nif (left) {\n    position.x -= tags.speed * deltaTime;\n}\nif (right) {\n    position.x += tags.speed * deltaTime;\n}\nif (down) {\n    position.y -= tags.speed * deltaTime;\n}\nif (up) {\n    position.y += tags.speed * deltaTime;\n}\n\nif (reset) {\n    position.x = 0;\n    position.y = 0;\n    console.log(`reset`);\n}\n\ntags.velocity = position.subtract(prevPosition);\ntags.homePosition = position;",
+        "orientationMode": "billboard",
+        "scaleY": "2",
+        "scaleZ": "1",
+        "speed": "10",
+        "system": "rc-updateTickerTest.pawn",
+        "velocity": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    }
+  }
+}
