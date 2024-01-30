@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "state": {
+    "rc-capturePhoto-test.settings.idealResolution": {
+      "id": "rc-capturePhoto-test.settings.idealResolution",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 12,
+        "homeY": -13,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@// Ask for ideal resolution.\nlet idealResolution = await os.showInput(null, {\n    title: 'Ideal resolution?',\n    type: 'text',\n    autoSelect: true,\n    placeholder: 'width x height',\n});\n\nmasks.value = idealResolution;",
+        "photoSetting": "idealResolution",
+        "scaleX": "10",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.idealResolution",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;"
+      }
+    },
+    "rc-capturePhoto-test.settings.imageFormat": {
+      "id": "rc-capturePhoto-test.settings.imageFormat",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 1,
+        "homeY": -10,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@// Ask for image format.\nlet imageFormat = await os.showInput(0, {\n    title: 'Which image format?',\n    type: 'list',\n    subtype: 'radio',\n    items: [\n        {\n            label: 'png',\n            value: 0\n        },\n        {\n            label: 'jpeg',\n            value: 1\n        }\n    ]\n});\n\nif (imageFormat.label) {\n    imageFormat = imageFormat.label;\n}\n\nmasks.value = imageFormat;",
+        "photoSetting": "imageFormat",
+        "scaleX": "10",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.imageFormat",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;",
+        "value": "png"
+      }
+    },
+    "rc-capturePhoto-test.util.copyToImmerse": {
+      "id": "rc-capturePhoto-test.util.copyToImmerse",
+      "space": "shared",
+      "tags": {
+        "onAnyBotsAdded": "@for (let bot of that.bots) {\n    // If a bot exists in home and NOT immerse,\n    // add it to immerse as well.\n    const immerseTags = [ 'immerse', 'immersive' ];\n\n    for (let immerseTag of immerseTags) {\n        if (bot.tags.home && !bot.tags[immerseTag]) {\n            // Don't mess with ab1 bots.\n            if (bot.tags.ab1ID || bot.tags.abID) {\n                continue;\n            }\n\n            console.log(`[${tags.system}] putting bot into ${immerseTag}`, bot);\n            \n            bot.masks[immerseTag] = true;\n\n            bot.masks[immerseTag + 'X'] = bot.tags.homeX;\n            bot.masks[immerseTag + 'Y'] = bot.tags.homeY;\n            bot.masks[immerseTag + 'Z'] = bot.tags.homeZ;\n\n            bot.masks[immerseTag + 'RotationX'] = bot.tags.homeRotationX;\n            bot.masks[immerseTag + 'RotationY'] = bot.tags.homeRotationY;\n            bot.masks[immerseTag + 'RotationZ'] = bot.tags.homeRotationZ;\n        }\n    }\n}",
+        "system": "rc-capturePhoto-test.util.copyToImmerse"
+      }
+    },
+    "rc-capturePhoto-test.settings.takePhotoAfterSeconds": {
+      "id": "rc-capturePhoto-test.settings.takePhotoAfterSeconds",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 7,
+        "homeY": -16,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@// Ask for camera type.\nlet takePhotoAfterSeconds = await os.showInput(0, {\n    title: 'Take photo after seconds',\n    type: 'text',\n    autoSelect: true,\n});\n\nif (takePhotoAfterSeconds) {\n    takePhotoAfterSeconds = Number.parseFloat(takePhotoAfterSeconds);\n}\n\nmasks.value = takePhotoAfterSeconds;",
+        "photoSetting": "takePhotoAfterSeconds",
+        "scaleX": "11",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.takePhotoAfterSeconds",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;"
+      }
+    },
+    "rc-capturePhoto-test._packageInfo": {
+      "id": "rc-capturePhoto-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-capturePhoto-test._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-01-30T13:19:18.885-05:00 local"
+      }
+    },
+    "rc-capturePhoto-test.settings.imageQuality": {
+      "id": "rc-capturePhoto-test.settings.imageQuality",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 1,
+        "homeY": -13,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@let input = await os.showInput('1', {\n    title: 'Image Quality',\n    type: 'text',\n    placeholder: '0 -> 1',\n    autoSelect: true,\n})\n\nlet inputNumber = Number.parseFloat(input);\n\nif (typeof inputNumber === 'number' && !Number.isNaN(inputNumber)) {\n    // Make sure the number is clamped.\n    if (inputNumber < 0) {\n        inputNumber = 0;\n    } else if (inputNumber > 1) {\n        inputNumber = 1;\n    }\n\n    masks.value = inputNumber;\n} else {\n    masks.value = null;\n}\n",
+        "photoSetting": "imageQuality",
+        "scaleX": "10",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.imageQuality",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;",
+        "value": "1"
+      }
+    },
+    "rc-capturePhoto-test.openPhotoCamera": {
+      "id": "rc-capturePhoto-test.openPhotoCamera",
+      "space": "shared",
+      "tags": {
+        "color": "#73D8FF",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 7,
+        "homeY": -4,
+        "homeZ": 0,
+        "label": "open photo camera",
+        "onBotAdded": "@os.bufferSound(tags.shutterSound);",
+        "onClick": "@const options = {};\n\ngetBots((b) => {\n    if (b.tags.photoSetting === 'cameraType') {\n        options.cameraType = b.tags.value;\n\n    } else if (b.tags.photoSetting === 'imageFormat') {\n        options.imageFormat = b.tags.value;\n\n    } else if (b.tags.photoSetting === 'imageQuality') {\n        options.imageQuality = b.tags.value;\n\n    } else if (b.tags.photoSetting === 'mirrorPhoto') {\n        options.mirrorPhoto = b.tags.value;\n\n    } else if (b.tags.photoSetting === 'skipConfirm') {\n        options.skipConfirm = b.tags.value;\n\n    } else if (b.tags.photoSetting === 'takePhotoAfterSeconds') {\n        options.takePhotoAfterSeconds = b.tags.value;\n    } else if (b.tags.photoSetting === 'idealResolution') {\n        if (typeof b.tags.value === 'string') {\n            const parts = b.tags.value.split('x');\n\n            if (parts.length === 2) {\n                const width = Number.parseInt(parts[0]);\n                const height = Number.parseInt(parts[1]);\n\n                if (typeof width === 'number' && !Number.isNaN(width) &&\n                    typeof height === 'number' && !Number.isNaN(height)\n                ) {\n                    options.idealResolution = { width, height };\n                }\n            }\n        }\n    }\n})\n\nconsole.log('openPhotoCamera options:', options);\n\n// Open the photo camera.\nos.openPhotoCamera(options);",
+        "onPhotoCameraClosed": "@console.log(`[${tags.system}] onPhotoCameraClosed`);",
+        "onPhotoCameraOpened": "@console.log(`[${tags.system}] onPhotoCameraOpened`);",
+        "onPhotoCaptured": "@const { photo } = that;\n\nos.playSound(tags.shutterSound);\n\nconsole.log(`[${tags.system}] onPhotoCaptured`, that);\n\ndestroy(getBots('recycleMe', true));\n\nconst photoScaleX = 10 * (photo.width / photo.height);\nconst photoScaleY = 10;\n\ncreate({ \n    space: 'tempLocal',\n    form: 'sprite',\n    draggable: false,\n    scaleX: photoScaleX,\n    scaleY: photoScaleY,\n    scaleZ: 0.01,\n    recycleMe: true,\n    home: true,\n    homeX: tags.homeX,\n    homeY: tags.homeY + 7,\n    homeZ: tags.homeZ,\n    cursor: 'pointer',\n    photo,\n    onBotAdded: `@\n        tags.formAddress = URL.createObjectURL(tags.photo.data);\n    `,\n    onClick: `@\n        const confirmed = await os.showConfirm({\n            title: 'Download Photo',\n            content: 'Would you like to download a copy of this photo?',\n            confirmText: 'Yes',\n            cancelText: 'No',\n        });\n\n        if (confirmed) {\n            os.download(tags.photo.data, 'casualos_photo', tags.photo.type);\n        }\n    `,\n    onDestroy: `@\n        URL.revokeObjectURL(tags.formAddress);\n    `,\n})\n\nfunction formatBytes(bytes, decimals = 2) {\n    if (bytes === 0) return '0 Bytes';\n\n    const k = 1024;\n    const dm = decimals < 0 ? 0 : decimals;\n    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];\n\n    const i = Math.floor(Math.log(bytes) / Math.log(k));\n\n    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];\n}\n\n\nlet infoLabel = 'width: ' + photo.width + '\\n';\ninfoLabel += 'height: ' + photo.height + '\\n';\ninfoLabel += 'size: ' + photo.data.size + ' bytes (' + formatBytes(photo.data.size) + ')\\n';\ninfoLabel += 'type: ' + photo.data.type;\n\ncreate({ \n    space: 'tempLocal',\n    form: 'cube',\n    draggable: false,\n    recycleMe: true,\n    scaleX: 10,\n    scaleY: 3,\n    scaleZ: 0.01,\n    anchorPoint: 'left',\n    home: true,\n    homeX: tags.homeX + (photoScaleX / 2) + 1,\n    homeY: tags.homeY + 7,\n    homeZ: tags.homeZ,\n    label: infoLabel,\n    labelAlignment: 'left',\n});\n\nos.closePhotoCamera();",
+        "scaleX": "11",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "shutterSound": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/67084b16f1232e0b79a3e5f8a30c13e8f44c6713e086d1a84ffd15df48110dca.mpga",
+        "system": "rc-capturePhoto-test.openPhotoCamera"
+      }
+    },
+    "rc-capturePhoto-test.settings.cameraType": {
+      "id": "rc-capturePhoto-test.settings.cameraType",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 1,
+        "homeY": -7,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@// Ask for camera type.\nlet cameraType = await os.showInput(0, {\n    title: 'Which camera?',\n    type: 'list',\n    subtype: 'radio',\n    items: [\n        {\n            label: 'auto',\n            value: 0\n        },\n        {\n            label: 'front',\n            value: 1\n        },\n        {\n            label: 'rear',\n            value: 2\n        }\n    ]\n});\n\nif (cameraType.label) {\n    if (cameraType.label === 'auto') {\n        cameraType = null;\n    } else {\n        cameraType = cameraType.label;\n    }\n}\n\nmasks.value = cameraType;",
+        "photoSetting": "cameraType",
+        "scaleX": "10",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.cameraType",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;",
+        "value": "auto"
+      }
+    },
+    "rc-capturePhoto-test.settings.mirrorPhoto": {
+      "id": "rc-capturePhoto-test.settings.mirrorPhoto",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 12,
+        "homeY": -10,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@// Ask for camera type.\nlet mirrorPhoto = await os.showInput(0, {\n    title: 'Mirror photo?',\n    type: 'list',\n    subtype: 'radio',\n    items: [\n        {\n            label: 'false',\n            value: 0\n        },\n        {\n            label: 'true',\n            value: 1\n        },\n    ]\n});\n\nif (mirrorPhoto.label) {\n    mirrorPhoto = mirrorPhoto.label;\n}\n\nmasks.value = mirrorPhoto;",
+        "photoSetting": "mirrorPhoto",
+        "scaleX": "10",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.mirrorPhoto",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;",
+        "value": "false"
+      }
+    },
+    "rc-capturePhoto-test.settings.skipConfirm": {
+      "id": "rc-capturePhoto-test.settings.skipConfirm",
+      "space": "shared",
+      "tags": {
+        "color": "#B3B3B3",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 12,
+        "homeY": -7,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onBotChanged": "@if (that.tags.some(t => t === 'photoSetting' || t === 'value')) {\n    thisBot.updateLabel();\n}",
+        "onClick": "@// Ask for camera type.\nlet skipConfirm = await os.showInput(0, {\n    title: 'Skip confirmation step?',\n    type: 'list',\n    subtype: 'radio',\n    items: [\n        {\n            label: 'false',\n            value: 0\n        },\n        {\n            label: 'true',\n            value: 1\n        },\n    ]\n});\n\nif (skipConfirm.label) {\n    skipConfirm = skipConfirm.label;\n}\n\nmasks.value = skipConfirm;",
+        "photoSetting": "skipConfirm",
+        "scaleX": "10",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-capturePhoto-test.settings.skipConfirm",
+        "updateLabel": "@let label = tags.photoSetting;\n\nif (tags.value != null) {\n    label += ':\\n' + tags.value;\n}\n\nmasks.label = label;",
+        "value": "false"
+      }
+    }
+  }
+}
