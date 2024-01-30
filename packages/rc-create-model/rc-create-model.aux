@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "state": {
+    "rc-create-model.createButton": {
+      "id": "rc-create-model.createButton",
+      "space": "shared",
+      "tags": {
+        "color": "#FFFFFF",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -2,
+        "homeY": -4,
+        "homeZ": 0,
+        "label": "create model bot",
+        "onClick": "@create({\n    space: 'shared',\n    home: true,\n    ab1Ignore: true,\n    homeX: tags.homeX,\n    homeY: tags.homeY + 6,\n    homeZ: 0,\n    scale: 4,\n    form: 'mesh',\n    formSubtype: 'gltf',\n    formAddress: 'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Fox/glTF-Binary/Fox.glb',\n})",
+        "onPointerEnter": "@masks.color = 'red';",
+        "onPointerExit": "@masks.color = null;",
+        "scaleX": "4",
+        "scaleY": "2",
+        "system": "rc-create-model.createButton"
+      }
+    }
+  }
+}
