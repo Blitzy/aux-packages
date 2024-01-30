@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "state": {
+    "rc-record-test._packageInfo": {
+      "id": "rc-record-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-record-test._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-01-22T19:41:18.096-05:00 local"
+      }
+    },
+    "rc-record-test.button.listData": {
+      "id": "rc-record-test.button.listData",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 2,
+        "homeY": 0,
+        "homeZ": 0.009000000000000001,
+        "label": "list data",
+        "onClick": "@let lastAddress;\nlet items = [];\n\nwhile(true) {\n    const result = await os.listData(recordInfo.tags.recordKey, lastAddress);\n\n    if (result.success) {\n\n        items.push(...result.items);\n        if (result.items.length > 0) {\n            lastAddress = result.items[result.items.length - 1].address;\n        } else {\n            // result.items is empty, so we can break out of the loop\n            break;\n        }\n    } else {\n        console.error(\"Failed \" + result.errorMessage);\n        break;\n    }\n}\n\nconsole.log(`${recordInfo.tags.recordName} data list:`, items);",
+        "system": "rc-record-test.button.listData"
+      }
+    },
+    "rc-record-test.button.recordData": {
+      "id": "rc-record-test.button.recordData",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": -2,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "record data",
+        "onClick": "@const address = await os.showInput(undefined, { title: 'Record Entry Address' });\n\nif (!address) {\n    return;\n}\n\nconst text = await os.showInput(undefined, { title: `${address} Text`});\n\nif (!text) {\n    return;\n}\n\nconst time = DateTime.now();\nconst recordEntry = { text, time };\n\nconst result = await os.recordData(recordInfo.tags.recordKey, address, recordEntry);\n\nconsole.log(`${address} record data result:`, result);",
+        "system": "rc-record-test.button.recordData"
+      }
+    },
+    "rc-record-test.init": {
+      "id": "rc-record-test.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\n\nshout('onInitialize');",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-record-test.init"
+      }
+    },
+    "rc-record-test.recordInfo": {
+      "id": "rc-record-test.recordInfo",
+      "space": "shared",
+      "tags": {
+        "onDestory": "@delete globalThis.recordInfo;",
+        "onInitialize": "@globalThis.recordInfo = thisBot;",
+        "recordKey": "vRK2.cmMtcHVibGljLXJlY29yZC10ZXN0LTAx.U2JyVmZVendkYjFobERRTmJTSnJ1dz09.subjectless",
+        "recordName": "rc-public-record-test-01",
+        "system": "rc-record-test.recordInfo"
+      }
+    },
+    "rc-record-test.button.getData": {
+      "id": "rc-record-test.button.getData",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": "true",
+        "label": "get data",
+        "onClick": "@const address = await os.showInput(undefined, { title: 'Record Entry Address' });\n\nif (!address) {\n    return;\n}\n\nconst data = await os.getData(recordInfo.tags.recordKey, address);\n\nconsole.log(`${address} get data result:`, data);",
+        "system": "rc-record-test.button.getData"
+      }
+    }
+  }
+}
