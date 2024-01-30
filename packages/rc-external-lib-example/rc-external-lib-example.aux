@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "state": {
+    "rc-external-lib-example.padZero": {
+      "id": "rc-external-lib-example.padZero",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 4,
+        "homeY": 2,
+        "homeZ": 0,
+        "label": "click me",
+        "onClick": "@const padZeroImport = await import('https://cdn.skypack.dev/pad-zero');\nconst padZero = padZeroImport.padZero;\n\nconst rand = math.randomInt(1, 99999);\nconst padding = 10;\n\nmasks.label = \"number:\\n\" + padZero(padding, rand);",
+        "scale": "2",
+        "scaleX": "5",
+        "scaleY": "3",
+        "system": "rc-external-lib-example.padZero"
+      }
+    }
+  }
+}
