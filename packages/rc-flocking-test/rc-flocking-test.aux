@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "state": {
+    "rc-flocking-test._packageInfo": {
+      "id": "rc-flocking-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-flocking-test._packageInfo",
+        "version": "0.5",
+        "versionDate": "📅2023-08-23T21:33:16.586-04:00 local"
+      }
+    },
+    "rc-flocking-test.startStopButton": {
+      "id": "rc-flocking-test.startStopButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "onBotAdded": "@masks.label = tags.started ? 'stop' : 'start';",
+        "onClick": "@masks.started = !tags.started;\nmasks.label = tags.started ? 'stop' : 'start';\n\nconst FORMATION_SPACING_WIDTH = 4;\nconst FORMATION_SPACING_DEPTH = 4;\nif (tags.started) {\n        math.setRandomSeed(tags.randomSeed);\n        const shipPrefabBot = getBot('system', 'rc-flocking-test.ship');\n        const shipMod = getMod(shipPrefabBot);\n\n        for (let i = 0; i < tags.shipCount; i++) {\n            let formationOffset = new Vector3();\n\n            if (i > 0) {\n                formationOffset = new Vector3(\n                    (FORMATION_SPACING_WIDTH / 2) * (i % 2 !== 0 ? 1 : -1),\n                    -FORMATION_SPACING_DEPTH * i - 1, \n                    0\n                );\n            }\n            \n            create({\n                ...shipMod,\n                space: 'tempLocal',\n                leader: i === 0,\n                listening: true,\n                instanceId: uuid(),\n                formationOffset,\n                home: true,\n                homePosition: new Vector3(\n                    math.randomInt(-20, 20),\n                    math.randomInt(-20, 20),\n                    0,\n                )\n            });\n        }\n        \n        shout('onStart');\n\n        masks.prevTime = os.localTime;\n        masks.intervalId = setInterval(() => {\n            const curTime = os.localTime;\n            const deltaTime = (curTime - masks.prevTime) / 1000;\n            masks.prevTime = curTime;\n\n            shout('onUpdate', { deltaTime });\n        }, 1000 / tags.updateFPS)\n} else {\n    clearInterval(masks.intervalId);\n    masks.intervalId = null;\n\n    destroy(getBots('instanceId'));\n}\n\n",
+        "randomSeed": "abc123",
+        "scaleX": "2",
+        "scaleY": "1",
+        "scaleZ": "0.3",
+        "shipCount": "10",
+        "started": "false",
+        "system": "rc-flocking-test.startStopButton",
+        "updateFPS": "30"
+      }
+    },
+    "rc-flocking-test.target": {
+      "id": "rc-flocking-test.target",
+      "space": "shared",
+      "tags": {
+        "color": "red",
+        "home": true,
+        "homeX": -18,
+        "homeY": 12,
+        "homeZ": 0,
+        "isTarget": "true",
+        "slowRadius": "20",
+        "stopRadius": "2",
+        "system": "rc-flocking-test.target"
+      }
+    },
+    "rc-flocking-test.ship": {
+      "id": "rc-flocking-test.ship",
+      "space": "shared",
+      "tags": {
+        "alignmentDistance": "2",
+        "alignmentWeight": "0.2",
+        "cohesionDistance": "2",
+        "cohesionWeight": "0.2",
+        "color": "lightblue",
+        "draggable": "false",
+        "form": "cube",
+        "formationSlowRadius": "7",
+        "formationStopRadius": "0.5",
+        "isShip": "true",
+        "listening": "false",
+        "maxForce": "0.02",
+        "maxSpeed": "13",
+        "onStart": "@links.ships = getBots(b => b.tags.isShip && b.tags.instanceId);\nlinks.target = getBot(b => b.tags.isTarget);\nmasks.velocity = new Vector3(0, 0, 0);",
+        "onUpdate": "@const { deltaTime } = that;\n\nconst DELTA_MAX_SPEED = tags.maxSpeed * deltaTime;\nconst DELTA_MAX_FORCE = tags.maxForce * deltaTime;\n\nfunction getPosition(bot) {\n    if (bot.tags.homePosition) {\n        return bot.tags.homePosition;\n    } else {\n        return new Vector3(\n            bot.tags.homeX ?? 0,\n            bot.tags.homeY ?? 0,\n            bot.tags.homeZ ?? 0,\n        )\n    }\n}\n\nfunction getRotation(bot) {\n    if (bot.tags.homeRotation) {\n        return bot.tags.homeRotation;\n    } else {\n        return new Rotation({\n            euler: {\n                x: bot.tags.homeRotationX ?? 0,\n                y: bot.tags.homeRotationY ?? 0,\n                z: bot.tags.homeRotationZ ?? 0,\n            }\n        });\n    }\n}\n\nfunction divideScalar(vec3, scalar) {\n    return new Vector3(\n        vec3.x / scalar,\n        vec3.y / scalar,\n        vec3.z / scalar\n    );\n}\n\nfunction normalize(vec3) {\n    if (vec3.x === 0 && vec3.y === 0 && vec3.z === 0) {\n        return vec3;\n    } else {\n        return vec3.normalize();\n    }\n}\n\nfunction clampLength(vec3, min, max) {\n    let length = vec3.length();\n\n    if (length > max) {\n        // Clamp to max.\n        vec3 = vec3.normalize();\n        vec3 = vec3.multiplyScalar(max);\n    } else if (length < min) {\n        // Clamp to min.\n        vec3 = vec3.normalize();\n        vec3 = vec3.multiplyScalar(min);\n    }\n\n    return vec3;\n}\n\nfunction seek (agent, targetPosition, slowRadius, stopRadius) {\n    let agentPosition = getPosition(agent);\n    let agentVelocity = masks.velocity;\n    \n    let direction = targetPosition.subtract(agentPosition);\n    let distance = direction.length();\n    direction = direction.normalize();\n\n    if (stopRadius > 0 && distance <= stopRadius) {\n        return agentVelocity.negate();\n    } else {\n        if (slowRadius > 0 && distance <= slowRadius) {\n            let reducedSpeed = (distance / slowRadius) * DELTA_MAX_SPEED;\n            direction = direction.multiplyScalar(reducedSpeed);\n        } else {\n            direction = direction.multiplyScalar(DELTA_MAX_SPEED);\n        }\n        \n        let steering = direction.subtract(agentVelocity);\n        steering = clampLength(steering, 0, tags.maxForce);\n        \n        return steering;\n    }\n}\n\nfunction seperate (agent, neighbors) {\n    let steering = new Vector3();\n    let agentPosition = getPosition(agent);\n    let agentVelocity = masks.velocity;\n    let total = 0;\n    \n    for (let neighbor of neighbors) {\n        let neighborPosition = getPosition(neighbor);\n        let direction = neighborPosition.subtract(agentPosition);\n        let distance = direction.length();\n\n        if (distance < tags.seperationDistance) {\n            let difference = agentPosition.subtract(neighborPosition);\n            difference = difference.normalize();\n            difference = divideScalar(difference, distance);\n\n            steering = steering.add(difference);\n            total++;\n        }\n    }\n    \n    if (total > 0 && steering.squareLength() > 0) {\n        steering = divideScalar(steering, total);\n        steering = steering.normalize();\n        steering = steering.multiplyScalar(DELTA_MAX_SPEED);\n        steering = steering.subtract(agentVelocity);\n        steering = clampLength(steering, 0, tags.maxForce);\n    }\n\n    return steering;\n}\n\nfunction alignment (agent, neighbors) {\n    let agentPosition = getPosition(agent);\n    let steering = new Vector3();\n    let sum = new Vector3();\n    let total = 0;\n\n    for (let neighbor of neighbors) {\n        let neighborPosition = getPosition(neighbor);\n        let direction = neighborPosition.subtract(agentPosition);\n        let distance = direction.length();\n\n        if (distance < tags.alignmentDistance) {\n            sum = sum.add(neighbor.tags.velocity);\n            total++;\n        }\n    }\n\n    if (total > 0 && sum.squareLength() > 0) {\n        let avg = divideScalar(sum, total);\n        avg = avg.normalize();\n        avg = avg.multiplyScalar(DELTA_MAX_SPEED);\n        \n        steering = avg.subtract(masks.velocity);\n        steering = clampLength(steering, 0, tags.maxForce);\n    }\n\n    return steering;\n}\n\nfunction cohesion (agent, neighbors) {\n    let agentPosition = getPosition(agent);\n    let sum = new Vector3();\n    let total = 0;\n\n    for (let neighbor of neighbors) {\n        let neighborPosition = getPosition(neighbor);\n        let direction = neighborPosition.subtract(agentPosition);\n        let distance = direction.length();\n\n        if (distance < tags.cohesionDistance) {\n            sum = sum.add(neighborPosition);\n            total++;\n        }\n    }\n\n    if (total > 0 && sum.squareLength() > 0) {\n        let avg = divideScalar(sum, total);\n        return seek(agent, avg);   \n    } else {\n        return new Vector3();\n    }\n}\n\nconst ships = Array.isArray(links.ships) ? links.ships : [links.ships];\nconst otherShips = ships.filter(s => s !== thisBot);\n\n// Calculated Forces\nlet seekForce;\n\nif (thisBot.tags.leader) {\n    // Seek towards the target.\n    let targetPosition = getPosition(links.target);\n    let targetSlowRadius = links.target.tags.slowRadius;\n    let targetStopRadius = links.target.tags.stopRadius;\n\n    seekForce = seek(thisBot, targetPosition, targetSlowRadius, targetStopRadius);\n} else {\n    // Seek toward formation position.\n    let leaderShip = otherShips.find(s => s.tags.leader);\n    let leaderPosition = getPosition(leaderShip);\n    let leaderRotation = getRotation(leaderShip);\n    \n    let formationOffset = thisBot.tags.formationOffset;\n    formationOffset = leaderRotation.rotateVector3(formationOffset);\n    \n    let formationPosition = leaderPosition.add(formationOffset);\n\n    seekForce = seek(thisBot, formationPosition, tags.formationSlowRadius, tags.formationStopRadius);\n}\n\nseekForce = seekForce.multiplyScalar(tags.seekWeight);\n\nlet seperateForce;\nlet alignmentForce;\nlet cohesionForce;\n\nif (!thisBot.tags.leader) {\n    seperateForce = seperate(thisBot, otherShips);\n    seperateForce = seperateForce.multiplyScalar(tags.seperationWeight);\n\n    alignmentForce = alignment(thisBot, otherShips);\n    alignmentForce = alignmentForce.multiplyScalar(tags.alignmentWeight);\n    \n    cohesionForce = cohesion(thisBot, otherShips);\n    cohesionForce = cohesionForce.multiplyScalar(tags.cohesionWeight);\n} else {\n    seperateForce = new Vector3();\n    alignmentForce = new Vector3();\n    cohesionForce = new Vector3();\n}\n\n// Add forces togethor to get acceleration.\nlet acceleration = new Vector3();\nacceleration = acceleration.add(seekForce);\nacceleration = acceleration.add(seperateForce);\nacceleration = acceleration.add(alignmentForce);\nacceleration = acceleration.add(cohesionForce);\n\n// Add acceleartion to our velocity.\nlet velocity = masks.velocity;\nvelocity = velocity.add(acceleration);\n\n// Clamp velocity so that its never goes beyond our max speed.\nvelocity = clampLength(velocity, 0, tags.maxSpeed);\n\n// Add velocity to our position.\nlet position = tags.homePosition;\nposition = position.add(velocity);\n\n// Set position and velocity tags.\ntags.homePosition = position;\nmasks.velocity = velocity;\n\n// Look in direction of current velocity.\nif (velocity.length() !== 0) {\n    let lookRotation = new Rotation({\n        direction: masks.velocity.normalize(),\n        upwards: new Vector3(0, 0, 1),\n        errorHandling: \"nudge\",\n    });\n\n    tags.homeRotation = lookRotation;\n}",
+        "seekWeight": "1",
+        "seperationDistance": "4",
+        "seperationWeight": "0.8",
+        "system": "rc-flocking-test.ship"
+      }
+    }
+  }
+}
