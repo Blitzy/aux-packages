@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "state": {
+    "rc-newLighting-example.buttons.toggleEnvMap": {
+      "id": "rc-newLighting-example.buttons.toggleEnvMap",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": -3,
+        "homeY": -9,
+        "homeZ": 0,
+        "label": "Toggle Environment Map",
+        "onClick": "@if (masks.on) {\n    shout('onEnvMapOff');\n} else {\n    shout('onEnvMapOn');\n}",
+        "onEnvMapOff": "@masks.on = false;",
+        "onEnvMapOn": "@masks.on = true;",
+        "onInitialize": "@shout('onEnvMapOff');",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-newLighting-example.buttons.toggleEnvMap"
+      }
+    },
+    "rc-newLighting-example.lights.directionalLight01": {
+      "id": "rc-newLighting-example.lights.directionalLight01",
+      "space": "shared",
+      "tags": {
+        "color": "#ccdaff",
+        "draggable": "false",
+        "form": "light",
+        "formLightIntensity": "15",
+        "home": false,
+        "homeX": "-10",
+        "homeY": "-10",
+        "homeZ": "20",
+        "onLightsOff": "@tags.home = false;",
+        "onLightsOn": "@tags.home = true;",
+        "pointable": "false",
+        "system": "rc-newLighting-example.lights.directionalLight01"
+      }
+    },
+    "rc-newLighting-example._packageInfo": {
+      "id": "rc-newLighting-example._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-newLighting-example._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-01-29T17:46:11.003-05:00 local"
+      }
+    },
+    "rc-newLighting-example.camera": {
+      "id": "rc-newLighting-example.camera",
+      "space": "shared",
+      "tags": {
+        "onInitialize": "@gridPortalBot.tags.portalCameraType = 'perspective';",
+        "system": "rc-newLighting-example.camera"
+      }
+    },
+    "rc-newLighting-example.helmet": {
+      "id": "rc-newLighting-example.helmet",
+      "space": "shared",
+      "tags": {
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/d5522ef2-a17e-4bed-a557-116903b1b1ed/a1e3b04de97b11de564ce6e53b95f02954a297f0008183ac63a4f5974f6b32d8.xml",
+        "formSubtype": "gltf",
+        "home": true,
+        "homeX": 0,
+        "homeY": 0,
+        "homeZ": "0",
+        "pointable": "false",
+        "scale": "8",
+        "system": "rc-newLighting-example.helmet"
+      }
+    },
+    "rc-newLighting-example.init": {
+      "id": "rc-newLighting-example.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\n\nshout('onBeforeInitialize');\nshout('onInitialize');",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-newLighting-example.init"
+      }
+    },
+    "rc-newLighting-example.lights.pointLight01": {
+      "id": "rc-newLighting-example.lights.pointLight01",
+      "space": "shared",
+      "tags": {
+        "color": "orange",
+        "draggable": "false",
+        "form": "light",
+        "formLightIntensity": "15",
+        "formSubtype": "point",
+        "home": false,
+        "homeX": "10",
+        "homeY": "5",
+        "homeZ": "10",
+        "onLightsOff": "@tags.home = false;",
+        "onLightsOn": "@tags.home = true;",
+        "pointable": "false",
+        "system": "rc-newLighting-example.lights.pointLight01"
+      }
+    },
+    "rc-newLighting-example.buttons.toggleLights": {
+      "id": "rc-newLighting-example.buttons.toggleLights",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 3,
+        "homeY": -9,
+        "homeZ": 0,
+        "label": "Toggle Custom Lights",
+        "onClick": "@if (masks.on) {\n    shout('onLightsOff');\n} else {\n    shout('onLightsOn');\n}",
+        "onInitialize": "@shout('onLightsOff');",
+        "onLightsOff": "@masks.on = false;",
+        "onLightsOn": "@masks.on = true;",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-newLighting-example.buttons.toggleLights"
+      }
+    },
+    "rc-newLighting-example.lights.defaultLighting": {
+      "id": "rc-newLighting-example.lights.defaultLighting",
+      "space": "shared",
+      "tags": {
+        "onLightsOff": "@gridPortalBot.tags.defaultLighting = true;\nconsole.log('default lighitng on');",
+        "onLightsOn": "@gridPortalBot.tags.defaultLighting = false;\nconsole.log('default lighitng off');",
+        "system": "rc-newLighting-example.lights.defaultLighting"
+      }
+    },
+    "rc-newLighting-example.envMap": {
+      "id": "rc-newLighting-example.envMap",
+      "space": "shared",
+      "tags": {
+        "onEnvMapOff": "@gridPortalBot.tags.portalHDRAddress = null;",
+        "onEnvMapOn": "@gridPortalBot.tags.portalHDRAddress = 'https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/9b3b9298-80d0-4791-8618-9f9ffe9dadda/aabcd9067ea1918455bdca5aa0e4dbb1b89be90513cb7115fce0264c5aab4dc0.bin';",
+        "system": "rc-newLighting-example.envMap"
+      }
+    }
+  }
+}
