@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "state": {
+    "rc-transformLinker.transformLinker": {
+      "id": "rc-transformLinker.transformLinker",
+      "space": "shared",
+      "tags": {
+        "addTransformee": "@const { bot } = that;\n\nif (!thisBot.vars.transformees) {\n    thisBot.vars.transformees = {};\n}\n\nconst transformees = thisBot.vars.transformees;\n\nif (!transformees[bot.id]) {\n    transformees[bot.id] = bot;\n    if (tags.debug) {\n        console.log(`[transformLinker] Added bot ${bot.id} to transformees.`);\n    }\n}",
+        "addTransformer": "@const { bot, linkId } = that;\n\nif (!thisBot.vars.transformers) {\n    thisBot.vars.transformers = {};\n}\n\nconst transformers = thisBot.vars.transformers;\n\nif (!transformers[linkId]) {\n    transformers[linkId] = bot;\n    if (tags.debug) {\n        console.log(`[transformLinker] Added bot ${bot.id} to transformers as ${linkId}.`);\n    }\n} else {\n    console.error(`[transformLinker] Bot ${bot.id} has ${tags.linkIdTag} tag set to ${linkId}, but ${linkId} was already defined as bot ${transformers[linkId].id}. Make sure that all ${tags.linkIdTag} tags are unique.`);\n}",
+        "debug": "true",
+        "debugState": "true",
+        "findStoredLinkId": "@const { botId } = that;\nconst transformers = thisBot.vars.transformers;\n\nif (transformers) {\n    for (linkId in transformers) {\n        if (transformers[linkId].id === botId) {\n            return linkId;\n        }\n    }\n}",
+        "forceRefresh": "@delete thisBot.vars.transformers;\ndelete thisBot.vars.transformees;\n\nconst bots = getBots();\nthisBot.onAnyBotsAdded({ bots });",
+        "hasValue": "@return that !== undefined && that !== null && that !== '';",
+        "linkIdTag": "transformId",
+        "linkToTag": "transformBy",
+        "onAnyBotsAdded": "@const { bots } = that;\nconst hasValue = thisBot.hasValue;\nconst addTransformer = thisBot.addTransformer;\nconst addTransformee = thisBot.addTransformee;\nlet update = false;\n\nfor (let bot of bots) {\n    if (bot === thisBot) {\n        continue;\n    }\n\n    const linkId = bot.tags[tags.linkIdTag];\n    if (hasValue(linkId)) {\n        addTransformer({ bot, linkId })\n        update = true;\n    }\n\n    const linkTo = bot.tags[tags.linkToTag];\n    if (hasValue(linkTo)) {\n        addTransformee({ bot });\n        update = true;\n    }\n}\n\nif (update) {\n    thisBot.updateTransformees();\n}",
+        "onAnyBotsChanged": "@const changes = that;\n\nconst removeTransformer = thisBot.removeTransformer;\nconst removeTransformee = thisBot.removeTransformee;\nconst addTransformer = thisBot.addTransformer;\nconst addTransformee = thisBot.addTransformee;\nconst hasValue = thisBot.hasValue;\nlet update = false;\n\nfor (let changed of changes) {\n    if (changed.tags.includes(tags.linkIdTag)) {\n        removeTransformer({ id: changed.bot.id });\n\n        const linkId = changed.bot.tags[tags.linkIdTag];\n        if (hasValue(linkId)) {\n            addTransformer({ bot: changed.bot, linkId });\n        }\n\n        update = true;\n    }\n\n    if (changed.tags.includes(tags.linkToTag)) {\n        const linkTo = changed.bot.tags[tags.linkToTag];\n        if (hasValue(linkTo)) {\n            addTransformee({ bot: changed.bot });\n        } else {\n            removeTransformee({ botId: changed.bot.id });\n            changed.bot.tags.transformer = null;\n        }\n\n        update = true;\n    }\n}\n\nif (update) {\n    thisBot.updateTransformees();\n}",
+        "onAnyBotsRemoved": "@const removeTransformer = thisBot.removeTransformer;\nconst removeTransformee = thisBot.removeTransformee;\nlet update = false;\n\nconst { botIDs } = that;\n\nfor (let id of botIDs) {\n    if (removeTransformer({ id })) {\n        update = true;\n    }\n    if (removeTransformee({ botId: id})) {\n        update = true;\n    }\n}\n\nif (update) {\n    thisBot.updateTransformees();\n}",
+        "onBotAdded": "@console.log(`\n=======================\nTransform Linker Loaded\n=======================\nOverview:\n    Use Transform Linker to automatically link up bot transformer relationships using pre-definable tag values.\n\nUsage example:\n\n    const parentMod = {\n        transformId: 'mom'\n    }\n\n    const childMod = {\n        transformBy: 'mom'\n    }\n\n    create([parentMod, childMod]);\n`);",
+        "onEggHatch": "@thisBot.forceRefresh();",
+        "removeTransformee": "@const { botId } = that;\n\nconst transformees = thisBot.vars.transformees;\nlet deleted = false;\n\nif (!transformees) {\n    return false;\n}\n\nif (transformees[botId]) {\n    delete transformees[botId];\n    deleted = true;\n    if (tags.debug) {\n        console.log(`[transformLinker] Removed bot ${botId} from transformees.`);\n    }\n}\n\nreturn deleted;",
+        "removeTransformer": "@const { id } = that;\n\nconst transformers = thisBot.vars.transformers;\nconst hasValue = thisBot.hasValue;\nconst findStoredLinkId = thisBot.findStoredLinkId;\nlet deleted = false;\n\nif (!transformers || !hasValue(id)) {\n    return false;\n}\n\n// Treat id as linkId first.\nif (transformers[id]) {\n    delete transformers[id];\n    if (tags.debug) {\n        console.log(`[transformLinker] Removed transformer ${id}`);\n    }\n\n    deleted = true;\n}\n\n// Treat id as botId.\nlet storedLinkId = findStoredLinkId({ botId: id });\nif (storedLinkId) {\n    delete transformers[storedLinkId];\n    if (tags.debug) {\n        console.log(`[transformLinker] Removed transformer ${storedLinkId}`);\n    }\n\n    deleted = true;\n}\n\nreturn deleted;",
+        "system": "rc-transformLinker.transformLinker",
+        "transformLinker": "true",
+        "updateTransformees": "@const transformers = thisBot.vars.transformers;\nconst transformees = thisBot.vars.transformees;\n\nif (tags.debugState) {\n    const state = {\n        transformers,\n        transformees,\n    }\n\n    console.log(`[transformLinker] state`, state);\n}\n\n// Go through all transformees and link up to their transformers.\nfor (botId in transformees) {\n    const bot = transformees[botId];\n    const linkTo = bot.tags[tags.linkToTag];\n    const transformer = transformers[linkTo];\n\n    if (transformer && transformer !== bot) {\n        bot.tags.transformer = transformer.id;\n    } else {\n        bot.tags.transformer = null;\n    }\n}"
+      }
+    },
+    "rc-transformLinker._packageInfo": {
+      "id": "rc-transformLinker._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-transformLinker._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-01-30T15:09:41.809-05:00 local"
+      }
+    }
+  }
+}
