@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "state": {
+    "rc-remote-data-example.receiveRemote": {
+      "id": "rc-remote-data-example.receiveRemote",
+      "space": "shared",
+      "tags": {
+        "draggable": "false",
+        "home": true,
+        "homeX": "8",
+        "homeY": 6,
+        "homeZ": 0,
+        "onBotAdded": "@thisBot.updateLabel();",
+        "onRemoteData": "@const name = that.name;\nconst arg = that.that;\nconst remoteId = that.remoteId;\n\nconsole.log(`[${tags.system}] onRemoteData`, that);\n\nif (name === 'text_message') {\n    masks.messageCount = (tags.messageCount ?? 0) + 1;\n    masks.lastMessage = arg;\n\n    thisBot.updateLabel();\n}",
+        "scaleX": "8",
+        "scaleY": "4",
+        "system": "rc-remote-data-example.receiveRemote",
+        "updateLabel": "@let messageCount = tags.messageCount ?? 0;\n\nif (messageCount > 0) {\n    masks.label = `[ msg# ${tags.messageCount ?? 0} ]\\n${tags.lastMessage ?? ''}`;\n} else {\n    masks.label = '[ no msg received yet ]'\n}"
+      }
+    },
+    "rc-remote-data-example.sendRemote": {
+      "id": "rc-remote-data-example.sendRemote",
+      "space": "shared",
+      "tags": {
+        "color": "#73D8FF",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": 7,
+        "homeZ": 0,
+        "label": "broadcast message",
+        "onClick": "@let message = await os.showInput(undefined, { title: 'Message' });\n\nif (message) {\n    let remotes = await os.remotes();\n    remotes = remotes.filter(id => id !== configBot.id);\n\n    if (remotes.length > 0) {\n        sendRemoteData(remotes, 'text_message', message);\n        os.toast(`Sent message to ${remotes.length} remotes.`, 3);\n    } else {\n        os.toast('There are no remotes to receive this message.', 3);\n    }\n    \n}",
+        "scaleX": "1.9",
+        "scaleY": "0.9",
+        "scaleZ": "0.3",
+        "system": "rc-remote-data-example.sendRemote"
+      }
+    }
+  }
+}
