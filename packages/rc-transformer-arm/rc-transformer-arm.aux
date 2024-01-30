@@ -1,168 +1,6 @@
 {
   "version": 1,
   "state": {
-    "rc-transformer-arm.arm1": {
-      "id": "rc-transformer-arm.arm1",
-      "space": "shared",
-      "tags": {
-        "color": "#7B64FF",
-        "draggable": "false",
-        "form": "hex",
-        "home": true,
-        "homeRotationX": -0.10000000000000003,
-        "homeRotationY": 0.10000000000000003,
-        "homeX": "0",
-        "homeY": "0",
-        "homeZ": "0",
-        "scaleX": "1",
-        "scaleY": "1",
-        "scaleZ": "1",
-        "system": "rc-transformer-arm.arm1",
-        "transformer": "6136b180-2c33-4b95-b8c7-9ce734e4f0a2"
-      }
-    },
-    "rc-transformer-arm.rightArrow": {
-      "id": "rc-transformer-arm.rightArrow",
-      "space": "shared",
-      "tags": {
-        "buttonColor": "#fff",
-        "color": "#fff",
-        "draggable": "false",
-        "home": true,
-        "homeRotationZ": "3.14159",
-        "homeX": 1,
-        "homeY": -5,
-        "homeZ": 0,
-        "label": "<--",
-        "labelWordWrapMode": "breakWords",
-        "onClick": "@const armRoot = getBot(byTag('system', 'rc-transformer-arm.armRoot'));\nwhisper(armRoot, 'move', { direction: 'right' });",
-        "onPointerDown": "@thisBot.tags.scaleZ = 0.25;",
-        "onPointerEnter": "@thisBot.tags.color = '#d33';",
-        "onPointerExit": "@thisBot.tags.color = thisBot.tags.buttonColor;\nthisBot.tags.scaleZ = 0.5;",
-        "onPointerUp": "@thisBot.tags.scaleZ = 0.5;",
-        "scaleX": "1",
-        "scaleY": "1",
-        "scaleZ": 0.5,
-        "system": "rc-transformer-arm.rightArrow",
-        "undefined": true
-      }
-    },
-    "rc-transformer-arm.arm2": {
-      "id": "rc-transformer-arm.arm2",
-      "space": "shared",
-      "tags": {
-        "color": "#68BC00",
-        "draggable": "false",
-        "form": "hex",
-        "home": true,
-        "homeRotationX": -0.10000000000000003,
-        "homeRotationY": 0.10000000000000003,
-        "homeX": "0",
-        "homeY": "0",
-        "homeZ": "0",
-        "scaleX": "1",
-        "scaleY": "1",
-        "scaleZ": "1",
-        "system": "rc-transformer-arm.arm2",
-        "transformer": "44a9f18a-d0ee-45e5-9c72-189f3081763e"
-      }
-    },
-    "rc-transformer-arm.arm3": {
-      "id": "rc-transformer-arm.arm3",
-      "space": "shared",
-      "tags": {
-        "color": "#009CE0",
-        "draggable": "false",
-        "form": "hex",
-        "home": true,
-        "homeRotationX": -0.10000000000000003,
-        "homeRotationY": 0.10000000000000003,
-        "homeX": 0,
-        "homeY": 0,
-        "homeZ": "0",
-        "system": "rc-transformer-arm.arm3",
-        "transformer": "4f212119-ba32-4d78-a176-643f1c00acc8"
-      }
-    },
-    "rc-transformer-arm.armRoot": {
-      "id": "rc-transformer-arm.armRoot",
-      "space": "shared",
-      "tags": {
-        "color": "#F44E3B",
-        "draggable": "false",
-        "form": "hex",
-        "home": true,
-        "homeX": 0,
-        "homeY": 1,
-        "homeZ": 0,
-        "move": "@/**\n * @type {'left' | 'right' | 'up' | 'down'}\n */\nconst direction = that.direction;\nconst speed = thisBot.tags.speed;\n\nlet deltaX = 0;\nlet deltaY = 0;\n\nswitch (direction) {\n    case 'left':\n        deltaX = 0;\n        deltaY = speed;\n        break;\n    case 'right':\n        deltaX = 0;\n        deltaY = -speed;\n        break;\n    case 'up':\n        deltaX = -speed;\n        deltaY = 0;\n        break;\n    case 'down':\n        deltaX = speed;\n        deltaY = 0;\n        break;\n}\n\nconst dimension = os.getCurrentDimension();\nconst arm1 = getBot(byTag('system', 'rc-transformer-arm.arm1'));\nconst arm2 = getBot(byTag('system', 'rc-transformer-arm.arm2'));\nconst arm3 = getBot(byTag('system', 'rc-transformer-arm.arm3'));\n\narm1.tags[`${dimension}RotationX`] += deltaX;\narm1.tags[`${dimension}RotationY`] += deltaY;\narm2.tags[`${dimension}RotationX`] += deltaX;\narm2.tags[`${dimension}RotationY`] += deltaY;\narm3.tags[`${dimension}RotationX`] += deltaX;\narm3.tags[`${dimension}RotationY`] += deltaY;",
-        "scaleX": "2",
-        "scaleY": "2",
-        "scaleZ": "2",
-        "speed": "0.1",
-        "system": "rc-transformer-arm.armRoot"
-      }
-    },
-    "rc-transformer-arm.downArrow": {
-      "id": "rc-transformer-arm.downArrow",
-      "space": "shared",
-      "tags": {
-        "buttonColor": "#fff",
-        "color": "#fff",
-        "draggable": "false",
-        "home": true,
-        "homeRotationZ": "-4.712389",
-        "homeX": 0,
-        "homeY": -6,
-        "homeZ": 0,
-        "label": "<--",
-        "labelWordWrapMode": "breakWords",
-        "onClick": "@const armRoot = getBot(byTag('system', 'rc-transformer-arm.armRoot'));\nwhisper(armRoot, 'move', { direction: 'down' });",
-        "onPointerDown": "@thisBot.tags.scaleZ = 0.25;",
-        "onPointerEnter": "@thisBot.tags.color = '#d33';",
-        "onPointerExit": "@thisBot.tags.color = thisBot.tags.buttonColor;\nthisBot.tags.scaleZ = 0.5;",
-        "onPointerUp": "@thisBot.tags.scaleZ = 0.5;",
-        "scaleX": "1",
-        "scaleY": "1",
-        "scaleZ": 0.5,
-        "system": "rc-transformer-arm.downArrow",
-        "undefined": true
-      }
-    },
-    "rc-transformer-arm._packageInfo": {
-      "id": "rc-transformer-arm._packageInfo",
-      "space": "shared",
-      "tags": {
-        "system": "rc-transformer-arm._packageInfo",
-        "version": "1.1",
-        "versionDate": "📅2024-01-30T14:16:15.616-05:00 local"
-      }
-    },
-    "rc-transformer-arm.leftArrow": {
-      "id": "rc-transformer-arm.leftArrow",
-      "space": "shared",
-      "tags": {
-        "buttonColor": "#fff",
-        "color": "#fff",
-        "draggable": "false",
-        "home": true,
-        "homeX": "-1",
-        "homeY": -5,
-        "homeZ": 0,
-        "label": "<--",
-        "labelWordWrapMode": "breakWords",
-        "onClick": "@const armRoot = getBot(byTag('system', 'rc-transformer-arm.armRoot'));\nwhisper(armRoot, 'move', { direction: 'left' });",
-        "onPointerDown": "@thisBot.tags.scaleZ = 0.25;",
-        "onPointerEnter": "@thisBot.tags.color = '#d33';",
-        "onPointerExit": "@thisBot.tags.color = thisBot.tags.buttonColor;\nthisBot.tags.scaleZ = 0.5;",
-        "onPointerUp": "@thisBot.tags.scaleZ = 0.5;",
-        "scaleX": "1",
-        "scaleY": "1",
-        "scaleZ": 0.5,
-        "system": "rc-transformer-arm.leftArrow",
-        "undefined": true
-      }
-    },
     "rc-transformer-arm.camera": {
       "id": "rc-transformer-arm.camera",
       "space": "shared",
@@ -199,6 +37,93 @@
         "undefined": true
       }
     },
+    "rc-transformer-arm.arm3": {
+      "id": "rc-transformer-arm.arm3",
+      "space": "shared",
+      "tags": {
+        "color": "#009CE0",
+        "draggable": "false",
+        "form": "hex",
+        "home": true,
+        "homeRotationX": -2.7755575615628914e-17,
+        "homeRotationY": -2.7755575615628914e-17,
+        "homeX": 0,
+        "homeY": 0,
+        "homeZ": "0",
+        "system": "rc-transformer-arm.arm3",
+        "transformer": "9cd7a1af-b1f5-4f07-93f4-caba60e5977d"
+      }
+    },
+    "rc-transformer-arm.leftArrow": {
+      "id": "rc-transformer-arm.leftArrow",
+      "space": "shared",
+      "tags": {
+        "buttonColor": "#fff",
+        "color": "#fff",
+        "draggable": "false",
+        "home": true,
+        "homeX": "-1",
+        "homeY": -5,
+        "homeZ": 0,
+        "label": "<--",
+        "labelWordWrapMode": "breakWords",
+        "onClick": "@const armRoot = getBot(byTag('system', 'rc-transformer-arm.armRoot'));\nwhisper(armRoot, 'move', { direction: 'left' });",
+        "onPointerDown": "@thisBot.tags.scaleZ = 0.25;",
+        "onPointerEnter": "@thisBot.tags.color = '#d33';",
+        "onPointerExit": "@thisBot.tags.color = thisBot.tags.buttonColor;\nthisBot.tags.scaleZ = 0.5;",
+        "onPointerUp": "@thisBot.tags.scaleZ = 0.5;",
+        "scaleX": "1",
+        "scaleY": "1",
+        "scaleZ": 0.5,
+        "system": "rc-transformer-arm.leftArrow",
+        "undefined": true
+      }
+    },
+    "rc-transformer-arm.armRoot": {
+      "id": "rc-transformer-arm.armRoot",
+      "space": "shared",
+      "tags": {
+        "color": "#F44E3B",
+        "draggable": "false",
+        "form": "hex",
+        "home": true,
+        "homeX": 0,
+        "homeY": 1,
+        "homeZ": 0,
+        "move": "@/**\n * @type {'left' | 'right' | 'up' | 'down'}\n */\nconst direction = that.direction;\nconst speed = thisBot.tags.speed;\n\nlet deltaX = 0;\nlet deltaY = 0;\n\nswitch (direction) {\n    case 'left':\n        deltaX = 0;\n        deltaY = speed;\n        break;\n    case 'right':\n        deltaX = 0;\n        deltaY = -speed;\n        break;\n    case 'up':\n        deltaX = -speed;\n        deltaY = 0;\n        break;\n    case 'down':\n        deltaX = speed;\n        deltaY = 0;\n        break;\n}\n\nconst dimension = os.getCurrentDimension();\nconst arm1 = getBot(byTag('system', 'rc-transformer-arm.arm1'));\nconst arm2 = getBot(byTag('system', 'rc-transformer-arm.arm2'));\nconst arm3 = getBot(byTag('system', 'rc-transformer-arm.arm3'));\n\narm1.tags[`${dimension}RotationX`] += deltaX;\narm1.tags[`${dimension}RotationY`] += deltaY;\narm2.tags[`${dimension}RotationX`] += deltaX;\narm2.tags[`${dimension}RotationY`] += deltaY;\narm3.tags[`${dimension}RotationX`] += deltaX;\narm3.tags[`${dimension}RotationY`] += deltaY;",
+        "scaleX": "2",
+        "scaleY": "2",
+        "scaleZ": "2",
+        "speed": "0.1",
+        "system": "rc-transformer-arm.armRoot"
+      }
+    },
+    "rc-transformer-arm.rightArrow": {
+      "id": "rc-transformer-arm.rightArrow",
+      "space": "shared",
+      "tags": {
+        "buttonColor": "#fff",
+        "color": "#fff",
+        "draggable": "false",
+        "home": true,
+        "homeRotationZ": "3.14159",
+        "homeX": 1,
+        "homeY": -5,
+        "homeZ": 0,
+        "label": "<--",
+        "labelWordWrapMode": "breakWords",
+        "onClick": "@const armRoot = getBot(byTag('system', 'rc-transformer-arm.armRoot'));\nwhisper(armRoot, 'move', { direction: 'right' });",
+        "onPointerDown": "@thisBot.tags.scaleZ = 0.25;",
+        "onPointerEnter": "@thisBot.tags.color = '#d33';",
+        "onPointerExit": "@thisBot.tags.color = thisBot.tags.buttonColor;\nthisBot.tags.scaleZ = 0.5;",
+        "onPointerUp": "@thisBot.tags.scaleZ = 0.5;",
+        "scaleX": "1",
+        "scaleY": "1",
+        "scaleZ": 0.5,
+        "system": "rc-transformer-arm.rightArrow",
+        "undefined": true
+      }
+    },
     "rc-transformer-arm.arrowKeys": {
       "id": "rc-transformer-arm.arrowKeys",
       "space": "shared",
@@ -212,6 +137,81 @@
         "onKeyUp": "@const left = that.keys.includes('ArrowLeft');\nconst right = that.keys.includes('ArrowRight');\nconst up = that.keys.includes('ArrowUp');\nconst down = that.keys.includes('ArrowDown');\n\nif (left) {\n    const bot = getBot(byTag('system', 'rc-transformer-arm.leftArrow'));\n    whisper(bot, 'onPointerUp');\n    whisper(bot, 'onPointerExit');\n    whisper(bot, 'onClick');\n}\nif (right) {\n    const bot = getBot(byTag('system', 'rc-transformer-arm.rightArrow'));\n    whisper(bot, 'onPointerUp');\n    whisper(bot, 'onPointerExit');\n    whisper(bot, 'onClick');\n}\nif (up) {\n    const bot = getBot(byTag('system', 'rc-transformer-arm.upArrow'));\n    whisper(bot, 'onPointerUp');\n    whisper(bot, 'onPointerExit');\n    whisper(bot, 'onClick');\n}\nif (down) {\n    const bot = getBot(byTag('system', 'rc-transformer-arm.downArrow'));\n    whisper(bot, 'onPointerUp');\n    whisper(bot, 'onPointerExit');\n    whisper(bot, 'onClick');\n}",
         "scaleZ": "0.5",
         "system": "rc-transformer-arm.arrowKeys"
+      }
+    },
+    "rc-transformer-arm.arm1": {
+      "id": "rc-transformer-arm.arm1",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "draggable": "false",
+        "form": "hex",
+        "home": true,
+        "homeRotationX": -2.7755575615628914e-17,
+        "homeRotationY": -2.7755575615628914e-17,
+        "homeX": "0",
+        "homeY": "0",
+        "homeZ": "0",
+        "scaleX": "1",
+        "scaleY": "1",
+        "scaleZ": "1",
+        "system": "rc-transformer-arm.arm1",
+        "transformer": "6d07a3fa-b11a-4b10-ad69-2b9142e338b6"
+      }
+    },
+    "rc-transformer-arm._packageInfo": {
+      "id": "rc-transformer-arm._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-transformer-arm._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-01-30T14:16:15.616-05:00 local"
+      }
+    },
+    "rc-transformer-arm.downArrow": {
+      "id": "rc-transformer-arm.downArrow",
+      "space": "shared",
+      "tags": {
+        "buttonColor": "#fff",
+        "color": "#fff",
+        "draggable": "false",
+        "home": true,
+        "homeRotationZ": "-4.712389",
+        "homeX": 0,
+        "homeY": -6,
+        "homeZ": 0,
+        "label": "<--",
+        "labelWordWrapMode": "breakWords",
+        "onClick": "@const armRoot = getBot(byTag('system', 'rc-transformer-arm.armRoot'));\nwhisper(armRoot, 'move', { direction: 'down' });",
+        "onPointerDown": "@thisBot.tags.scaleZ = 0.25;",
+        "onPointerEnter": "@thisBot.tags.color = '#d33';",
+        "onPointerExit": "@thisBot.tags.color = thisBot.tags.buttonColor;\nthisBot.tags.scaleZ = 0.5;",
+        "onPointerUp": "@thisBot.tags.scaleZ = 0.5;",
+        "scaleX": "1",
+        "scaleY": "1",
+        "scaleZ": 0.5,
+        "system": "rc-transformer-arm.downArrow",
+        "undefined": true
+      }
+    },
+    "rc-transformer-arm.arm2": {
+      "id": "rc-transformer-arm.arm2",
+      "space": "shared",
+      "tags": {
+        "color": "#68BC00",
+        "draggable": "false",
+        "form": "hex",
+        "home": true,
+        "homeRotationX": -2.7755575615628914e-17,
+        "homeRotationY": -2.7755575615628914e-17,
+        "homeX": "0",
+        "homeY": "0",
+        "homeZ": "0",
+        "scaleX": "1",
+        "scaleY": "1",
+        "scaleZ": "1",
+        "system": "rc-transformer-arm.arm2",
+        "transformer": "87a87fe6-826d-42c5-ad47-8ffbdc6e6ea2"
       }
     }
   }
