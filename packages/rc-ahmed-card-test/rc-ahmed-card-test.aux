@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "state": {
+    "rc-ahmed-card-test.toggleApp": {
+      "id": "rc-ahmed-card-test.toggleApp",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": 4,
+        "homeZ": 0,
+        "label": "Toggle App",
+        "onClick": "@shout('onToggleApp');",
+        "onPointerDown": "@masks.scaleZ = 0.1;",
+        "onPointerEnter": "@masks.color = 'orange';",
+        "onPointerExit": "@masks.color = null;\nmasks.scaleZ = null;",
+        "onPointerUp": "@masks.scaleZ = null;",
+        "scale": "2",
+        "scaleX": "2",
+        "scaleZ": "0.3",
+        "system": "rc-ahmed-card-test.toggleApp"
+      }
+    },
+    "rc-ahmed-card-test.app": {
+      "id": "rc-ahmed-card-test.app",
+      "space": "shared",
+      "tags": {
+        "App": "@const BigButton = ({\n    onClick,\n    className,\n    children,\n}) => { \n    return (\n        <>\n            <button \n                className={`big-button ${className}`}\n                onClick={onClick}\n            >\n                {children}\n            </button>\n        </>\n    )\n}\n\nconst App = () => {\n\n    const onButtonClick = () => {\n        os.toast('Button clicked!');\n    }\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div class='centered-card'>\n                <h1 class='card-title'>This is a Card</h1>\n                <div class='card-content'>\n                    <p>Press the Escape (Esc) key to close this app</p>\n                </div>\n                <div className='card-button-container'>\n                    <BigButton onClick={onButtonClick} className='card-button-left'>Button 01</BigButton>\n                    <BigButton onClick={onButtonClick} className='card-button-right'>Button 02</BigButton>\n                </div>\n            </div>\n        </>\n    )\n}\n\nreturn App;",
+        "onBotAdded": "@masks.enabled = false;",
+        "onKeyDown": "@const esc = that.keys.includes('Escape');\n\nif (esc) {\n    if (masks.enabled) {\n        whisper(thisBot, 'onToggleApp');\n    }\n}",
+        "onToggleApp": "@masks.enabled = !masks.enabled;\n\nif (masks.enabled) {\n    const App = thisBot.App();\n\n    await os.registerApp('myApp', thisBot);\n    await os.compileApp('myApp', <App/>)\n} else {\n    await os.compileApp('myApp', <></>)\n    await os.unregisterApp('myApp');\n}",
+        "style.css": ".big-button {\n    width: 160px;\n    height: 64px;\n    border: none;\n    border-radius: 6px;\n    background-color: #000;\n    font-weight: 600;\n    color: #fff;\n    cursor: pointer;\n    font-size: 1.3em;\n    transition: background-color 0.25s, opacity 0.25s;\n}\n\n.big-button:hover {\n    background-color: #0c4ac6;\n}\n\n.big-button:disabled {\n    opacity: 0.5;\n    pointer-events: none;\n}\n\n.centered-card {\n    display: flex;\n    flex-direction: column;\n    background-color: white;\n    height: 80vh;\n    width: calc(80vh / 1.5);\n    max-width: 65vw;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n}\n\n.card-title {\n    text-align: center;\n}\n\n.card-content {\n    padding: 16px;\n    overflow: auto;\n    flex-grow: 1;\n}\n\n.card-button-container {\n    width: 100%;\n    min-height: 130px;\n    padding-top: 16px;\n}\n\n.card-button-left {\n    position: absolute;\n    left: -70px;\n}\n\n.card-button-right {\n    position: absolute;\n    right: -70px;\n}\n\n@media (max-width: 420px) {\n    .centered-card {\n        max-width: 85vw;\n    }\n\n    .card-button-left {\n        left: -20px;\n    }\n\n    .card-button-right {\n        right: -20px;\n    }\n}",
+        "system": "rc-ahmed-card-test.app"
+      }
+    },
+    "rc-ahmed-card-test._packageInfo": {
+      "id": "rc-ahmed-card-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-ahmed-card-test._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-01-30T13:10:36.696-05:00 local"
+      }
+    }
+  }
+}
