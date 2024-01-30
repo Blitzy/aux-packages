@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "state": {
+    "rc-iframe-app.app": {
+      "id": "rc-iframe-app.app",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useCallback } = os.appHooks;\n        \nconst App = () => {\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div className='custom-app'>\n                <iframe id='myCoolIframe' src={tags.iframeAddress}></iframe>\n            </div>\n        </>\n    )\n}\n\nreturn App;\n",
+        "forceUpdate": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.system, <App/>)\n}\n",
+        "iframeAddress": "https://www.example.com",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.system, thisBot);\n\n    thisBot.forceUpdate();\n}\n",
+        "onDestroy": "@thisBot.unmount();",
+        "style.css": "#myCoolIframe {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 50%;\n    height: 100%;\n}\n",
+        "system": "rc-iframe-app.app",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    delete thisBot.vars.appInstance;\n\n    // Compiling the app with an empty root value is a workaround that allows the\n    // previous components to perform their unmounting code properly.\n    await os.compileApp(tags.system, <></>);\n\n    await os.unregisterApp(tags.system);\n}\n"
+      }
+    },
+    "rc-iframe-app.toggle": {
+      "id": "rc-iframe-app.toggle",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": "true",
+        "label": "toggle iframe",
+        "onClick": "@const appBot = getBot('system', 'rc-iframe-app.app');\n\nif (appBot.vars.appInstance) {\n    appBot.unmount();\n} else {\n    const input = await os.showInput(appBot.tags.iframeAddress, { title: 'IFrame Address' });\n    appBot.tags.iframeAddress = input;\n\n    appBot.mount();\n}\n",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.5",
+        "system": "rc-iframe-app.toggle"
+      }
+    },
+    "rc-iframe-app._packageInfo": {
+      "id": "rc-iframe-app._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-iframe-app._packageInfo",
+        "version": "0.1",
+        "versionDate": "📅2023-08-16T18:09:59.941-04:00 local"
+      }
+    }
+  }
+}
