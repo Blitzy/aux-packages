@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "state": {
+    "rc-formDepthTest.label": {
+      "id": "rc-formDepthTest.label",
+      "space": "shared",
+      "tags": {
+        "color": "#73D8FF",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": -14,
+        "homeY": 13,
+        "homeZ": 0,
+        "label": "Hello, World!",
+        "scale": "2",
+        "scaleX": "2",
+        "system": "rc-formDepthTest.label"
+      }
+    },
+    "rc-formDepthTest.progressBar": {
+      "id": "rc-formDepthTest.progressBar",
+      "space": "shared",
+      "tags": {
+        "color": "#FCDC00",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": 0,
+        "homeY": 13,
+        "homeZ": 0,
+        "progressBar": "0.5",
+        "progressBarColor": "#00ff00",
+        "progressBarPosition": "floating",
+        "scale": "2",
+        "scaleX": "2",
+        "system": "rc-formDepthTest.progressBar"
+      }
+    },
+    "rc-formDepthTest._packageInfo": {
+      "id": "rc-formDepthTest._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-formDepthTest._packageInfo",
+        "version": "0.3",
+        "versionDate": "📅2023-08-23T12:01:00.129-04:00 local"
+      }
+    },
+    "rc-formDepthTest.iframe": {
+      "id": "rc-formDepthTest.iframe",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "center",
+        "form": "iframe",
+        "formAddress": "https://www.casualsimulation.com/",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "formSubtype": "src",
+        "home": true,
+        "homeX": -2,
+        "homeY": 29,
+        "homeZ": 0,
+        "scale": "10",
+        "scaleX": "1",
+        "system": "rc-formDepthTest.iframe"
+      }
+    },
+    "rc-formDepthTest.camera": {
+      "id": "rc-formDepthTest.camera",
+      "space": "shared",
+      "tags": {
+        "home": "false",
+        "onEggHatch": "@gridPortalBot.tags.portalCameraType = 'perspective';",
+        "onInstJoined": "@gridPortalBot.tags.portalCameraType = 'perspective';",
+        "system": "rc-formDepthTest.camera"
+      }
+    },
+    "rc-formDepthTest.cubeStroke": {
+      "id": "rc-formDepthTest.cubeStroke",
+      "space": "shared",
+      "tags": {
+        "color": "#F44E3B",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": 13,
+        "homeY": 13,
+        "homeZ": 0,
+        "scale": "2",
+        "strokeColor": "cyan",
+        "strokeWidth": "7",
+        "system": "rc-formDepthTest.cubeStroke"
+      }
+    },
+    "rc-formDepthTest.keyboard": {
+      "id": "rc-formDepthTest.keyboard",
+      "space": "shared",
+      "tags": {
+        "color": "#16A5A5",
+        "form": "keyboard",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": -9,
+        "homeY": 19,
+        "homeZ": 0,
+        "scale": "2",
+        "scaleX": "4",
+        "scaleY": "4",
+        "system": "rc-formDepthTest.keyboard"
+      }
+    },
+    "rc-formDepthTest.labelFloating": {
+      "id": "rc-formDepthTest.labelFloating",
+      "space": "shared",
+      "tags": {
+        "color": "#009CE0",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": -7,
+        "homeY": 13,
+        "homeZ": 0,
+        "label": "Hello, World!",
+        "labelPosition": "floating",
+        "labelSize": "1",
+        "scale": "2",
+        "scaleX": "1",
+        "system": "rc-formDepthTest.labelFloating"
+      }
+    },
+    "rc-formDepthTest.cube": {
+      "id": "rc-formDepthTest.cube",
+      "space": "shared",
+      "tags": {
+        "color": "#FDA1FF",
+        "formDepthTest": "false",
+        "formDepthWrite": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": -21,
+        "homeY": 13,
+        "homeZ": 0,
+        "scale": "2",
+        "system": "rc-formDepthTest.cube"
+      }
+    },
+    "rc-formDepthTest.frustum": {
+      "id": "rc-formDepthTest.frustum",
+      "space": "shared",
+      "tags": {
+        "color": "cyan",
+        "form": "frustum",
+        "formDepthTest": "false",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": "6",
+        "homeY": "18",
+        "homeZ": 0,
+        "scale": "2",
+        "system": "rc-formDepthTest.frustum"
+      }
+    },
+    "rc-formDepthTest.occluder": {
+      "id": "rc-formDepthTest.occluder",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "cursor": "pointer",
+        "draggable": "false",
+        "formOpacity": 1,
+        "home": true,
+        "homeX": 0,
+        "homeY": 8,
+        "homeZ": 0,
+        "normalColor": "#7B64FF",
+        "onClick": "@// if (tags.color !== 'transparent') {\n//     tags.color = 'transparent';\n//     tags.strokeColor = tags.normalColor;\n// } else {\n//     tags.color = tags.normalColor;\n//     tags.strokeColor = null;\n// }\n\nif (tags.formOpacity === 1) {\n    tags.formOpacity = 0;\n    tags.strokeColor = tags.normalColor;\n} else if (tags.formOpacity === 0.5) {\n    tags.formOpacity = 1;\n    tags.strokeColor = null;\n} else if (tags.formOpacity === 0) {\n    tags.formOpacity = 0.5;\n    tags.strokeColor = tags.normalColor;\n}",
+        "onPointerEnter": "@os.tip('Click to change transparency');",
+        "scaleX": "50",
+        "scaleZ": "15",
+        "system": "rc-formDepthTest.occluder"
+      }
+    },
+    "rc-formDepthTest.sprite": {
+      "id": "rc-formDepthTest.sprite",
+      "space": "shared",
+      "tags": {
+        "form": "sprite",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/4e5cffa49f4571e17cf338fe81596f3404d5fedd890531671ad36912719daf44.png",
+        "formDepthTest": "false",
+        "formOpacity": "1",
+        "formRenderOrder": "1",
+        "home": true,
+        "homeX": 7,
+        "homeY": 13,
+        "homeZ": 0,
+        "scale": "1",
+        "scaleX": "4",
+        "scaleY": "4",
+        "system": "rc-formDepthTest.sprite"
+      }
+    }
+  }
+}
