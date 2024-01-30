@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "state": {
+    "rc-label-billboard.label": {
+      "id": "rc-label-billboard.label",
+      "space": "shared",
+      "tags": {
+        "home": "true",
+        "homeX": "0",
+        "homeY": "0",
+        "homeZ": "3",
+        "label": "I'm a separate label bot, but I'm attached to this red bot via the \"transformer\" tag!",
+        "onBotAdded": "@const nodeBot = getBot('system', 'rc-label-billboard.node');\nmasks.transformer = nodeBot.id;\n\n",
+        "orientationMode": "billboard",
+        "scaleX": "7",
+        "scaleY": "4",
+        "scaleZ": "0.1",
+        "system": "rc-label-billboard.label"
+      }
+    },
+    "rc-label-billboard.node": {
+      "id": "rc-label-billboard.node",
+      "space": "shared",
+      "tags": {
+        "color": "red",
+        "home": true,
+        "homeX": "0",
+        "homeY": "0",
+        "homeZ": 0,
+        "system": "rc-label-billboard.node"
+      }
+    }
+  }
+}
