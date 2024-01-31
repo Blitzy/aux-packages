@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "state": {
+    "rc-sideLoadInstTest.loadButton": {
+      "id": "rc-sideLoadInstTest.loadButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": "true",
+        "label": "load inst",
+        "onClick": "@const inst = await os.showInput(null, { title: 'Inst'});\n\nif (inst) {\n    os.toast('Load inst: ' + inst, 3);\n    os.loadInst(inst);\n}",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-sideLoadInstTest.loadButton"
+      }
+    },
+    "rc-sideLoadInstTest.unloadButton": {
+      "id": "rc-sideLoadInstTest.unloadButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": -3,
+        "label": "unload inst",
+        "onClick": "@const currentInsts = Array.isArray(configBot.tags.inst) ? configBot.tags.inst : [configBot.tags.inst];\n\nconst options = currentInsts.map((inst, index) => {\n    return {\n        label: inst,\n        value: index,\n    }\n})\n\nconst selectedItems = await os.showInput([], {\n    title: 'Check inst(s) to unload',\n    type: 'list',\n    subtype: 'checkbox',\n    items: options,\n});\n\nif (selectedItems && selectedItems.length > 0) {\n    let insts = selectedItems.map(item => item.label); \n    os.toast('Unload inst(s): ' + insts.join(', '), 3);\n\n    for (let inst of insts) {\n        os.unloadInst(inst);\n    }\n}",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-sideLoadInstTest.unloadButton"
+      }
+    },
+    "rc-sideLoadInstTest.init": {
+      "id": "rc-sideLoadInstTest.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\n\nshout('onBeforeInitialize');\nshout('onInitialize');",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-sideLoadInstTest.init"
+      }
+    },
+    "rc-sideLoadInstTest._packageInfo": {
+      "id": "rc-sideLoadInstTest._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-sideLoadInstTest._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-01-31T12:44:44.338-05:00 local"
+      }
+    }
+  }
+}
