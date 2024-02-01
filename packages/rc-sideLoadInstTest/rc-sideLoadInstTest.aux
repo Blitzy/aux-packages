@@ -1,18 +1,15 @@
 {
   "version": 1,
   "state": {
-    "rc-sideLoadInstTest.loadButton": {
-      "id": "rc-sideLoadInstTest.loadButton",
+    "rc-sideLoadInstTest.utils.listenerProxy": {
+      "id": "rc-sideLoadInstTest.utils.listenerProxy",
       "space": "shared",
       "tags": {
-        "cursor": "pointer",
-        "home": "true",
-        "label": "load inst",
-        "onClick": "@const inst = await os.showInput(null, { title: 'Inst'});\n\nif (inst) {\n    os.toast('Load inst: ' + inst, 3);\n    os.loadInst(inst);\n}",
-        "scaleX": "4",
-        "scaleY": "2",
-        "scaleZ": "0.3",
-        "system": "rc-sideLoadInstTest.loadButton"
+        "listening": "true",
+        "onAnyListen": "@if (!thisBot.vars.listeners) {\n    return; // This bot has not initialized yet.\n}\n\nconst { \n    name,\n    that: thatParam,\n    targets\n} = that;\n\nconst entries = thisBot.vars.listeners[name];\n\nif (entries && entries.length) {\n    for (let i = 0; i < entries.length; i++) {\n        const entry = entries[i];\n        \n        let invoke = true;\n\n        if (entry.bot) {\n            // Only invoke listener if the bot is one of the targets.\n            let entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            invoke = targets && targets.some(t => t.id === entryBotId);\n        }\n\n        if (invoke) {\n            entry.listener(thatParam);\n        }\n    }\n}",
+        "onBotAdded": "@function addListenTagListener (bot, name, listener) {\n    assert(name, `${tags.system} name is required.`);\n    assert(listener && typeof listener === 'function', `${tags.system} listener function is required.`);\n    \n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        entries = [];\n        thisBot.vars.listeners[name] = entries;\n    }\n\n    entries.push({ listener, bot });\n}\n\nfunction removeListenTagListener (bot, name, listener) {\n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        return;\n    }\n\n    for (let i = entries.length - 1; i >= 0; i--) {\n        let entry = entries[i];\n\n        if (entry.listener != listener) {\n            continue;\n        }\n\n        if (bot) {\n            const botId = typeof bot === 'string' ? bot : bot.id;\n            const entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            \n            if (botId !== entryBotId) {\n                continue;\n            }\n        }\n\n        entries.splice(i, 1);\n    }\n}\n\nglobalThis.addListenTagListener = addListenTagListener;\nglobalThis.removeListenTagListener = removeListenTagListener;\n\nthisBot.vars.listeners = {};",
+        "onDestroy": "@globalThis.addListenTagListener = undefined;\nglobalThis.removeListenTagListener = undefined;",
+        "system": "rc-sideLoadInstTest.utils.listenerProxy"
       }
     },
     "rc-sideLoadInstTest.unloadButton": {
@@ -41,13 +38,32 @@
         "system": "rc-sideLoadInstTest.init"
       }
     },
+    "rc-sideLoadInstTest.loadButton": {
+      "id": "rc-sideLoadInstTest.loadButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "load inst",
+        "onAbAdded": "@console.log(`[${tags.system}] onAbAdded`, that);",
+        "onAnyBotsAdded": "@console.log(`[${tags.system}] onAnyBotsAdded`, that);",
+        "onClick": "@const inst = await os.showInput(null, { title: 'Inst'});\n\nasync function loadInst(instToLoad) {\n    return new Promise((resolve) => {\n\n        const onInstJoined = (listenerThat) => {\n            if (listenerThat.inst === instToLoad) {\n                removeListenTagListener(null, 'onInstJoined', onInstJoined);\n\n                // HACK: As of writing (Feb 1 2024) there is no way to know when ab has been fully loaded into the new inst.\n                // So until then, we are just going to wait a healthy amount of time and hope that ab is loaded by then.\n                os.sleep(2000).then(() => {\n                    resolve();\n                });\n            }\n        }\n\n        addListenTagListener(null, 'onInstJoined', onInstJoined)\n        os.loadInst(instToLoad);\n    })\n}\n\nif (inst) {\n    let pattern = await os.showInput(null, { title: 'Pattern to load'});\n\n    if (!pattern) {\n        pattern = null;\n    }\n\n    // Remove ab/pattern from URL query params if it is there. \n    // Otherwise the new ab in the new inst will use it to load an undesirable pattern.\n    configBot.tags.ab = null;\n    configBot.tags.pattern = null;\n\n    let loadMessage = 'Load inst ' + inst;\n    if (pattern) {\n        loadMessage += ' with pattern ' + pattern;\n    }\n\n    os.toast(loadMessage, 3);\n\n    await loadInst(inst);\n    \n    // Disable listening on the ab search bot for a moment.\n    abSearch.tags.listening = false;\n\n    // Super shout the ab patten loading function.\n    superShout('onLookupABEggs', {\n        abID: pattern,\n        autoHatch: true,\n    });\n}",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-sideLoadInstTest.loadButton"
+      }
+    },
     "rc-sideLoadInstTest._packageInfo": {
       "id": "rc-sideLoadInstTest._packageInfo",
       "space": "shared",
       "tags": {
         "system": "rc-sideLoadInstTest._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-01-31T12:44:44.338-05:00 local"
+        "version": "1.1",
+        "versionDate": "📅2024-02-01T15:46:22.131-05:00 local"
       }
     }
   }
