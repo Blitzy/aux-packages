@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "state": {
+    "rc-pdfRead._packageInfo": {
+      "id": "rc-pdfRead._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-pdfRead._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-02-01T17:07:38.377-05:00 local"
+      }
+    },
+    "rc-pdfRead.reader": {
+      "id": "rc-pdfRead.reader",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": "true",
+        "label": "read pdf",
+        "onClick": "@console.log('loading pdfjs...');\nconst pdfjs = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/+esm');\nconsole.log('pdfjs:', pdfjs);\n\nconst files = await os.showUploadFiles();\nconsole.log('files:', files);\n\nlet pdfFile = null;\n\nfor (let file of files) { \n    if (file.mimeType === 'application/pdf') {\n        pdfFile = file;\n        break;\n    }\n}\n\nif (!pdfFile) {\n    return;\n}\n\nconsole.log('pdfFile:', pdfFile);\n\nconst pdf = await pdfjs.getDocument(pdfFile.data).promise;\nconsole.log('pdf:', pdf);\n\nconst pageCount = pdf.numPages;\n\n\nos.showHtml(`Parsing ${pdfFile.name}...`);\n\nlet outputHtml = `<h1>${pdfFile.name} Text Content</h1>`;\n\nfor (let i = 1; i <= pageCount; i++) {\n    const page = await pdf.getPage(i);\n    console.log(`page ${i}:`, page);\n    const textContent = await page.getTextContent();\n    console.log(`page ${i} textContent:`, textContent);\n    const textStrings = textContent.items.map(item => item.str);\n    console.log(`page ${i} textStrings:`, textStrings);\n\n    outputHtml += `<h2>Page ${i}</h2>`\n\n    for (let str of textStrings) {\n        outputHtml += `<p>${str}</p>`;\n    }\n}\n\nos.showHtml(outputHtml);",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-pdfRead.reader"
+      }
+    }
+  }
+}
