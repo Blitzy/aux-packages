@@ -1,24 +1,24 @@
 {
   "version": 1,
   "state": {
-    "rc-listenerProxy._packageInfo": {
-      "id": "rc-listenerProxy._packageInfo",
-      "space": "shared",
-      "tags": {
-        "system": "rc-listenerProxy._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-01-30T13:47:36.334-05:00 local"
-      }
-    },
-    "rc-listenerProxy": {
-      "id": "rc-listenerProxy",
+    "rc-listenerProxy.listenerProxy": {
+      "id": "rc-listenerProxy.listenerProxy",
       "space": "shared",
       "tags": {
         "listening": "true",
         "onAnyListen": "@if (!thisBot.vars.listeners) {\n    return; // This bot has not initialized yet.\n}\n\nconst { \n    name,\n    that: thatParam,\n    targets\n} = that;\n\nconst entries = thisBot.vars.listeners[name];\n\nif (entries && entries.length) {\n    for (let i = 0; i < entries.length; i++) {\n        const entry = entries[i];\n        \n        let invoke = true;\n\n        if (entry.bot) {\n            // Only invoke listener if the bot is one of the targets.\n            let entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            invoke = targets && targets.some(t => t.id === entryBotId);\n        }\n\n        if (invoke) {\n            entry.listener(thatParam);\n        }\n    }\n}",
         "onBotAdded": "@function addListenTagListener (bot, name, listener) {\n    assert(name, `${tags.system} name is required.`);\n    assert(listener && typeof listener === 'function', `${tags.system} listener function is required.`);\n    \n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        entries = [];\n        thisBot.vars.listeners[name] = entries;\n    }\n\n    entries.push({ listener, bot });\n}\n\nfunction removeListenTagListener (bot, name, listener) {\n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        return;\n    }\n\n    for (let i = entries.length - 1; i >= 0; i--) {\n        let entry = entries[i];\n\n        if (entry.listener != listener) {\n            continue;\n        }\n\n        if (bot) {\n            const botId = typeof bot === 'string' ? bot : bot.id;\n            const entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            \n            if (botId !== entryBotId) {\n                continue;\n            }\n        }\n\n        entries.splice(i, 1);\n    }\n}\n\nglobalThis.addListenTagListener = addListenTagListener;\nglobalThis.removeListenTagListener = removeListenTagListener;\n\nthisBot.vars.listeners = {};",
         "onDestroy": "@globalThis.addListenTagListener = undefined;\nglobalThis.removeListenTagListener = undefined;",
-        "system": "rc-listenerProxy"
+        "system": "rc-listenerProxy.listenerProxy"
+      }
+    },
+    "rc-listenerProxy._packageInfo": {
+      "id": "rc-listenerProxy._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-listenerProxy._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-02-01T13:48:46.628-05:00 local"
       }
     }
   }
