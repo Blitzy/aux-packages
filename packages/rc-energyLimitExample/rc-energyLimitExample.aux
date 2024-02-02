@@ -1,24 +1,6 @@
 {
   "version": 1,
   "state": {
-    "rc-energyLimitExample.note": {
-      "id": "rc-energyLimitExample.note",
-      "space": "shared",
-      "tags": {
-        "color": "#999999",
-        "draggable": "false",
-        "home": true,
-        "homeX": "0.5",
-        "homeY": 5,
-        "homeZ": 0,
-        "label": "This test shows how the CasualOS energy limit can be avoided.\nDoing a heavy load of work over time is how to avoid getting hit with the energy limit error.\n\nTest A) Trying to add 1+1 together 25,000 times in one big loop.\n\nTest B) Adding 1+1 together 25,000 times in smaller work chunks over time.",
-        "labelAlignment": "left",
-        "scaleX": "13",
-        "scaleY": "5",
-        "scaleZ": "0.3",
-        "system": "rc-energyLimitExample.note"
-      }
-    },
     "rc-energyLimitExample.testB": {
       "id": "rc-energyLimitExample.testB",
       "space": "shared",
@@ -30,7 +12,7 @@
         "homeY": 0,
         "homeZ": 0,
         "label": "= Test B =\nDistribute over time",
-        "onClick": "@os.toast('Started Test B...', 1);\n\nlet sum = 0;\n\nconst count = 250000;\nconst chunks = 10;\nconst chunkSize = count / chunks;\n\nfor (let c = 0; c < chunks; c++) {\n    for (let i = 0; i < chunkSize; i++) {\n        sum += 1;\n    }\n\n    console.log('Test B sum after chunk ' + c + ': ' + sum);\n    await os.sleep(100);\n}\n\n\nos.toast('Test B Final Sum: ' + sum, 3);\nconsole.log('Test B Final Sum:', sum);",
+        "onClick": "@try {\n    os.toast('Started Test B...', 1);\n\n    console.log(globalThis);\n\n    let sum = 0;\n\n    const count = 250000;\n    const chunks = 10;\n    const chunkSize = count / chunks;\n\n    for (let c = 0; c < chunks; c++) {\n        for (let i = 0; i < chunkSize; i++) {\n            sum += 1;\n        }\n\n        console.log('Test B sum after chunk ' + c + ': ' + sum);\n        await os.sleep(100);\n    }\n\n\n    os.toast('Test B Final Sum: ' + sum, 3);\n    console.log('Test B Final Sum:', sum);\n} catch (e) {\n    os.toast('Test B Error: ' + e.message, 3);\n    console.error('Test B Error: ' + e.message);\n}",
         "scaleX": "4",
         "scaleY": "2",
         "scaleZ": "0.3",
@@ -48,7 +30,7 @@
         "homeY": 0,
         "homeZ": 0,
         "label": "= Test A =\nOne Big Loop",
-        "onClick": "@try { \n    let sum = 0;\n\n    for (let i = 0; i < 250000; i++) {\n        sum += 1;\n    }\n\n    os.toast('final sum: ' + sum, 3);\n    console.log('final sum:', sum);\n} catch (e) {\n    os.toast('Test A Error: ' + e.message, 3);\n}",
+        "onClick": "@try { \n    let sum = 0;\n\n    for (let i = 0; i < 250000; i++) {\n        sum += 1;\n    }\n\n    os.toast('Test A Final Sum: ' + sum, 3);\n    console.log('Test A Final Sum:', sum);\n} catch (e) {\n    os.toast('Test A Error: ' + e.message, 3);\n    console.error('Test A Error: ' + e.message);\n}",
         "scaleX": "4",
         "scaleY": "2",
         "scaleZ": "0.3",
@@ -60,8 +42,26 @@
       "space": "shared",
       "tags": {
         "system": "rc-energyLimitExample._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-02-01T19:31:39.279-05:00 local"
+        "version": "1.1",
+        "versionDate": "📅2024-02-02T09:26:30.500-05:00 local"
+      }
+    },
+    "rc-energyLimitExample.note": {
+      "id": "rc-energyLimitExample.note",
+      "space": "shared",
+      "tags": {
+        "color": "#999999",
+        "draggable": "false",
+        "home": true,
+        "homeX": "0.5",
+        "homeY": "6",
+        "homeZ": 0,
+        "label": "This test shows how the CasualOS energy limit can be avoided.\nDoing a heavy load of work over time is how to avoid getting hit with the energy limit error.\n\nTest A) Trying to add 1+1 together 250,000 times in one big loop.\n\nTest B) Adding 1+1 together 250,000 times in smaller work chunks over time.",
+        "labelAlignment": "left",
+        "scaleX": "12",
+        "scaleY": "7",
+        "scaleZ": "0.3",
+        "system": "rc-energyLimitExample.note"
       }
     }
   }
