@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "state": {
+    "rc-pdfReadOCR.reader": {
+      "id": "rc-pdfReadOCR.reader",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "read PDF images with OCR",
+        "onClick": "@console.log('loading pdfjs...');\nconst pdfjs = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/+esm');\nconsole.log('pdfjs:', pdfjs);\n\npdfjs.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs';\n\nconsole.log('loading tesseract...');\nconst tesseract = await import(\"https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/+esm\");\nconsole.log('tesseract:', tesseract);\n\nconst worker = await tesseract.createWorker('eng');\nconsole.log('worker:', worker);\n\nconst files = await os.showUploadFiles();\nconsole.log('files:', files);\n\nlet pdfFile = null;\n\nfor (let file of files) { \n    if (file.mimeType === 'application/pdf') {\n        pdfFile = file;\n        break;\n    }\n}\n\nif (!pdfFile) {\n    return;\n}\n\nconsole.log('pdfFile:', pdfFile);\n\nconst pdf = await pdfjs.getDocument({\n    data: pdfFile.data,\n    // disableFontFace: true,\n}).promise;\nconsole.log('pdf:', pdf);\n\nconst pageCount = pdf.numPages;\n\nconst canvas = new OffscreenCanvas(512, 512);\nconst context = canvas.getContext('2d');\n\nlet outputHtml = `<h1>${pdfFile.name} Text Content</h1>`;\n\nfor (let i = 1; i <= pageCount; i++) {\n    os.showHtml(`Parsing ${pdfFile.name} page #${i}...`);\n\n    const page = await pdf.getPage(i);\n    console.log(`page ${i}:`, page);\n\n    const scale = 2;\n    const viewport = page.getViewport({ scale: scale, });\n    canvas.width = viewport.width;\n    canvas.height = viewport.height;\n\n    const renderContext = {\n        canvasContext: context,\n        viewport: viewport\n    };\n\n    // Render the page to the offscreen canvas context.\n    await page.render(renderContext).promise;\n\n    const blob = await canvas.convertToBlob({ type: 'image/png' });\n\n    // os.download(blob, 'test.png', 'image/png');\n    const result = await worker.recognize(blob, undefined, 'text');\n    console.log('result:', result);\n\n    outputHtml += `<h2>Page ${i}</h2>`;\n    outputHtml += `<p style=\"white-space: pre\">${result.data.text}</p>`;\n}\n\nos.showHtml(outputHtml);",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-pdfReadOCR.reader"
+      }
+    },
+    "rc-pdfReadOCR._packageInfo": {
+      "id": "rc-pdfReadOCR._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-pdfReadOCR._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-02-02T16:11:25.924-05:00 local"
+      }
+    }
+  }
+}
