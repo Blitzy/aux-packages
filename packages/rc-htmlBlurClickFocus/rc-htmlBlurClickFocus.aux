@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "state": {
+    "rc-htmlBlurClickFocus.appToggle": {
+      "id": "rc-htmlBlurClickFocus.appToggle",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": "true",
+        "label": "app toggle",
+        "onClick": "@const appBot = getBot('system', 'rc-htmlBlurClickFocus.app');\n\nif (appBot.vars.appInstance) {\n    appBot.unmount();\n} else {\n    appBot.mount();\n}",
+        "onEggHatch": "@const appBot = getBot('system', 'rc-htmlBlurClickFocus.app');\nappBot.mount();",
+        "onInstJoined": "@const appBot = getBot('system', 'rc-htmlBlurClickFocus.app');\nappBot.mount();",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-htmlBlurClickFocus.appToggle"
+      }
+    },
+    "rc-htmlBlurClickFocus.app": {
+      "id": "rc-htmlBlurClickFocus.app",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useCallback, useRef } = os.appHooks;\n        \nconst App = () => {\n    const inputRef = useRef(null);\n    const [focusButtonDisabled, setFocusButtonDisabled] = useState(false);\n\n    const onFocusAndBlurClick = useCallback(() => {\n        setFocusButtonDisabled(true);\n\n        console.log(`[${tags.system}] onFocusAndBlurClick input element:`, inputRef.current);\n\n        console.log(`[${tags.system}] onFocusAndBlurClick focus()`);\n        inputRef.current.focus();\n\n        os.sleep(2000).then(() => {\n            console.log(`[${tags.system}] onFocusAndBlurClick blur()`);\n            inputRef.current.blur();\n\n            setFocusButtonDisabled(false);\n        });\n    }, [setFocusButtonDisabled]);\n\n    const onClickClick = useCallback(() => {\n        console.log(`[${tags.system}] onClickClick input element:`, inputRef.current);\n\n        console.log(`[${tags.system}] onClickClick click()`);\n        inputRef.current.click();\n    }, []);\n\n    const onSelectClick = useCallback(() => {\n        console.log(`[${tags.system}] onSelectClick input element:`, inputRef.current);\n\n        console.log(`[${tags.system}] onClickClick select()`);\n        inputRef.current.select();\n    }, []);\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div className='rc-html-app'>\n                <div>This app tests HTMLElement methods on the input field below.</div>\n                <div style={{marginBottom: '16px'}}>Each button will execute the method on the input element when clicked.</div>\n                <input ref={inputRef} placeholder='hi'></input>\n                <button onClick={onFocusAndBlurClick} disabled={focusButtonDisabled}>focus() then blur() after 2s</button>\n                <button onClick={onClickClick}>click()</button>\n                <button onClick={onSelectClick}>select()</button>\n            </div>\n        </>\n    )\n}\n\nreturn App;\n",
+        "forceUpdate": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.system, <App/>)\n}\n",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.system, thisBot);\n\n    thisBot.forceUpdate();\n}\n",
+        "onDestroy": "@thisBot.unmount();",
+        "style.css": ".rc-html-app {\n    background-color: white;\n    padding: 24px;\n}\n",
+        "system": "rc-htmlBlurClickFocus.app",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    delete thisBot.vars.appInstance;\n\n    // Compiling the app with an empty root value is a workaround that allows the\n    // previous components to perform their unmounting code properly.\n    await os.compileApp(tags.system, <></>);\n\n    await os.unregisterApp(tags.system);\n}\n"
+      }
+    },
+    "rc-htmlBlurClickFocus._packageInfo": {
+      "id": "rc-htmlBlurClickFocus._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-htmlBlurClickFocus._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-02-13T13:20:34.837-05:00 local"
+      }
+    }
+  }
+}
