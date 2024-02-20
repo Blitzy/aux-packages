@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "state": {
+    "rc-overlayDialogApp._packageInfo": {
+      "id": "rc-overlayDialogApp._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-overlayDialogApp._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-02-20T17:16:02.671-05:00 local"
+      }
+    },
+    "rc-overlayDialogApp.app": {
+      "id": "rc-overlayDialogApp.app",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "home": "true",
+        "label": "open app",
+        "onClick": "@const App = () => {\n\n    const onCloseClick = () => {\n        os.unregisterApp('overlay-app');\n    }\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div className='overlay-app'>\n                <div className='overlay-dialog'>\n                    <h1>Hello!</h1>\n                    <button onClick={onCloseClick}>Close</button>\n                </div>\n            </div>\n        </>\n    )\n}\n\nawait os.registerApp('overlay-app', thisBot);\nawait os.compileApp('overlay-app', <App/>)",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "style.css": ".overlay-app {\n    display: flex;\n    width: 100vw;\n    height: 100vh;\n    background-color: #0000009e;\n    align-content: center;\n    justify-content: center;\n    align-items: center;\n}\n\n.overlay-dialog {\n    padding: 16px;\n    background-color: white;\n    border-radius: 8px;\n    width: 50vw;\n    height: 50vh;\n}",
+        "system": "rc-overlayDialogApp.app"
+      }
+    }
+  }
+}
