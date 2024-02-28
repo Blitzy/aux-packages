@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "state": {
+    "rc-customLabelFont._packageInfo": {
+      "id": "rc-customLabelFont._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-customLabelFont._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-02-28T15:58:40.917-05:00 local"
+      }
+    },
+    "rc-customLabelFont.bot": {
+      "id": "rc-customLabelFont.bot",
+      "space": "shared",
+      "tags": {
+        "cookieSweetFont": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/d5522ef2-a17e-4bed-a557-116903b1b1ed/26487bbe1ad9ea17900e5b3ef171b980c051ddf536abfb7e24e24b1418a8570f.otf",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "label": "Hello, World!",
+        "labelFontAddress": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/d5522ef2-a17e-4bed-a557-116903b1b1ed/26487bbe1ad9ea17900e5b3ef171b980c051ddf536abfb7e24e24b1418a8570f.otf",
+        "labelFontSize": "4",
+        "onClick": "@if (tags.labelFontAddress) {\n    tags.labelFontAddress = null;\n} else {\n    tags.labelFontAddress = tags.cookieSweetFont;\n}",
+        "onPointerEnter": "@os.tip('Toggle label font', null, null, 5);",
+        "scaleX": "10",
+        "scaleY": "4",
+        "system": "rc-customLabelFont.bot"
+      }
+    }
+  }
+}
