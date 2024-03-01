@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "state": {
+    "rc-imageBlobUrl.imageBot": {
+      "id": "rc-imageBlobUrl.imageBot",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "center",
+        "cursor": "pointer",
+        "draggable": "false",
+        "form": "sprite",
+        "home": "true",
+        "label": "No image",
+        "onClick": "@const files = await os.showUploadFiles();\n\nif (!files) {\n    return;\n}\n\nif (files.length === 0) {\n    return;\n}\n\nif (files.length > 1) {\n    os.toast('Choose only one file.', 3);\n    return;\n}\n\nconst file = files[0];\n\nif (!file.mimeType.startsWith('image/')) {\n    os.toast('File must be an image.', 3);\n    return;\n}\n\nwhisper(thisBot, 'setImageFromFile', { file });",
+        "scale": "4",
+        "scaleX": "1",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "setImageFromFile": "@const { file } = that ?? {};\n\nassert(file, '[setImageFromFile] file is a required parameter');\n\nif (masks.formAddress) {\n    // Revoke url of previously set image.\n    URL.revokeObjectURL(masks.formAddress);\n    console.log('[setImageFromFile] revoked previous blob url');\n}\n\n// Create a blob from incoming file data.\nconst blob = new Blob([file.data], { type: file.mimeType });\nconsole.log('[setImageFromFile] blob:', blob);\n\n\n// Create a bitmap from the blob to gather the width and height of the image.\nconst bitmap = await self.createImageBitmap(blob);\nconsole.log('[setImageFromFile] bitmap:', bitmap);\n\nlet aspectRatio = 1;\n\nif (bitmap.width > 0 && bitmap.height > 0) {\n    aspectRatio = bitmap.width / bitmap.height;\n} else {\n    console.error('Could not determine image aspect ratio.');\n    os.toast('Could not determine image aspect ratio.', 3);\n}\n\nconst blobUrl = URL.createObjectURL(blob);\nconsole.log('[setImageFromFile] new blob url:', blobUrl);\n\nmasks.formAddress = blobUrl;\nmasks.label = ' ';\nmasks.scaleX = aspectRatio;",
+        "system": "rc-imageBlobUrl.imageBot"
+      }
+    },
+    "rc-imageBlobUrl._packageInfo": {
+      "id": "rc-imageBlobUrl._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-imageBlobUrl._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-03-01T10:08:09.958-05:00 local"
+      }
+    }
+  }
+}
