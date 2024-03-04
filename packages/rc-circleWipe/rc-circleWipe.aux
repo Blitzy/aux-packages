@@ -26,10 +26,12 @@
         "homeX": -7,
         "homeY": 0,
         "homeZ": 0,
+        "initialize": "@// onInstJoined immediately close the circle wipe as fast as possible.\n// Setting duration to zero seems to not work so setting it to a really small number is a good work aroyun\nawait os.closeCircleWipe({\n    color: 'royalblue',\n    duration: 0.0001,\n})\n\n// Wait for a moment with it closed.\nawait os.sleep(250);\n\n// Open the circle wipe to reveal the scene!\nawait os.openCircleWipe({\n    color: 'royalblue',\n    duration: 1\n});",
         "label": "first load wipe bot",
         "labelColor": "white",
         "onClick": "@os.toast('check me out in the sheet portal!')",
-        "onInstJoined": "@// onInstJoined immediately close the circle wipe as fast as possible.\n// Setting duration to zero seems to not work so setting it to a really small number is a good work aroyun\nawait os.closeCircleWipe({\n    color: 'royalblue',\n    duration: 0.0001,\n})\n\n// Wait for a moment with it closed.\nawait os.sleep(250);\n\n// Open the circle wipe to reveal the scene!\nawait os.openCircleWipe({\n    color: 'royalblue',\n    duration: 1\n});",
+        "onEggHatch": "@whisper(thisBot, 'initialize');",
+        "onInstJoined": "@whisper(thisBot, 'initialize');",
         "scale": "0.5",
         "scaleX": "4",
         "scaleY": "4",
@@ -41,8 +43,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-circleWipe._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-03-04T16:30:39.036-05:00 local"
+        "version": "1.1",
+        "versionDate": "📅2024-03-04T16:32:42.089-05:00 local"
       }
     }
   }
