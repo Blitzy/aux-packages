@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "state": {
+    "rc-circleWipe.wipeTestButton": {
+      "id": "rc-circleWipe.wipeTestButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "label": "press to circle wipe",
+        "onClick": "@// Close the circle wipe.\nawait os.closeCircleWipe({\n    color: 'black',\n    duration: 1,\n})\n\n// Wait for a moment with it closed.\nawait os.sleep(500);\n\n// Open the cricle wipe again.\nawait os.openCircleWipe({\n    color: 'purple',\n    duration: 1,\n});",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-circleWipe.wipeTestButton"
+      }
+    },
+    "rc-circleWipe.firstLoadWipe": {
+      "id": "rc-circleWipe.firstLoadWipe",
+      "space": "shared",
+      "tags": {
+        "color": "royalblue",
+        "draggable": "false",
+        "home": true,
+        "homeX": -7,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "first load wipe bot",
+        "labelColor": "white",
+        "onClick": "@os.toast('check me out in the sheet portal!')",
+        "onInstJoined": "@// onInstJoined immediately close the circle wipe as fast as possible.\n// Setting duration to zero seems to not work so setting it to a really small number is a good work aroyun\nawait os.closeCircleWipe({\n    color: 'royalblue',\n    duration: 0.0001,\n})\n\n// Wait for a moment with it closed.\nawait os.sleep(250);\n\n// Open the circle wipe to reveal the scene!\nawait os.openCircleWipe({\n    color: 'royalblue',\n    duration: 1\n});",
+        "scale": "0.5",
+        "scaleX": "4",
+        "scaleY": "4",
+        "system": "rc-circleWipe.firstLoadWipe"
+      }
+    },
+    "rc-circleWipe._packageInfo": {
+      "id": "rc-circleWipe._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-circleWipe._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-03-04T16:30:39.036-05:00 local"
+      }
+    }
+  }
+}
