@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "state": {
+    "rc-appCustomHook.app": {
+      "id": "rc-appCustomHook.app",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useCallback, useEffect } = os.appHooks;\n\n/**\n * This is a custom hook. It takes a bot as an arguement and will return the label tag on it.\n * It will automatically update if the bot tag changes.\n */\nfunction useBotLabel (bot) {\n    const [ cachedLabel, setCachedLabel ] = useState('foobar');\n\n    useEffect(() => {\n        function checkLabel() {\n            const label = bot.tags.label;\n\n            if (cachedLabel !== label) {\n                console.log('[useBotLabel] label has changed.');\n                // Label has changed!\n                setCachedLabel(label);\n            }\n        }\n    \n        // Set interval to check the bot's label tag every 1 second.\n        let intervalId = setInterval(() => {\n            checkLabel();\n        }, 1000)\n\n        // Run checkLabel immediately so we get a result when the hook first runs.\n        checkLabel();\n        \n        return () => {\n            clearInterval(intervalId);\n        }\n    }, [bot, cachedLabel])\n\n    const setBotLabel = useCallback((label) => {\n        bot.tags.label = label;\n    }, [bot])\n\n    return {\n        label: cachedLabel,\n        setBotLabel\n    }\n}\n\n// Grab reference to the label bot that we can use in our App component.\nconst labelBot = getBot('labelBot', true);\n\nconst App = () => {\n    const { label, setBotLabel } = useBotLabel(labelBot);\n\n    const onInput = useCallback((event) => {\n        const text = event.currentTarget.value;\n        setBotLabel(text);\n    }, [setBotLabel])\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div className='custom-app'>\n                <h1>App Custom Hook Example</h1>\n                <p><b>Bot's Label:</b> {label}</p>\n                <p>This input field below will run the setBotLabel function returned by the custom hook that sets the bot label tags for us.</p>\n                <input onInput={onInput} value={label}></input>\n            </div>\n        </>\n    )\n}\n\nreturn App;\n",
+        "forceUpdate": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.system, <App/>)\n}\n",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.system, thisBot);\n\n    thisBot.forceUpdate();\n}\n",
+        "onDestroy": "@thisBot.unmount();",
+        "onInitialize": "@thisBot.mount();",
+        "style.css": ".custom-app {\n    background-color: white;\n    padding: 12px;\n    max-width: 400px;\n}",
+        "system": "rc-appCustomHook.app",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    delete thisBot.vars.appInstance;\n\n    // Compiling the app with an empty root value is a workaround that allows the\n    // previous components to perform their unmounting code properly.\n    await os.compileApp(tags.system, <></>);\n\n    await os.unregisterApp(tags.system);\n}\n"
+      }
+    },
+    "rc-appCustomHook.init": {
+      "id": "rc-appCustomHook.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\n\nshout('onInitialize');",
+        "onEggHatch": "@whisper(thisBot, 'initialize');",
+        "onInstJoined": "@whisper(thisBot, 'initialize');",
+        "system": "rc-appCustomHook.init"
+      }
+    },
+    "rc-appCustomHook.labelBot": {
+      "id": "rc-appCustomHook.labelBot",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "label": "Change me!",
+        "labelBot": "true",
+        "onClick": "@os.showInputForTag(thisBot, 'label', {});",
+        "onPointerEnter": "@masks.color = 'royalblue';",
+        "onPointerExit": "@masks.color = null;",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-appCustomHook.labelBot"
+      }
+    },
+    "rc-appCustomHook._packageInfo": {
+      "id": "rc-appCustomHook._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-appCustomHook._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-03-05T09:36:03.412-05:00 local"
+      }
+    }
+  }
+}
