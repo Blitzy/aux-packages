@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "state": {
+    "rc-breathingCube.cube": {
+      "id": "rc-breathingCube.cube",
+      "space": "shared",
+      "tags": {
+        "color": "white",
+        "colorB": "255",
+        "colorG": "255",
+        "colorR": "255",
+        "cursor": "pointer",
+        "exhaleAnimation": "@clearAnimations(thisBot);\n\nmasks.label = '...out...';\n\nawait animateTag(thisBot, {\n    fromValue: {\n        scale: tags.scale,\n        colorR: tags.colorR,\n        colorG: tags.colorG,\n        colorB: tags.colorB\n    }, \n    toValue: {\n        scale: 3,\n        colorR: 255,\n        colorG: 255,\n        colorB: 255\n    },\n    duration: 3,\n    easing: {\n        mode: \"inout\",\n        type: \"sinusoidal\"\n    }\n});\n\nthisBot.exhaleImmediate();",
+        "exhaleImmediate": "@clearAnimations(thisBot);\n\nmasks.colorR = 255;\nmasks.colorG = 255;\nmasks.colorB = 255;\n\nmasks.scale = 3;\n\nmasks.label = 'inhale';\ntags.state = 'inhale';",
+        "home": true,
+        "homeX": -3,
+        "homeY": -3,
+        "homeZ": 0,
+        "inhaleAnimation": "@clearAnimations(thisBot);\n\nmasks.label = '...in...';\n\nawait animateTag(thisBot, {\n    fromValue: {\n        scale: tags.scale,\n        colorR: tags.colorR,\n        colorG: tags.colorG,\n        colorB: tags.colorB\n    }, \n    toValue: {\n        scale: 5,\n        colorR: 18,\n        colorG: 146,\n        colorB: 232\n    },\n    duration: 3,\n    easing: {\n        mode: \"inout\",\n        type: \"sinusoidal\"\n    }\n});\n\nthisBot.inhaleImmediate();",
+        "inhaleImmediate": "@clearAnimations(thisBot);\n\nmasks.colorR = 18;\nmasks.colorG = 146;\nmasks.colorB = 232;\n\nmasks.scale = 5;\n\nmasks.label = 'exhale';\ntags.state = 'exhale';",
+        "label": "exhale",
+        "labelFontSize": "2.5",
+        "labelOpacity": "0.75",
+        "onBotAdded": "@if (tags.state === 'inhaling' || tags.state === 'inhale') {\n    thisBot.exhaleImmediate();\n} else if (tags.state === 'exhaling' || tags.state === 'exhale') {\n    thisBot.inhaleImmediate();\n}",
+        "onBotChanged": "@const stateChanged = that.tags.includes('state');\n\nif (stateChanged) {\n    const state = tags.state;\n\n    if (state === 'inhaling') {\n        thisBot.inhaleAnimation();\n    } else if (state === 'exhaling') {\n        thisBot.exhaleAnimation();\n    }\n}\n\nconst rgbChanged = that.tags.some((tag) => {\n    return tag === 'colorR' ||\n           tag === 'colorG' ||\n           tag === 'colorB';\n});\n\nif (rgbChanged) {\n    const r = Math.ceil(tags.colorR);\n    const g = Math.ceil(tags.colorG);\n    const b = Math.ceil(tags.colorB);\n    masks.color = `rgb(${r}, ${g}, ${b})`;\n}",
+        "onClick": "@if (tags.state === 'inhale') {\n    tags.state = 'inhaling';\n} else if (tags.state === 'exhale') {\n    tags.state = 'exhaling';\n}",
+        "scale": "3",
+        "state": "inhale",
+        "system": "rc-breathingCube.cube"
+      }
+    },
+    "rc-breathingCube._packageInfo": {
+      "id": "rc-breathingCube._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-breathingCube._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-03-05T14:03:30.001-05:00 local"
+      }
+    }
+  }
+}
