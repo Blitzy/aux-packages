@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "state": {
+    "rc-pixelRatio.city": {
+      "id": "rc-pixelRatio.city",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "🧬[0,0,-0.2]",
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/VC/glTF-Binary/VC.glb",
+        "formSubtype": "gltf",
+        "home": true,
+        "homeX": "0",
+        "homeY": "0",
+        "homeZ": 0,
+        "pointable": "false",
+        "scale": "200",
+        "system": "rc-pixelRatio.city"
+      }
+    },
+    "rc-pixelRatio.buttonVeryHigh": {
+      "id": "rc-pixelRatio.buttonVeryHigh",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": -9,
+        "label": "200% (super sampling)",
+        "onClick": "@configBot.tags.pixelRatio = configBot.tags.defaultPixelRatio * tags.resolutionScale;\nos.toast(`Resolution set to ${tags.resolutionScale * 100}%`);",
+        "onPointerEnter": "@masks.color = 'royalblue';",
+        "onPointerExit": "@masks.color = null;",
+        "resolutionScale": "2",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-pixelRatio.buttonVeryHigh"
+      }
+    },
+    "rc-pixelRatio.buttonMedium": {
+      "id": "rc-pixelRatio.buttonMedium",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": -3,
+        "label": "75%",
+        "onClick": "@configBot.tags.pixelRatio = configBot.tags.defaultPixelRatio * tags.resolutionScale;\nos.toast(`Resolution set to ${tags.resolutionScale * 100}%`);",
+        "onPointerEnter": "@masks.color = 'royalblue';",
+        "onPointerExit": "@masks.color = null;",
+        "resolutionScale": "0.75",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-pixelRatio.buttonMedium"
+      }
+    },
+    "rc-pixelRatio.buttonHigh": {
+      "id": "rc-pixelRatio.buttonHigh",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": -6,
+        "label": "100% (Native)",
+        "onClick": "@configBot.tags.pixelRatio = configBot.tags.defaultPixelRatio * tags.resolutionScale;\nos.toast(`Resolution set to ${tags.resolutionScale * 100}%`);",
+        "onPointerEnter": "@masks.color = 'royalblue';",
+        "onPointerExit": "@masks.color = null;",
+        "resolutionScale": "1",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-pixelRatio.buttonHigh"
+      }
+    },
+    "rc-pixelRatio._packageInfo": {
+      "id": "rc-pixelRatio._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-pixelRatio._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-03-06T15:57:16.322-05:00 local"
+      }
+    },
+    "rc-pixelRatio.buttonLow": {
+      "id": "rc-pixelRatio.buttonLow",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "label": "40%",
+        "onClick": "@configBot.tags.pixelRatio = configBot.tags.defaultPixelRatio * tags.resolutionScale;\nos.toast(`Resolution set to ${tags.resolutionScale * 100}%`);",
+        "onPointerEnter": "@masks.color = 'royalblue';",
+        "onPointerExit": "@masks.color = null;",
+        "resolutionScale": "0.4",
+        "scaleX": "3",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-pixelRatio.buttonLow"
+      }
+    },
+    "rc-pixelRatio.header": {
+      "id": "rc-pixelRatio.header",
+      "space": "shared",
+      "tags": {
+        "color": "darkgrey",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": 3.0000000000000004,
+        "homeZ": 0.009000000000000001,
+        "label": "Resolution Scale",
+        "scaleX": "6",
+        "scaleY": "2",
+        "scaleZ": "0.5",
+        "system": "rc-pixelRatio.header"
+      }
+    }
+  }
+}
