@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "state": {
+    "rc-gpsLocation.utils.listenerProxy": {
+      "id": "rc-gpsLocation.utils.listenerProxy",
+      "space": "shared",
+      "tags": {
+        "listening": "true",
+        "onAnyListen": "@if (!thisBot.vars.listeners) {\n    return; // This bot has not initialized yet.\n}\n\nconst { \n    name,\n    that: thatParam,\n    targets\n} = that;\n\nconst entries = thisBot.vars.listeners[name];\n\nif (entries && entries.length) {\n    for (let i = 0; i < entries.length; i++) {\n        const entry = entries[i];\n        \n        let invoke = true;\n\n        if (entry.bot) {\n            // Only invoke listener if the bot is one of the targets.\n            let entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            invoke = targets && targets.some(t => t.id === entryBotId);\n        }\n\n        if (invoke) {\n            entry.listener(thatParam);\n        }\n    }\n}",
+        "onBotAdded": "@function addListenTagListener (bot, name, listener) {\n    assert(name, `${tags.system} name is required.`);\n    assert(listener && typeof listener === 'function', `${tags.system} listener function is required.`);\n    \n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        entries = [];\n        thisBot.vars.listeners[name] = entries;\n    }\n\n    entries.push({ listener, bot });\n}\n\nfunction removeListenTagListener (bot, name, listener) {\n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        return;\n    }\n\n    for (let i = entries.length - 1; i >= 0; i--) {\n        let entry = entries[i];\n\n        if (entry.listener != listener) {\n            continue;\n        }\n\n        if (bot) {\n            const botId = typeof bot === 'string' ? bot : bot.id;\n            const entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            \n            if (botId !== entryBotId) {\n                continue;\n            }\n        }\n\n        entries.splice(i, 1);\n    }\n}\n\nglobalThis.addListenTagListener = addListenTagListener;\nglobalThis.removeListenTagListener = removeListenTagListener;\n\nthisBot.vars.listeners = {};",
+        "onDestroy": "@globalThis.addListenTagListener = undefined;\nglobalThis.removeListenTagListener = undefined;",
+        "system": "rc-gpsLocation.utils.listenerProxy"
+      }
+    },
+    "rc-gpsLocation.app": {
+      "id": "rc-gpsLocation.app",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useCallback, useEffect, useMemo } = os.appHooks;\n\nconst DataItem = ({\n    label,\n    value\n}) => {\n    return (\n        <div className='data-item'>\n            <span className='label'>{`${label}:`}</span><span className='value'>{value == null ? 'null' : value.toString()}</span>\n        </div>\n    )\n}\n\nconst App = () => {\n    const [ error, setError ] = useState();\n    const [ gps, setGPS ] = useState();\n\n    // Hookup gps shout listeners.\n    useEffect(() => {\n        function onGPS(listenerThat) {\n            setGPS(listenerThat);\n            setError(null);\n        }\n\n        function onGPSError(listenerThat) {\n            const { errorCode, errorMessage } = listenerThat;\n            setError(`[GPS Error Code: ${errorCode}] ${errorMessage}`);\n        }\n\n        addListenTagListener(null, 'onGPS', onGPS);\n        addListenTagListener(null, 'onGPSError', onGPSError);\n\n        // Force a gps update to get init value quick.\n        whisper(gpsUpdate, 'update');\n        \n        return () => {\n            removeListenTagListener(null, 'onGPS', onGPS);\n            removeListenTagListener(null, 'onGPSError', onGPSError);\n        }\n    }, []);\n\n    const gpsDataItems = useMemo(() => {\n        if (gps) {\n            const keys = Object.keys(gps);\n\n            if (keys.length) {\n                keys.sort();\n\n                return keys.map((key, index) => {\n                    return (\n                        <DataItem key={key} label={key} value={gps[key]} />\n                    )\n                })\n            } else {\n                return null;\n            }\n        } else {\n            return null;\n        }\n\n    }, [gps]);\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div className='gps-app'>\n                <h1>GPS Location</h1>\n                \n                { !error && gpsDataItems && \n                    <div className='data'>\n                        {gpsDataItems}\n                    </div>\n                }\n                \n                {error && \n                    <div className='error'>\n                        {error}\n                    </div>\n                }\n\n            </div>\n        </>\n    )\n}\n\nreturn App;\n",
+        "forceUpdate": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.system, <App/>)\n}\n",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.system, thisBot);\n\n    thisBot.forceUpdate();\n}\n",
+        "onDestroy": "@thisBot.unmount();",
+        "onInitialize": "@thisBot.mount();",
+        "style.css": ".gps-app {\n    background-color: white;\n    padding: 12px;\n    border-radius: 8px;\n    top: 8px;\n    left: 8px;\n}\n\n.gps-app .data { \n    display: flex;\n    flex-direction: column;\n    gap: 4px;\n}\n\n.gps-app .data .data-item {\n    background-color: rgb(200, 200, 200);\n    border-radius: 8px;\n    padding: 4px 12px 4px 12px;\n    /* animation-name: update-blink;\n    animation-duration: 0.5s;\n    animation-timing-function: ease-out; */\n}\n\n/* @keyframes update-blink {\n    from {\n        background-color: white;\n    }\n    to {\n        background-color: inherit;\n    }\n} */\n\n.gps-app .data .data-item .label {\n    font-weight: bold;\n}\n\n.gps-app .data .data-item .value {\n    margin-left: 4px;\n}\n\n.gps-app .error {\n    background-color: rgb(234, 68, 68);\n    color: white;\n    font-weight: bold;\n    border-radius: 8px;\n    padding: 4px;\n}\n",
+        "system": "rc-gpsLocation.app",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    delete thisBot.vars.appInstance;\n\n    // Compiling the app with an empty root value is a workaround that allows the\n    // previous components to perform their unmounting code properly.\n    await os.compileApp(tags.system, <></>);\n\n    await os.unregisterApp(tags.system);\n}\n"
+      }
+    },
+    "rc-gpsLocation.init": {
+      "id": "rc-gpsLocation.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\n\nshout('onBeforeInitialize');\nshout('onInitialize');",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-gpsLocation.init"
+      }
+    },
+    "rc-gpsLocation.gpsUpdate": {
+      "id": "rc-gpsLocation.gpsUpdate",
+      "space": "shared",
+      "tags": {
+        "debug": "true",
+        "onBeforeInitialize": "@globalThis.gpsUpdate = thisBot;",
+        "onInitialize": "@thisBot.update();",
+        "system": "rc-gpsLocation.gpsUpdate",
+        "update": "@const updateId = uuid();\n\nif (tags.debug) {\n    console.log(`[${tags.system}] updateId: ${updateId}`);\n}\n\nmasks.updateId = updateId;\n\nconst gps = await os.getGeolocation();\n\nconst data = {...gps};\ndelete data.success;\n\nif (gps.success) {\n    if (tags.debug) {\n        console.log(`[${tags.system}] gps sucess:`, data);\n    }\n    shout('onGPS', data);\n} else {\n    if (tags.debug) {\n        console.log(`[${tags.system}] gps error:`, data);\n    }\n    shout('onGPSError', data);\n}\n\nawait os.sleep(tags.updateRateMS);\n\n// Allows update to be forcefully called and prevent multiple loops.\nif (masks.updateId === updateId) {\n    whisper(thisBot, 'update');\n} else {\n    if (tags.debug) {\n        console.log(`[${tags.system}] updateId ${updateId} is no longer valid, dont recursively call self.`);\n    }\n}",
+        "updateRateMS": "10000"
+      }
+    },
+    "rc-gpsLocation._packageInfo": {
+      "id": "rc-gpsLocation._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-gpsLocation._packageInfo",
+        "version": "0.1",
+        "versionDate": "📅2024-03-11T11:31:12.779-04:00 local"
+      }
+    }
+  }
+}
