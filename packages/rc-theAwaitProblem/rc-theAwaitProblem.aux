@@ -60,13 +60,45 @@
         "cursor": "pointer",
         "home": true,
         "homeX": 0,
-        "homeY": -1,
-        "homeZ": 0.009000000000000001,
+        "homeY": -3,
+        "homeZ": 0,
         "label": "thenable",
         "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
         "scaleX": "2",
         "system": "rc-theAwaitProblem.thenable",
         "testFunction": "@let x = 2;\nlet y = 2;\n\nos.sleep(1000).then(() => {\n    os.toast(x+y);\n})\n"
+      }
+    },
+    "rc-theAwaitProblem.awaitNested": {
+      "id": "rc-theAwaitProblem.awaitNested",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": -1,
+        "label": "await nested",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.awaitNested",
+        "testFunction": "@async function test() {\n    let x = 2;\n    let y = 2;\n\n    await os.sleep(1000);\n\n    os.toast(x+y);\n}\n\ntest();"
+      }
+    },
+    "rc-theAwaitProblem.awaitNestedComment": {
+      "id": "rc-theAwaitProblem.awaitNestedComment",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 3,
+        "homeY": -1,
+        "label": "await nested comment",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.awaitNestedComment",
+        "testFunction": "@async function test() {\n    let x = 2;\n    let y = 2;\n\n    // await os.sleep(1000);\n    /* await os.sleep(1000); */\n\n    os.toast(x+y);\n}\n\ntest();"
       }
     },
     "rc-theAwaitProblem.awaitRoot": {
@@ -90,8 +122,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-theAwaitProblem._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-03-13T09:19:08.652-04:00 local"
+        "version": "1.1",
+        "versionDate": "📅2024-03-13T09:43:31.108-04:00 local"
       }
     }
   }
