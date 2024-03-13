@@ -1,8 +1,8 @@
 {
   "version": 1,
   "state": {
-    "rc-theAwaitProblem.awaitEmbed": {
-      "id": "rc-theAwaitProblem.awaitEmbed",
+    "rc-theAwaitProblem.awaitStringEmbed": {
+      "id": "rc-theAwaitProblem.awaitStringEmbed",
       "space": "shared",
       "tags": {
         "color": "#00D9CD",
@@ -11,10 +11,10 @@
         "homeX": 0,
         "homeY": 1,
         "homeZ": 0,
-        "label": "await embed",
+        "label": "await string embed",
         "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
         "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitEmbed",
+        "system": "rc-theAwaitProblem.awaitStringEmbed",
         "testFunction": "@const funcString = `\n    let x = 2;\n    let y = 2;\n\n    await os.sleep(1000);\n\n    os.toast(x+y);\n`\n\nos.run(funcString);"
       }
     },
@@ -35,8 +35,8 @@
         "testFunction": "@let x = 2;\nlet y = 2;\n\n// await os.sleep(1000);\n\n/*\nawait os.sleep(1000);\n*/\n\nos.toast(x+y);"
       }
     },
-    "rc-theAwaitProblem.awaitEmbedComment": {
-      "id": "rc-theAwaitProblem.awaitEmbedComment",
+    "rc-theAwaitProblem.awaitStringEmbedComment": {
+      "id": "rc-theAwaitProblem.awaitStringEmbedComment",
       "space": "shared",
       "tags": {
         "color": "#00D9CD",
@@ -45,10 +45,10 @@
         "homeX": 3,
         "homeY": 1,
         "homeZ": 0,
-        "label": "await embed comment",
+        "label": "await string embed comment",
         "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
         "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitEmbedComment",
+        "system": "rc-theAwaitProblem.awaitStringEmbedComment",
         "testFunction": "@const funcString = `\n    let x = 2;\n    let y = 2;\n\n    //await os.sleep(1000);\n\n    /*\n    await os.sleep(1000);\n    */\n\n    os.toast(x+y);\n`\n\nos.run(funcString);"
       }
     },
@@ -122,8 +122,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-theAwaitProblem._packageInfo",
-        "version": "1.1",
-        "versionDate": "📅2024-03-13T09:43:31.108-04:00 local"
+        "version": "1.2",
+        "versionDate": "📅2024-03-13T09:45:11.321-04:00 local"
       }
     }
   }
