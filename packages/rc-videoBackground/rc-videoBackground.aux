@@ -54,8 +54,9 @@
         "onEggHatch": "@thisBot.onStart();",
         "onInstJoined": "@thisBot.onStart();",
         "onPortalBackgroundAddressChanged": "@if (gridPortalBot.tags.portalBackgroundAddress) {\n    masks.label = 'Video ON';\n    masks.color = 'rgb(0, 255, 0)';\n} else {\n    masks.label = 'Video OFF';\n    masks.color = 'rgb(255, 255, 255)';\n}",
-        "onStart": "@gridPortalBot.tags.portalBackgroundAddress = tags.videoURL;",
+        "onStart": "@if (tags.playOnLoad) {\n    if (tags.playOnLoadDelayMS > 0) {\n        console.log('video playOnLoad delay...');\n        masks.label = 'Video starting soon...';\n        await os.sleep(tags.playOnLoadDelayMS);\n    }\n\n    console.log('video playOnLoad');\n    gridPortalBot.tags.portalBackgroundAddress = tags.videoURL;\n}",
         "playOnLoad": "true",
+        "playOnLoadDelayMS": "0",
         "scaleX": "4",
         "scaleY": "2",
         "scaleZ": "1",
@@ -68,8 +69,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-videoBackground._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-03-19T10:18:02.161-04:00 local"
+        "version": "1.1",
+        "versionDate": "📅2024-03-19T12:33:17.989-04:00 local"
       }
     }
   }
