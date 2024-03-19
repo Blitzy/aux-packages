@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "state": {
+    "rc-videoBackground.circleWipe": {
+      "id": "rc-videoBackground.circleWipe",
+      "space": "shared",
+      "tags": {
+        "circleWipeColor": "royalblue",
+        "circleWipeDuration": "1",
+        "circleWipeSpeed": "1",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": -6,
+        "label": "Circle Wipe",
+        "onClick": "@if (masks.wiping) {\n    return;\n}\n\nmasks.wiping = true;\n\nos.closeCircleWipe({\n    color: tags.circleWipeColor,\n    duration: tags.circleWipeDuration,\n})\n.then(() => {\n    return os.sleep(250);\n})\n.then(() => {\n    return os.openCircleWipe({\n        color: tags.circleWipeColor,\n        duration: tags.circleWipeDuration,\n    })\n})\n.finally(() => {\n    masks.wiping = false;\n})\n\nanimateTag(thisBot, {\n    fromValue: {\n        scaleZ: 1,\n    },\n    toValue: {\n        scaleZ: 0.3,\n    },\n    duration: 0.075,\n})\n.then(() => {\n    animateTag(thisBot, {\n        fromValue: {\n            scaleZ: 0.3,\n        }, \n        toValue: {\n            scaleZ: 1,\n        },\n        duration: 0.125,\n    })\n})",
+        "onEggHatch": "@thisBot.onStart();",
+        "onInstJoined": "@thisBot.onStart();",
+        "onStart": "@if (tags.openOnLoad) {\n    masks.wiping = true;\n\n    os.closeCircleWipe({\n        color: tags.circleWipeColor,\n        duration: 0.0001,\n    })\n    .then(() => {\n        return os.sleep(500);\n    })\n    .then(() => {\n        return os.openCircleWipe({\n            color: tags.circleWipeColor,\n            duration: tags.circleWipeDuration,\n        })\n    })\n    .finally(() => {\n        masks.wiping = false;\n    });\n}",
+        "openOnLoad": "true",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "1",
+        "system": "rc-videoBackground.circleWipe"
+      }
+    },
+    "rc-videoBackground.openQRScan": {
+      "id": "rc-videoBackground.openQRScan",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "homeY": "-3",
+        "label": "Open QR Scanner",
+        "onClick": "@os.openQRCodeScanner();\n\nanimateTag(thisBot, {\n    fromValue: {\n        scaleZ: 1,\n    },\n    toValue: {\n        scaleZ: 0.3,\n    },\n    duration: 0.075,\n})\n.then(() => {\n    animateTag(thisBot, {\n        fromValue: {\n            scaleZ: 0.3,\n        }, \n        toValue: {\n            scaleZ: 1,\n        },\n        duration: 0.125,\n    })\n})",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "1",
+        "system": "rc-videoBackground.openQRScan",
+        "videoURL": ""
+      }
+    },
+    "rc-videoBackground.toggleVideo": {
+      "id": "rc-videoBackground.toggleVideo",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": "true",
+        "onAnyBotsChanged": "@for (let change of that) {\n    if (change.bot === globalThis.gridPortalBot) {\n        if (change.tags.includes('portalBackgroundAddress')) {\n            console.log('gridPortalBot portalBackgroundAddress changed');\n            shout('onPortalBackgroundAddressChanged', { portalBackgroundAddress: gridPortalBot.tags.portalBackgroundAddress });\n        }\n    }\n}",
+        "onClick": "@if (gridPortalBot.tags.portalBackgroundAddress) {\n    gridPortalBot.tags.portalBackgroundAddress = null;\n} else {\n    gridPortalBot.tags.portalBackgroundAddress = tags.videoURL;\n}\n\nanimateTag(thisBot, {\n    fromValue: {\n        scaleZ: 1,\n    },\n    toValue: {\n        scaleZ: 0.3,\n    },\n    duration: 0.075,\n})\n.then(() => {\n    animateTag(thisBot, {\n        fromValue: {\n            scaleZ: 0.3,\n        }, \n        toValue: {\n            scaleZ: 1,\n        },\n        duration: 0.125,\n    })\n})",
+        "onEggHatch": "@thisBot.onStart();",
+        "onInstJoined": "@thisBot.onStart();",
+        "onPortalBackgroundAddressChanged": "@if (gridPortalBot.tags.portalBackgroundAddress) {\n    masks.label = 'Video ON';\n    masks.color = 'rgb(0, 255, 0)';\n} else {\n    masks.label = 'Video OFF';\n    masks.color = 'rgb(255, 255, 255)';\n}",
+        "onStart": "@gridPortalBot.tags.portalBackgroundAddress = tags.videoURL;",
+        "playOnLoad": "true",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "1",
+        "system": "rc-videoBackground.toggleVideo",
+        "videoURL": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/d5522ef2-a17e-4bed-a557-116903b1b1ed/e131ad42621442758a3acb899bfbdfeeab0b40c7e2f7c7e66683f58a09a99aee.mp4"
+      }
+    },
+    "rc-videoBackground._packageInfo": {
+      "id": "rc-videoBackground._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-videoBackground._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-03-19T10:18:02.161-04:00 local"
+      }
+    }
+  }
+}
