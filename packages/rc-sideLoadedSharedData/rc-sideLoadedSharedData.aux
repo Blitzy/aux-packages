@@ -1,6 +1,13 @@
 {
   "version": 1,
   "state": {
+    "rc-sideLoadedSharedData.data": {
+      "id": "rc-sideLoadedSharedData.data",
+      "space": "shared",
+      "tags": {
+        "system": "rc-sideLoadedSharedData.data"
+      }
+    },
     "rc-sideLoadedSharedData.listener": {
       "id": "rc-sideLoadedSharedData.listener",
       "space": "shared",
@@ -11,15 +18,9 @@
         "onAnyBotsChanged": "@const dataBot = thisBot.getDataBot();\nconst dataBotChange = that.find(change => change.bot.id === dataBot.id);\n\nif (dataBotChange) {\n    if (tags.debug) {\n        console.log(`[${tags.system}] data bot change detected`);\n    }\n\n    for (let tag of dataBotChange.tags) {\n        superShout('onSideLoadedSharedDataUpdated', {\n            tag: tag,\n            value: dataBot.tags[tag]\n        })\n    }\n}",
         "onInstJoined": "@const { inst } = that;\n\nif (tags.debug) {\n    console.log(`[${tags.system}] onInstJoined: ${inst}`);\n}\n\nconst dataBot = thisBot.getDataBot();\nlet dataTags = {};\n\nif (dataBot) {\n    const tagKeys = Object.keys(dataBot.tags);\n    for (let tag of tagKeys) {\n        dataTags[tag] = dataBot.tags[tag];\n    }\n    \n    // Dont want to include some tags.\n    delete dataTags.system;\n\n    if (tags.debug) {\n        console.log(`[${tags.system}] dataTags:`, dataTags);\n    }\n}\n\nsuperShout('onSideLoadedSharedDataLoaded', dataTags);",
         "onIsABLoadedRequest": "@superShout('onIsABLoadedResponse', { ab: 'rc-sideLoadedSharedData' });",
+        "onSideLoadedSharedDataGet": "@const { \n    tag\n} = that ?? {};\n\nif (tags.debug) {\n    console.log(`[${tags.system}] onSideLoadedSharedDataGet`, that);\n}\n\nconst dataBot = thisBot.getDataBot();\n\nif (dataBot) {\n    if (tag) {\n        superShout('onSideLoadedSharedDataGetResponse', {\n            tag,\n            value: dataBot.tags[tag],\n        })\n    }\n}\n\n",
         "onSideLoadedSharedDataSet": "@const { \n    tag,\n    value = null\n} = that ?? {};\n\nif (tags.debug) {\n    console.log(`[${tags.system}] onSideLoadedSharedDataSet`, that);\n}\n\nconst dataBot = thisBot.getDataBot();\n\nif (dataBot) {\n    if (tag) {\n        if (dataBot.tags[tag] !== value) {\n            setTagMask(dataBot, tag, value, 'shared');\n        }\n    }\n}\n\n",
         "system": "rc-sideLoadedSharedData.listener"
-      }
-    },
-    "rc-sideLoadedSharedData.data": {
-      "id": "rc-sideLoadedSharedData.data",
-      "space": "shared",
-      "tags": {
-        "system": "rc-sideLoadedSharedData.data"
       }
     },
     "rc-sideLoadedSharedData._packageInfo": {
@@ -27,8 +28,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-sideLoadedSharedData._packageInfo",
-        "version": "0.6",
-        "versionDate": "📅2024-03-19T22:25:26.423-04:00 local"
+        "version": "0.7",
+        "versionDate": "📅2024-03-20T10:47:55.396-04:00 local"
       }
     }
   }
