@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "state": {
+    "rc-sideLoadedSharedData.listener": {
+      "id": "rc-sideLoadedSharedData.listener",
+      "space": "shared",
+      "tags": {
+        "debug": "true",
+        "getDataBot": "@if (!links.__dataBot) {\n    const dataBot = getBot('system', 'rc-sideLoadedSharedData.data');\n\n    if (dataBot) {\n        if (tags.debug) {\n            console.log(`[${tags.system}] dataBot found`);\n        }\n        setTagMask(thisBot, '__dataBot', dataBot.link, 'shared');\n    } else {\n        console.error(`[${tags.system}] dataBot not found`);\n        return null;\n    }\n}\n\nif (!links.__dataBot) {\n    console.error(`[${tags.system}] dataBot link is not set.`);\n    return null;\n}\n\nif (links.__dataBot) {\n    return links.__dataBot;\n} else {\n    console.error(`[${tags.system}] dataBot link is not set.`);\n    return null\n}",
+        "listening": "true",
+        "onAnyBotsChanged": "@const dataBot = thisBot.getDataBot();\nconst dataBotChange = that.find(change => change.bot.id === dataBot.id);\n\nif (dataBotChange) {\n    if (tags.debug) {\n        console.log(`[${tags.system}] data bot change detected`);\n    }\n\n    for (let tag of dataBotChange.tags) {\n        superShout('onSideLoadedSharedDataUpdated', {\n            tag: tag,\n            value: dataBot.tags[tag]\n        })\n    }\n}",
+        "onInstJoined": "@const { inst } = that;\n\nif (tags.debug) {\n    console.log(`[${tags.system}] onInstJoined: ${inst}`);\n}\n\nconst dataBot = thisBot.getDataBot();\nlet dataTags = {};\n\nif (dataBot) {\n    dataTags = getMod(dataBot);\n    \n    // Dont want to include some tags.\n    delete dataTags.system;\n\n    if (tags.debug) {\n        console.log(`[${tags.system}] dataTags:`, dataTags);\n    }\n}\n\nsuperShout('onSideLoadedSharedDataLoaded', dataTags);",
+        "onSideLoadedSharedDataGet": "@const { tag } = that ?? {};\n\nconst dataBot = thisBot.getDataBot();\n\nif (dataBot) {\n    if (tag) {\n\n    }\n}",
+        "onSideLoadedSharedDataSet": "@const { \n    tag,\n    value = null\n} = that ?? {};\n\nif (tags.debug) {\n    console.log(`[${tags.system}] onSideLoadedSharedDataSet`, that);\n}\n\nconst dataBot = thisBot.getDataBot();\n\nif (dataBot) {\n    if (tag) {\n        if (dataBot.tags[tag] !== value) {\n            dataBot.tags[tag] = value;\n        }\n    }\n}\n\n",
+        "system": "rc-sideLoadedSharedData.listener"
+      }
+    },
+    "rc-sideLoadedSharedData.data": {
+      "id": "rc-sideLoadedSharedData.data",
+      "space": "shared",
+      "tags": {
+        "system": "rc-sideLoadedSharedData.data"
+      }
+    },
+    "rc-sideLoadedSharedData._packageInfo": {
+      "id": "rc-sideLoadedSharedData._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-sideLoadedSharedData._packageInfo",
+        "version": "0.5",
+        "versionDate": "📅2024-03-19T21:53:48.847-04:00 local"
+      }
+    }
+  }
+}
