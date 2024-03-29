@@ -1,55 +1,20 @@
 {
   "version": 1,
   "state": {
-    "rc-theAwaitProblem.awaitStringEmbed": {
-      "id": "rc-theAwaitProblem.awaitStringEmbed",
+    "rc-theAwaitProblem.awaitRoot": {
+      "id": "rc-theAwaitProblem.awaitRoot",
       "space": "shared",
       "tags": {
         "color": "#00D9CD",
         "cursor": "pointer",
         "home": true,
         "homeX": 0,
-        "homeY": 1,
-        "homeZ": 0,
-        "label": "await string embed",
-        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
-        "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitStringEmbed",
-        "testFunction": "@const funcString = `\n    let x = 2;\n    let y = 2;\n\n    await os.sleep(1000);\n\n    os.toast(x+y);\n`\n\nos.run(funcString);"
-      }
-    },
-    "rc-theAwaitProblem.awaitRootComment": {
-      "id": "rc-theAwaitProblem.awaitRootComment",
-      "space": "shared",
-      "tags": {
-        "color": "#00D9CD",
-        "cursor": "pointer",
-        "home": true,
-        "homeX": 3,
         "homeY": 3,
-        "homeZ": 0,
-        "label": "await root comment",
+        "label": "await root",
         "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
         "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitRootComment",
-        "testFunction": "@let x = 2;\nlet y = 2;\n\n// await os.sleep(1000);\n\n/*\nawait os.sleep(1000);\n*/\n\nos.toast(x+y);"
-      }
-    },
-    "rc-theAwaitProblem.awaitStringEmbedComment": {
-      "id": "rc-theAwaitProblem.awaitStringEmbedComment",
-      "space": "shared",
-      "tags": {
-        "color": "#00D9CD",
-        "cursor": "pointer",
-        "home": true,
-        "homeX": 3,
-        "homeY": 1,
-        "homeZ": 0,
-        "label": "await string embed comment",
-        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
-        "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitStringEmbedComment",
-        "testFunction": "@const funcString = `\n    let x = 2;\n    let y = 2;\n\n    //await os.sleep(1000);\n\n    /*\n    await os.sleep(1000);\n    */\n\n    os.toast(x+y);\n`\n\nos.run(funcString);"
+        "system": "rc-theAwaitProblem.awaitRoot",
+        "testFunction": "@let x = 2;\nlet y = 2;\n\nawait os.sleep(1000);\n\nos.toast(x+y);"
       }
     },
     "rc-theAwaitProblem.thenable": {
@@ -69,20 +34,21 @@
         "testFunction": "@let x = 2;\nlet y = 2;\n\nos.sleep(1000).then(() => {\n    os.toast(x+y);\n})\n"
       }
     },
-    "rc-theAwaitProblem.awaitInEnglishComment": {
-      "id": "rc-theAwaitProblem.awaitInEnglishComment",
+    "rc-theAwaitProblem.awaitRootComment": {
+      "id": "rc-theAwaitProblem.awaitRootComment",
       "space": "shared",
       "tags": {
         "color": "#00D9CD",
         "cursor": "pointer",
         "home": true,
-        "homeX": 0,
-        "homeY": -3,
-        "label": "\"await\" in english comment",
+        "homeX": 3,
+        "homeY": 3,
+        "homeZ": 0,
+        "label": "await root comment",
         "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
         "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitInEnglishComment",
-        "testFunction": "@// Ahoy, me hearties! Stand fast and await the signal; treasure and glory lie just under the horizon!\nlet x = 2;\nlet y = 2;\n\nos.toast(x+y);"
+        "system": "rc-theAwaitProblem.awaitRootComment",
+        "testFunction": "@let x = 2;\nlet y = 2;\n\n// await os.sleep(1000);\n\n/*\nawait os.sleep(1000);\n*/\n\nos.toast(x+y);"
       }
     },
     "rc-theAwaitProblem.awaitNested": {
@@ -101,6 +67,100 @@
         "testFunction": "@async function test() {\n    let x = 2;\n    let y = 2;\n\n    await os.sleep(1000);\n\n    os.toast(x+y);\n}\n\ntest();"
       }
     },
+    "rc-theAwaitProblem.importDeclaration": {
+      "id": "rc-theAwaitProblem.importDeclaration",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 6.000000000000001,
+        "homeY": -7.000000000000001,
+        "homeZ": 0.009000000000000001,
+        "label": "import declaration",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.importDeclaration",
+        "testFunction": "@import * as three from 'https://cdn.jsdelivr.net/npm/three@0.162.0/+esm';\nconsole.log('[importDeclaration] imported module:', three);\n"
+      }
+    },
+    "rc-theAwaitProblem.awaitStringEmbedComment": {
+      "id": "rc-theAwaitProblem.awaitStringEmbedComment",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 3,
+        "homeY": 1,
+        "homeZ": 0,
+        "label": "await string embed comment",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.awaitStringEmbedComment",
+        "testFunction": "@const funcString = `\n    let x = 2;\n    let y = 2;\n\n    //await os.sleep(1000);\n\n    /*\n    await os.sleep(1000);\n    */\n\n    os.toast(x+y);\n`\n\nos.run(funcString);"
+      }
+    },
+    "rc-theAwaitProblem.dynamicImport": {
+      "id": "rc-theAwaitProblem.dynamicImport",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": -7,
+        "homeZ": 0.009000000000000001,
+        "label": "dynamic import",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.dynamicImport",
+        "testFunction": "@import('https://cdn.jsdelivr.net/npm/three@0.162.0/+esm').then((three) => {\n    console.log('[dynamicImport] imported module:', three);\n})\n"
+      }
+    },
+    "rc-theAwaitProblem._packageInfo": {
+      "id": "rc-theAwaitProblem._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-theAwaitProblem._packageInfo",
+        "version": "1.4",
+        "versionDate": "📅2024-03-29T09:42:28.311-04:00 local"
+      }
+    },
+    "rc-theAwaitProblem.awaitStringEmbed": {
+      "id": "rc-theAwaitProblem.awaitStringEmbed",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 0,
+        "homeY": 1,
+        "homeZ": 0,
+        "label": "await string embed",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.awaitStringEmbed",
+        "testFunction": "@const funcString = `\n    let x = 2;\n    let y = 2;\n\n    await os.sleep(1000);\n\n    os.toast(x+y);\n`\n\nos.run(funcString);"
+      }
+    },
+    "rc-theAwaitProblem.awaitDynamicImport": {
+      "id": "rc-theAwaitProblem.awaitDynamicImport",
+      "space": "shared",
+      "tags": {
+        "color": "#00D9CD",
+        "cursor": "pointer",
+        "home": true,
+        "homeX": 3,
+        "homeY": -7,
+        "homeZ": 0.009000000000000001,
+        "label": "await dynamic import",
+        "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
+        "scaleX": "2",
+        "system": "rc-theAwaitProblem.awaitDynamicImport",
+        "testFunction": "@const three = await import('https://cdn.jsdelivr.net/npm/three@0.162.0/+esm');\nconsole.log('[awaitDynamicImport] imported module:', three);\n"
+      }
+    },
     "rc-theAwaitProblem.awaitNestedComment": {
       "id": "rc-theAwaitProblem.awaitNestedComment",
       "space": "shared",
@@ -117,29 +177,20 @@
         "testFunction": "@async function test() {\n    let x = 2;\n    let y = 2;\n\n    // await os.sleep(1000);\n    /* await os.sleep(1000); */\n\n    os.toast(x+y);\n}\n\ntest();"
       }
     },
-    "rc-theAwaitProblem.awaitRoot": {
-      "id": "rc-theAwaitProblem.awaitRoot",
+    "rc-theAwaitProblem.awaitInEnglishComment": {
+      "id": "rc-theAwaitProblem.awaitInEnglishComment",
       "space": "shared",
       "tags": {
         "color": "#00D9CD",
         "cursor": "pointer",
         "home": true,
         "homeX": 0,
-        "homeY": 3,
-        "label": "await root",
+        "homeY": -3,
+        "label": "\"await\" in english comment",
         "onClick": "@const result = thisBot.testFunction();\n\nif (result instanceof Promise) {\n    os.tip('is a promise function');\n} else {\n    os.tip('is a normal function')\n}",
         "scaleX": "2",
-        "system": "rc-theAwaitProblem.awaitRoot",
-        "testFunction": "@let x = 2;\nlet y = 2;\n\nawait os.sleep(1000);\n\nos.toast(x+y);"
-      }
-    },
-    "rc-theAwaitProblem._packageInfo": {
-      "id": "rc-theAwaitProblem._packageInfo",
-      "space": "shared",
-      "tags": {
-        "system": "rc-theAwaitProblem._packageInfo",
-        "version": "1.3",
-        "versionDate": "📅2024-03-13T09:48:59.709-04:00 local"
+        "system": "rc-theAwaitProblem.awaitInEnglishComment",
+        "testFunction": "@// Ahoy, me hearties! Stand fast and await the signal; treasure and glory lie just under the horizon!\nlet x = 2;\nlet y = 2;\n\nos.toast(x+y);"
       }
     }
   }
