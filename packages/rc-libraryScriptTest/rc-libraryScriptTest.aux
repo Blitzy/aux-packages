@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "state": {
+    "rc-libraryScriptTest._packageInfo": {
+      "id": "rc-libraryScriptTest._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-libraryScriptTest._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-04-04T11:39:12.697-04:00 local"
+      }
+    },
+    "rc-libraryScriptTest.createMonsterButton": {
+      "id": "rc-libraryScriptTest.createMonsterButton",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": -3,
+        "label": "create monster",
+        "onClick": "@import { Monster } from \"rc-libraryScriptTest.library.Monster\";\n\nconst monster = new Monster(3);\nmonster.position = new Vector3(\n    math.random(-10, 10),\n    math.random(2, 12),\n    0\n)",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-libraryScriptTest.createMonsterButton"
+      }
+    },
+    "rc-libraryScriptTest.library": {
+      "id": "rc-libraryScriptTest.library",
+      "space": "shared",
+      "tags": {
+        "GameObject": "📄import { uuid, shout, destroy } from \"casualos\";\n\nexport class GameObject {\n\n    get position(): Vector3 {\n        if (this.bot.tags.homePosition) {\n            return this.bot.tags.homePosition;\n        } else {\n            return new Vector3(\n                this.bot.tags.homeX ?? 0,\n                this.bot.tags.homeY ?? 0,\n                this.bot.tags.homeZ ?? 0\n            )\n        }\n    }\n\n    set position(value): Vector3 {\n        this.bot.tags.homeX = null;\n        this.bot.tags.homeY = null;\n        this.bot.tags.homeZ = null;\n        \n        this.bot.tags.homePosition = value;\n    }\n\n    constructor() {\n        this.id = uuid();\n        this.destroyed = false;\n\n        this.bot = this._createBot();\n        this.botId = this.bot.id;\n        this.bot.vars.gameObject = this;\n\n        shout('onGameObjectCreated', this);\n    }\n\n    _createBot() {\n        throw new Error(\"[GameObject] must override _createBot\");\n    }\n\n    onClick() {}\n\n    onDestroy() {\n        this.destroyed = true;\n\n        shout('onGameObjectDestroyed', { gameObjectId: this.id, gameObjectBotId: this.botId });\n    }\n\n    destroy() {\n        destroy(this.bot);\n    }\n}",
+        "Monster": "📄import { GameObject } from \"rc-libraryScriptTest.library.GameObject\";\nimport { create, os } from \"casualos\";\n\nexport class Monster extends GameObject { \n\n    get hp() {\n        return this._hp;\n    }\n\n    set hp(value) {\n        if (this._hp !== value) {\n            this._hp = value;\n\n            this.onHPChanged();\n        }\n    }\n\n    constructor(hp: number) {\n        super();\n        \n        this.hp = hp;\n        this.dead = false;\n        this.panic = false;\n\n        this.move = this.move.bind(this);\n    }\n\n    _createBot() {\n        return create({\n            space: 'tempLocal',\n            draggable: false,\n            form: 'cube',\n            color: 'green',\n            cursor: 'crosshair',\n            home: true\n        })\n    }\n\n    onBotAdded() {\n        this.move();\n    }\n    \n    onClick() {\n        if (this.hp > 0) {\n            this.hp--;\n            this.panic = true;\n            \n            this.move();\n        }\n    }\n\n    onHPChanged() {\n        this.bot.tags.label = this.hp;\n\n        if (this.hp <= 0 && !this.dead) {\n            this.dead = true;\n            this.onDead();\n        }\n    }\n\n    onDead() {\n        this.bot.tags.color = 'red';\n        this.bot.tags.scaleZ = 0.5;\n        this.bot.tags.scaleX = 1.1;\n        this.bot.tags.label = 'x(';\n\n        self.setTimeout(() => {\n            this.destroy();\n        }, 3000);\n    }\n\n    move() {\n        if (this.destroyed || this.dead) {\n            return;\n        }\n\n        if (this.moveTimeoutId) {\n            self.clearTimeout(this.moveTimeoutId);\n            this.moveTimeoutId = null;\n        }\n\n        let moveDist = this.panic ? 1.5 : 1;\n        let moveSpeed = this.panic ? 400 : 750;\n        let moveChance = this.panic ? 0.8 : 0.5;\n        let dirChance = 0.5;\n\n        const pos = this.position;\n        pos.x += Math.random() < moveChance ? \n            Math.random() < dirChance ? moveDist : -moveDist\n            :\n            0;\n\n        pos.y += Math.random() < moveChance ? \n            Math.random() < dirChance ? moveDist : -moveDist\n            :\n            0;\n\n        this.position = pos;\n\n        this.moveTimeoutId = self.setTimeout(this.move, moveSpeed);\n    }\n}",
+        "system": "rc-libraryScriptTest.library"
+      }
+    },
+    "rc-libraryScriptTest.gameObjectListenerProxy": {
+      "id": "rc-libraryScriptTest.gameObjectListenerProxy",
+      "space": "shared",
+      "tags": {
+        "onAnyListen": "@if (!thisBot.vars.gameObjectBotMap) {\n    return;\n}\n\nconst targetGameObjects = [];\n\nfor (let target of that.targets) {\n    const gameObject = thisBot.vars.gameObjectBotMap[target.id];\n\n    if (gameObject) {\n        if (that.name in gameObject) {\n            gameObject[that.name](that.that);\n        }\n    }\n}",
+        "onGameObjectCreated": "@const gameObject = that;\n\nconsole.log('onGameObjectCreated', gameObject);\n\nif (!thisBot.vars.gameObjectBotMap) {\n    thisBot.vars.gameObjectBotMap = {};\n}\n\nthisBot.vars.gameObjectBotMap[gameObject.bot.id] = gameObject;",
+        "onGameObjectDestroyed": "@const { gameObjectId, gameObjectBotId } = that;\n\nconsole.log('onGameObjectDestroyed', that);\n\nif (thisBot.vars.gameObjectBotMap) {\n    delete thisBot.vars.gameObjectBotMap[gameObjectBotId];\n}",
+        "system": "rc-libraryScriptTest.gameObjectListenerProxy"
+      }
+    }
+  }
+}
