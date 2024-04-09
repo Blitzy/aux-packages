@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "state": {
+    "rc-rapier-physics-test.rapier": {
+      "id": "rc-rapier-physics-test.rapier",
+      "space": "shared",
+      "tags": {
+        "onBeforeInitialize": "@import RAPIER from 'https://cdn.jsdelivr.net/npm/@dimforge/rapier3d-compat@0.12.0/+esm';\n\nconsole.log(`[${tags.system}] RAPIER module:`, RAPIER);\n\nawait RAPIER.init();\nconsole.log(`[${tags.system}] RAPIER initialized`);\n\nglobalThis.RAPIER = RAPIER;",
+        "system": "rc-rapier-physics-test.rapier"
+      }
+    },
+    "rc-rapier-physics-test.app": {
+      "id": "rc-rapier-physics-test.app",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useCallback, useEffect } = os.appHooks;\n        \nconst App = () => {\n\n    const onResetClick = useCallback(() => {\n        shout('onReset');\n    }, []);\n\n    const onConfigureClick = useCallback(() => {\n        const curVal = `${configBot.tags.sceneWidth},${configBot.tags.sceneDepth},${configBot.tags.sceneHeight}`;\n        os.showInput(curVal, {\n            title: 'Scene Dimensions',\n            placeholder: 'x,y,z'\n        })\n        .then((input) => {\n            const parts = input.split(',');\n            const width = Number.parseInt(parts[0]);\n            const depth = Number.parseInt(parts[1]);\n            const height = Number.parseInt(parts[2]);\n\n            let setCount = 0;\n\n            if (Number.isInteger(width) && !Number.isNaN(width)) {\n                configBot.tags.sceneWidth = width;\n                setCount++;\n            }\n            if (Number.isInteger(depth) && !Number.isNaN(depth)) {\n                configBot.tags.sceneDepth = depth;\n                setCount++;\n            }\n            if (Number.isInteger(height) && !Number.isNaN(height)) {\n                configBot.tags.sceneHeight = height;\n                setCount++;\n            }\n\n            if (setCount > 0) {\n                shout('onReset');\n            }\n        })\n    }, []);\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n            <div className='custom-app'>\n                <h1>RC Rapier Physics Test</h1>\n                <p>This is a simple integration test with the Rapier physics system into CasualOS.\n                Click on an empty space to create an \"explosion\" force to apply to the cubes.</p>\n                <button onClick={onResetClick}>Reset</button>\n                <button onClick={onConfigureClick}>Configure</button>\n            </div>\n        </>\n    )\n}\n\nreturn App;\n",
+        "forceUpdate": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.system, <App/>)\n}\n",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.system, thisBot);\n\n    thisBot.forceUpdate();\n}\n",
+        "onDestroy": "@thisBot.unmount();",
+        "onInitialize": "@thisBot.mount();",
+        "style.css": ".custom-app {\n    background-color: white;\n    padding: 12px;\n}\n\n.custom-app h1 {\n    font-size: 1.2em;\n}\n\n.custom-app p {\n    white-space: pre-line;\n}\n",
+        "system": "rc-rapier-physics-test.app",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    delete thisBot.vars.appInstance;\n\n    // Compiling the app with an empty root value is a workaround that allows the\n    // previous components to perform their unmounting code properly.\n    await os.compileApp(tags.system, <></>);\n\n    await os.unregisterApp(tags.system);\n}\n"
+      }
+    },
+    "rc-rapier-physics-test.explode": {
+      "id": "rc-rapier-physics-test.explode",
+      "space": "shared",
+      "tags": {
+        "onGridClick": "@const explosionCenter = new Vector3(that.position.x, that.position.y, 0);\nconst explosionRadius = 7.5;\nconst maxForce = 15;\nconst maxTorque = 3.5;\n\n// Create temporary explosions visual bot.\ncreate({\n    space: 'tempLocal',\n    home: true,\n    homePosition: explosionCenter,\n    form: 'sphere',\n    formOpacity: 0.5,\n    color: 'red',\n    anchorPoint: 'center',\n    scale: explosionRadius * 2,\n    onBotAdded: `@\n        os.sleep(250).then(() => {\n            destroy(thisBot);\n        })\n    `\n})\n\nshout('onExplosion', {\n    explosionCenter,\n    explosionRadius,\n    maxForce,\n    maxTorque,\n})",
+        "system": "rc-rapier-physics-test.explode"
+      }
+    },
+    "rc-rapier-physics-test.scene": {
+      "id": "rc-rapier-physics-test.scene",
+      "space": "shared",
+      "tags": {
+        "createScene": "@// Create the Rapier World. This is what all physics objects will be added to and updated each frame.\nconst gravity = new RAPIER.Vector3(0, 0, -9.81);\nconst world = new RAPIER.World(gravity);\nworld.numSolverIterations = 2;\n\nthisBot.vars.rapierWorld = world;\n\n// Create the ground.\nconst groundColliderDesc = RAPIER.ColliderDesc.cuboid(100.0, 100.0, 0.1);\nconst groundCollider = world.createCollider(groundColliderDesc);\nthisBot.vars.groundCollider = groundCollider;\n\nfunction createCubeBot(position: Vector3, size: number = 1) {\n    // Create a dynamic rigidbody.\n    const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic()\n                            .setTranslation(position.x, position.y, position.z)\n                            // .setRotation({ x: 0.0, y: 1.0, z: 0.0, w: 1.0})\n    const rigidBody = world.createRigidBody(rigidBodyDesc);\n    thisBot.vars.rigidBody = rigidBody;\n\n    // Create a cuboid collider attached to the dynamic rigidbody.\n    const halfSize = size / 2;\n    const colliderDesc = RAPIER.ColliderDesc.cuboid(halfSize, halfSize, halfSize);\n    const collider = world.createCollider(colliderDesc, rigidBody);\n    thisBot.vars.collider = collider;\n\n    // Create a cube bot to act as the visualization of the rigidbody.\n    const cubeBot = create({ \n        space: 'tempLocal',\n        home: true,\n        homePosition: new Vector3(rigidBodyDesc.translation.x, rigidBodyDesc.translation.y, rigidBodyDesc.translation.z),\n        homeRotation: new Rotation({ quaternion: rigidBodyDesc.rotation }),\n        anchorPoint: 'center',\n        form: 'cube',\n        cubeBot: true,\n        color: 'royalblue',\n        draggable: false,\n        pointable: true,\n        scene: thisBot.link,\n        onDestroy: `@\n            const rigidBody = thisBot.vars.rigidBody;\n            const world = links.scene.vars.rapierWorld;\n\n            if (rigidBody && world) {\n                world.removeRigidBody(rigidBody);\n            }\n        `,\n        onLateUpdate: `@\n            const { deltaTime, frameCount } = that;\n\n            // if (frameCount % 2 === 1) {\n            //     // Skip updating bot visual this frame.\n            //     return;\n            // }\n\n            const rigidBody = thisBot.vars.rigidBody;\n\n            if (rigidBody) {\n                const rigidBodyPosition = thisBot.vars.rigidBody.translation();\n                tags.homePosition = new Vector3(rigidBodyPosition.x, rigidBodyPosition.y, rigidBodyPosition.z);\n\n                const rigidBodyRotation = thisBot.vars.rigidBody.rotation();\n                tags.homeRotation = new Rotation({ quaternion: rigidBodyRotation });\n            }\n        `,\n        onExplosion: `@\n            const {\n                explosionCenter,\n                explosionRadius,\n                maxForce,\n                maxTorque\n            } = that;\n\n            const rigidBody = thisBot.vars.rigidBody;\n\n            if (rigidBody) {\n                const rigidBodyTranslation = rigidBody.translation();\n                const rigidBodyPosition = new Vector3(rigidBodyTranslation.x, rigidBodyTranslation.y, rigidBodyTranslation.z);\n                const distance = Vector3.distanceBetween(rigidBodyPosition, explosionCenter);\n\n                if (distance > explosionRadius) {\n                    // This cube is not within the explosion radius.\n                    return;\n                }\n\n                const direction = rigidBodyPosition.subtract(explosionCenter).normalize();\n                const forceMagnitude = maxForce * (1 - distance / explosionRadius);\n                const linearForce = direction.multiplyScalar(forceMagnitude);\n\n                rigidBody.applyImpulse(linearForce, true);\n                \n                // Calculate and apply a torque for rotation\n                // This is a simplified approach; adjust as needed for realism\n                const torqueDirection = new Vector3(direction.y, -direction.x, 0).normalize(); // Perpendicular to the direction\n                const torqueMagnitude = maxTorque * (1 - distance / explosionRadius);\n                const torque = torqueDirection.multiplyScalar(torqueMagnitude);\n\n                rigidBody.applyTorqueImpulse(torque, true);\n\n            }\n        `,\n    });\n\n    cubeBot.vars.rigidBody = rigidBody;\n}\n\nlet width = configBot.tags.sceneWidth;\nlet depth = configBot.tags.sceneDepth;\nlet height = configBot.tags.sceneHeight;\n\nfor (let x = 0; x < width; x++) {\n    for (let y = 0; y < depth; y++) {\n        for (let h = 0; h < height; h++) {\n            createCubeBot(new Vector3(x, y, 1 + (2 * h)));\n\n        }\n    }\n}",
+        "destroyScene": "@const world = thisBot.vars.rapierWorld;\n\nconst cubeBots = getBots('cubeBot', true);\ndestroy(cubeBots);\n\nconst groundCollider = thisBot.vars.groundCollider;\nif (groundCollider) {\n    world.removeCollider(groundCollider);\n    thisBot.vars.groundCollider = null;\n}\n\nworld.free();",
+        "onInitialize": "@// Change to persepctive camera.\ngridPortalBot.tags.portalCameraType = 'perspective';\n\nconfigBot.tags.sceneWidth = 2;\nconfigBot.tags.sceneDepth = 2;\nconfigBot.tags.sceneHeight = 4;\n\nthisBot.createScene();\n",
+        "onReset": "@thisBot.destroyScene();\nthisBot.createScene();",
+        "onUpdate": "@// Update the Rapier world simulation.\nconst world = thisBot.vars.rapierWorld;\n\nif (world) {\n    world.step();\n}\n",
+        "system": "rc-rapier-physics-test.scene"
+      }
+    },
+    "rc-rapier-physics-test.updateLoop": {
+      "id": "rc-rapier-physics-test.updateLoop",
+      "space": "shared",
+      "tags": {
+        "onInitialize": "@masks.lastFrameTime = Date.now();\nmasks.frameCount = 0;\n\nthisBot.update();",
+        "system": "rc-rapier-physics-test.updateLoop",
+        "update": "@masks.curFrameTime = Date.now();\nconst deltaTime = masks.curFrameTime - masks.lastFrameTime;\nmasks.lastFrameTime = masks.curFrameTime;\nmasks.frameCount++;\n\nshout('onUpdate', {\n    deltaTime,\n    frameCount: masks.frameCount,\n});\n\nshout('onLateUpdate', {\n    deltaTime,\n    frameCount: masks.frameCount,\n});\n\nself.requestAnimationFrame(() => {\n    whisper(thisBot, 'update');\n})"
+      }
+    },
+    "rc-rapier-physics-test.init": {
+      "id": "rc-rapier-physics-test.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (masks.initialized) {\n    return;\n}\n\nmasks.initialized = true;\n\nawait Promise.all(shout('onBeforeInitialize'));\nawait Promise.all(shout('onInitialize'));",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-rapier-physics-test.init"
+      }
+    },
+    "rc-rapier-physics-test._packageInfo": {
+      "id": "rc-rapier-physics-test._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-rapier-physics-test._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-04-09T16:34:14.832-04:00 local"
+      }
+    }
+  }
+}
