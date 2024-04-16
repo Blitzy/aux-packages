@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "state": {
+    "rc-humeai.connection": {
+      "id": "rc-humeai.connection",
+      "space": "shared",
+      "tags": {
+        "autoConnect": "true",
+        "connect": "@if (masks.connected) {\n    return;\n}\n\nif (!configBot.tags.gridPortal) {\n    return;\n}\n\nif (thisBot.vars.socket) {\n    thisBot.vars.socket.close();\n    delete thisBot.vars.socket;\n}\n\nlet apiKey = configBot.tags.humeApiKey;\n\nif (!apiKey) {\n    let input = await os.showInput(null, { title: 'Hume.ai API key' });\n\n    if (input) {\n        configBot.tags.humeApiKey = apiKey;\n        apiKey = input;\n    }\n\n    if (!apiKey) {\n        throw new Error(`[${tags.system}] Hume.ai API key is a required.`);\n    }\n}\n\nconst url = new URL(tags.humeModelsEndpoint);\nurl.searchParams.set('apiKey', apiKey);\n\nconst socket = new WebSocket(url.toString());\nthisBot.vars.socket = socket;\n\nsocket.addEventListener('open', (event) => {\n    whisper(thisBot, 'onWebSocketOpen', event);\n})\n\nsocket.addEventListener('message', (event) => {\n    whisper(thisBot, 'onWebSocketMessage', event);\n})\n\nsocket.addEventListener('close', (event) => {\n    whisper(thisBot, 'onWebSocketClose', event);\n})\n\nsocket.addEventListener('error', (event) => {\n    whisper(thisBot, 'onWebSocketError', event);\n})",
+        "connected": "false",
+        "cursor": "pointer",
+        "disconnect": "@if (thisBot.vars.socket) {\n    thisBot.vars.socket.close();\n    delete thisBot.vars.socket;\n}",
+        "draggable": "false",
+        "home": true,
+        "homeX": 0,
+        "homeY": 0,
+        "homeZ": 0,
+        "humeModelsEndpoint": "wss://api.hume.ai/v0/stream/models",
+        "humeTypes": "📄interface HumeEmotion {\n    name: string;\n    score: number;\n}\n\ninterface HumeBBox {\n    x: number;\n    y: number;\n    w: number;\n    h: number;\n}\n\ninterface HumePrediction {\n    frame: number;\n    bbox: HumeBBox;\n    prob: number; \n    face_id: string;\n    emotions: HumeEmotion[];\n}\n\ninterface HumeFace {\n    predictions?: HumePrediction[];\n    warning?: string;\n    code?: string;\n}",
+        "isConnected": "@return !!tags.connected;",
+        "keepAlive": "true",
+        "onBeforeInitialize": "@RCHume.connection = thisBot;\nmasks.connected = false;",
+        "onBotChanged": "@if (that.tags.includes('connected')) {\n    masks.color = tags.connected ?  'limegreen' : 'firebrick';\n}",
+        "onClick": "@if (masks.connected) {\n    const confirmed = await os.showConfirm({\n        content: 'Are you sure you want to disconnect the Hume.ai WebSocket?'\n    });\n\n    if (confirmed) {\n        thisBot.disconnect();\n    }\n} else {\n    thisBot.connect();\n}",
+        "onDestroy": "@thisBot.disconnect();\n\ndelete RCHume.connection;",
+        "onInitialize": "@if (tags.autoConnect) {\n    thisBot.connect();\n}",
+        "onWebSocketClose": "@const event = that;\n\nconsole.log(`[${tags.system}] onWebSocketClose`, event);\n\nmasks.connected = false;\n\nshout('onHumeWebSocketClose', event);\n\nif (tags.keepAlive) {\n    thisBot.connect();\n}",
+        "onWebSocketError": "@const event = that;\n\nconsole.log(`[${tags.system}] onWebSocketError`, event);\n\nshout('onHumeWebSocketError', event);\n\nmasks.label = '!';",
+        "onWebSocketMessage": "@const event = that;\n\nconsole.log(`[${tags.system}] onWebSocketMessage`, event);\n\nshout('onHumeWebSocketMessage', event);",
+        "onWebSocketOpen": "@const event = that;\n\nconsole.log(`[${tags.system}] onWebSocketOpen`, event);\n\nmasks.connected = true;\nmasks.label = null;\n\nshout('onHumeWebSocketOepn', event);",
+        "scale": "1",
+        "send": "@const data = that;\nthisBot.vars.socket.send(data);",
+        "system": "rc-humeai.connection"
+      }
+    },
+    "rc-humeai.init": {
+      "id": "rc-humeai.init",
+      "space": "shared",
+      "tags": {
+        "initialize": "@if (!masks.initialized) {\n    masks.initialized = true;\n\n    globalThis.RCHume = {};\n\n    await Promise.all(shout('onBeforeInitialize'));\n    await Promise.all(shout('onInitialize'));\n}",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "rc-humeai.init"
+      }
+    },
+    "rc-humeai._packageInfo": {
+      "id": "rc-humeai._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-humeai._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-04-16T12:32:25.908-04:00 local"
+      }
+    },
+    "rc-humeai.photoCameraHider": {
+      "id": "rc-humeai.photoCameraHider",
+      "space": "shared",
+      "tags": {
+        "App": "@const { useState, useCallback } = os.appHooks;\n        \nconst App = () => {\n\n    return (\n        <>\n            <style>{tags['style.css']}</style>\n        </>\n    )\n}\n\nreturn App;\n",
+        "forceUpdate": "@const App = thisBot.vars.appInstance;\n\nif (App) {\n    os.compileApp(tags.system, <App/>)\n}\n",
+        "mount": "@if (!thisBot.vars.appInstance) {\n    thisBot.vars.appInstance = thisBot.App();\n    await os.registerApp(tags.system, thisBot);\n\n    thisBot.forceUpdate();\n}\n",
+        "onBeforeInitialize": "@RCHume.photoCameraHider = thisBot;",
+        "onDestroy": "@thisBot.unmount();\n\ndelete RCHume.photoCameraHider;",
+        "style.css": ".photo-camera-dialog {\n    display: none;\n}\n\n.photo-camera-dialog + .md-dialog-overlay {\n    display: none;\n}\n",
+        "system": "rc-humeai.photoCameraHider",
+        "unmount": "@if (thisBot.vars.appInstance) {\n    delete thisBot.vars.appInstance;\n\n    // Compiling the app with an empty root value is a workaround that allows the\n    // previous components to perform their unmounting code properly.\n    await os.compileApp(tags.system, <></>);\n\n    await os.unregisterApp(tags.system);\n}\n"
+      }
+    },
+    "rc-humeai.utils.listenerProxy": {
+      "id": "rc-humeai.utils.listenerProxy",
+      "space": "shared",
+      "tags": {
+        "listening": "true",
+        "onAnyListen": "@if (!thisBot.vars.listeners) {\n    return; // This bot has not initialized yet.\n}\n\nconst { \n    name,\n    that: thatParam,\n    targets\n} = that;\n\nconst entries = thisBot.vars.listeners[name];\n\nif (entries && entries.length) {\n    for (let i = 0; i < entries.length; i++) {\n        const entry = entries[i];\n        \n        let invoke = true;\n\n        if (entry.bot) {\n            // Only invoke listener if the bot is one of the targets.\n            let entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            invoke = targets && targets.some(t => t.id === entryBotId);\n        }\n\n        if (invoke) {\n            entry.listener(thatParam);\n        }\n    }\n}",
+        "onBotAdded": "@function addListenTagListener (bot, name, listener) {\n    assert(name, `${tags.system} name is required.`);\n    assert(listener && typeof listener === 'function', `${tags.system} listener function is required.`);\n    \n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        entries = [];\n        thisBot.vars.listeners[name] = entries;\n    }\n\n    entries.push({ listener, bot });\n}\n\nfunction removeListenTagListener (bot, name, listener) {\n    let entries = thisBot.vars.listeners[name];\n    if (!entries) {\n        return;\n    }\n\n    for (let i = entries.length - 1; i >= 0; i--) {\n        let entry = entries[i];\n\n        if (entry.listener != listener) {\n            continue;\n        }\n\n        if (bot) {\n            const botId = typeof bot === 'string' ? bot : bot.id;\n            const entryBotId = typeof entry.bot === 'string' ? entry.bot : entry.bot.id;\n            \n            if (botId !== entryBotId) {\n                continue;\n            }\n        }\n\n        entries.splice(i, 1);\n    }\n}\n\nglobalThis.addListenTagListener = addListenTagListener;\nglobalThis.removeListenTagListener = removeListenTagListener;\n\nthisBot.vars.listeners = {};",
+        "onDestroy": "@globalThis.addListenTagListener = undefined;\nglobalThis.removeListenTagListener = undefined;",
+        "system": "rc-humeai.utils.listenerProxy"
+      }
+    },
+    "rc-humeai.facialExpressionTest": {
+      "id": "rc-humeai.facialExpressionTest",
+      "space": "shared",
+      "tags": {
+        "capture": "@const photoHider = getBot('system', 'rc-humeai.photoCameraHider');\n\nif (tags.hideCamera) {\n    await photoHider.mount();\n}\n\nlet photo: Photo;\n\ntry {\n    photo = await os.capturePhoto({\n        cameraType: 'front',\n        takePhotoAfterSeconds: 1,\n        skipConfirm: true,\n    })\n} catch (e) {\n    // Do nothing.\n}\n\nlet base64;\n\nif (photo) {\n    console.log('photo:', photo);\n    const blob = photo.data;\n    const arrayBuffer = await blob.arrayBuffer();\n    base64 = bytes.toBase64String(arrayBuffer);\n}\n\nif (tags.hideCamera) {\n    await os.sleep(500);\n    await photoHider.unmount();\n}\n\nif (photo) {\n    return { photo, base64 }\n} else {\n    return null;\n}",
+        "cursor": "pointer",
+        "draggable": "false",
+        "hideCamera": "false",
+        "home": true,
+        "homeX": 3,
+        "homeY": 0,
+        "homeZ": 0,
+        "label": "Hume Facial Expression Measurement Test",
+        "onBeforeInitialize": "@thisBot.vars.emotionBots = {};",
+        "onClick": "@if (masks.busy) {\n    return;\n}\n\nif (!RCHume.connection.isConnected()) {\n    return;\n}\n\nmasks.busy = true;\nmasks.label = 'Capturing...';\n\nconst captureResult = await thisBot.capture();\nconsole.log('captureResult:', captureResult);\n\nmasks.label = 'Processing...';\n\nawait thisBot.process({ base64: captureResult.base64 });\n\nmasks.busy = false;\nmasks.label = null;",
+        "onHumeWebSocketMessage": "@const event = that;\n\nif (!event) {\n    return;\n}\n\nconst data = JSON.parse(event.data);\n\nif (!data) {\n    return;\n}\n\nconst face: HumeFace = data.face;\n\nif (!face) {\n    return;\n}\n\nif (face.warning) {\n    os.toast(face.warning, 3);\n}\n\nconst predictions: HumePrediction[] = data.face?.predictions;\nconsole.log('predictions:', predictions);\n\nif (!predictions) {\n    return;\n}\n\nconst prediction: HumePrediction = predictions[0];\n\nprediction.emotions.sort((a, b) => {\n    return b.score - a.score;\n})\n\nconsole.log('emotions:', [...prediction.emotions]);\n\n// HACK\n// if (thisBot.vars.emotionBots) {\n//     for (let key in thisBot.vars.emotionBots) {\n//         destroy(thisBot.vars.emotionBots[key]);\n//     }\n\n//     thisBot.vars.emotionBots = {};\n// }\n\nconst EMOTION_START_Y = -3;\nconst EMOTION_START_X = 4;\nconst EMOTION_HEIGHT = 1;\nconst EMOTION_LABEL_WIDTH = 6;\nconst EMOTION_LABEL_RIGHT_MARGIN = 0.5;\nconst EMOTION_BAR_WIDTH = 6;\nconst EMOTION_BAR_HEIGHT = 2;\n\nfunction createEmotionBots(emotionName: string) {\n    const labelBot = create({\n        space: 'tempLocal',\n        home: true,\n        homeX: (-EMOTION_BAR_WIDTH / 2) + (-EMOTION_LABEL_WIDTH / 2) - EMOTION_LABEL_RIGHT_MARGIN + EMOTION_START_X,\n        homeY: 0,\n        homeZ: 0,\n        form: 'nothing',\n        color: 'red',\n        scaleX: EMOTION_LABEL_WIDTH,\n        labelAlignment: 'right',\n        labelColor: 'white',\n        label: emotionName,\n        emotionName,\n        emotionStartY: EMOTION_START_Y,\n        emotionHeight: EMOTION_HEIGHT,\n        anchorPoint: 'center',\n        onEmotionUpdate: `@\n            const { name, score, rank } = that;\n\n            if (tags.emotionName === name) {\n                tags.homeY = tags.emotionStartY - (tags.emotionHeight * (rank-1));\n            }\n        `\n    })\n\n    const progressBarBot = create({\n        space: 'tempLocal',\n        home: true,\n        homeX: EMOTION_START_X,\n        homeY: 0,\n        homeZ: 0,\n        form: 'nothing',\n        progressBar: 0,\n        progressBarColor: 'silver',\n        progressBarBackgroundColor: 'dimgray',\n        anchorPoint: 'center',\n        scaleX: EMOTION_BAR_WIDTH,\n        scaleY: EMOTION_BAR_HEIGHT,\n        emotionName,\n        emotionStartY: EMOTION_START_Y,\n        emotionHeight: EMOTION_HEIGHT,\n        onEmotionUpdate: `@\n            const { name, score, rank } = that;\n\n            if (tags.emotionName === name) {\n                tags.progressBar = score;\n                tags.homeY = tags.emotionStartY - (tags.emotionHeight * (rank-1));\n            }\n        `\n    });\n\n    return [ labelBot, progressBarBot ];\n}\n\nfor (let i = 0; i < prediction.emotions.length; i++) {\n    const emotion = prediction.emotions[i];\n    let emotionBots = thisBot.vars.emotionBots[emotion.name];\n\n    if (!emotionBots) {\n        emotionBots = createEmotionBots(emotion.name);\n        thisBot.vars.emotionBots[emotion.name] = emotionBots;\n    }\n\n    whisper(emotionBots, 'onEmotionUpdate', { \n        ...emotion,\n        rank: i + 1\n    });\n}",
+        "process": "@const { base64 } = that;\n\nlet data = {\n    models: {\n        \"face\": {}\n    },\n    raw_text: false,\n    data: base64,\n}\n\nconsole.log(`[${tags.system}] send facial expression detection request`)\n\nRCHume.connection.send(JSON.stringify(data));",
+        "scaleX": "4",
+        "scaleY": "2",
+        "scaleZ": "0.3",
+        "system": "rc-humeai.facialExpressionTest"
+      }
+    },
+    "rc-humeai.photoDisplay": {
+      "id": "rc-humeai.photoDisplay",
+      "space": "shared",
+      "tags": {
+        "anchorPoint": "center",
+        "draggable": "false",
+        "form": "sprite",
+        "home": true,
+        "homeX": "12.5",
+        "homeY": -8,
+        "homeZ": "0.5",
+        "onPhotoCaptured": "@const { photo } = that;\n\nconsole.log('onphotocaptured', that);\n\nconst blob = photo.data;\nconst arrayBuffer = await blob.arrayBuffer();\nconst base64Url = bytes.toBase64Url(arrayBuffer, blob.type);\n\nconst aspect = photo.height / photo.width;\n\nmasks.formAddress = base64Url;\nmasks.scaleY = aspect;",
+        "scale": "10",
+        "system": "rc-humeai.photoDisplay"
+      }
+    }
+  }
+}
