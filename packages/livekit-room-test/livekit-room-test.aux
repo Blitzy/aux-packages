@@ -1,13 +1,13 @@
 {
   "version": 1,
   "state": {
-    "livekit-room-test.sortUtils": {
-      "id": "livekit-room-test.sortUtils",
+    "livekit-room-test._packageInfo": {
+      "id": "livekit-room-test._packageInfo",
       "space": "shared",
       "tags": {
-        "onDestroy": "@globalThis.sortAZ = undefined;\nglobalThis.sortBotsAZ = undefined;\nglobalThis.sortZA = undefined;\nglobalThis.sortBotsZA = undefined;",
-        "onInitialize": "@function _sort(array, propertyKey, dir) { \n    array.sort((a, b) => {\n        let valueA = Number(a[propertyKey]);\n        let valueB = Number(b[propertyKey]);\n        \n        if (Number.isNaN(valueA)) {\n            valueA = 0;\n        }\n        if (Number.isNaN(valueB)) {\n            valueB = 0;\n        }\n        \n        if (dir === 'az') {\n            return valueA > valueB ? 1 : -1;\n        } else {\n            return valueA < valueB ? 1 : -1;\n        }\n    });\n}\n\nfunction _sortBots(array, tag, dir) {\n    array.sort((a, b) => {\n        let valueA = Number(a.tags[tag]);\n        let valueB = Number(b.tags[tag]);\n        \n        if (Number.isNaN(valueA)) {\n            valueA = 0;\n        }\n        if (Number.isNaN(valueB)) {\n            valueB = 0;\n        }\n\n        if (dir === 'az') {\n            return valueA > valueB ? 1 : -1;\n        } else {\n            return valueA < valueB ? 1 : -1;\n        }\n    });\n}\n\nfunction sortAZ(array, propertyKey) {\n    return _sort(array, propertyKey, 'az');\n}\n\nfunction sortZA(array, propertyKey) {\n    return _sort(array, propertyKey, 'za');\n}\n\nfunction sortBotsAZ(array, tag) {\n    return _sortBots(array, tag, 'az');\n}\n\nfunction sortBotsZA(array, tag) {\n    return _sortBots(array, tag, 'za');\n}\n\nglobalThis.sortAZ = sortAZ;\nglobalThis.sortBotsAZ = sortBotsAZ;\nglobalThis.sortZA = sortZA;\nglobalThis.sortBotsZA = sortBotsZA;",
-        "system": "livekit-room-test.sortUtils"
+        "system": "livekit-room-test._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-05-07T14:42:29.603-04:00 local"
       }
     },
     "livekit-room-test.buttons.joinRoom": {
@@ -32,43 +32,6 @@
         "system": "livekit-room-test.buttons.joinRoom"
       }
     },
-    "livekit-room-test._packageInfo": {
-      "id": "livekit-room-test._packageInfo",
-      "space": "shared",
-      "tags": {
-        "system": "livekit-room-test._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-05-07T14:42:29.603-04:00 local"
-      }
-    },
-    "livekit-room-test.roomListener": {
-      "id": "livekit-room-test.roomListener",
-      "space": "shared",
-      "tags": {
-        "color": "#999999",
-        "onRoomJoined": "@const { roomName, options } = that;\n\nconfigBot.tags.roomName = roomName;",
-        "onRoomLeave": "@const { roomName } = that;\n\nif (roomName === configBot.tags.roomName) {\n    configBot.tags.roomName = null;\n}",
-        "onRoomTrackSubscribed": "@if (that.kind === 'video') {\r\n    const otherVideoBots = getBots('videoBot', true);\r\n\r\n    // Calculate a sort order for the new video bot.\r\n    let highestSortOrder = 0;\r\n    for (let videoBot of otherVideoBots) {\r\n        if (typeof videoBot.tags.sortOrder === 'number') {\r\n            if (videoBot.tags.sortOrder > highestSortOrder) {\r\n                highestSortOrder = videoBot.tags.sortOrder;\r\n            }\r\n        }\r\n    }\r\n\r\n    const newVideoBot = create({\r\n        space: 'tempLocal',\r\n        home: true,\r\n        formAddress: that.address,\r\n        videoBot: true,\r\n        sortOrder: highestSortOrder + 1,\r\n        room: that.roomName,\r\n        isRemote: that.isRemote,\r\n        remoteId: that.remoteId,\r\n        strokeWidth: 15,\r\n        onVideoBotCreated: `@\r\n            const { newVideoBot, videoBots } = that;\r\n            thisBot.positionRefresh({ videoBots });\r\n        `,\r\n        onVideoBotDestroyed: `@\r\n            const { videoBots } = that;\r\n            thisBot.positionRefresh({ videoBots });\r\n        `,\r\n        onRoomSpeakersChanged: `@\r\n            const { speakerIds } = that;\r\n            const speaking = speakerIds.some(id => id === tags.remoteId);\r\n            const inAR = configBot.tags.inAR;\r\n\r\n            if (speaking) {\r\n                tags.strokeColor = '#0f0';\r\n\r\n                if (inAR) {\r\n                    tags[configBot.id]\r\n                }\r\n            } else {\r\n                tags.strokeColor = null;\r\n            }\r\n        `,\r\n        positionRefresh: `@\r\n            const { videoBots } = that;\r\n\r\n            const index = videoBots.findIndex(b => b === thisBot);\r\n\r\n            tags.homeX = 10;\r\n            tags.homeY = index;\r\n        `\r\n    });\r\n\r\n    const videoBots = getBots('videoBot', true);\r\n    sortBotsAZ(videoBots, 'sortOrder');\r\n\r\n    shout('onVideoBotCreated', { newVideoBot, videoBots });\r\n}",
-        "onRoomTrackUnsubscribed": "@const bots = getBots('formAddress', that.address);\r\n\r\nif (bots && bots.length) {\r\n    destroy(bots);\r\n    \r\n    const videoBots = getBots('videoBot', true);\r\n    sortBotsAZ(videoBots, 'sortOrder');\r\n\r\n    shout('onVideoBotDestroyed', { videoBots });\r\n}",
-        "system": "livekit-room-test.roomListener"
-      }
-    },
-    "livekit-room-test.init": {
-      "id": "livekit-room-test.init",
-      "space": "shared",
-      "tags": {
-        "home": "false",
-        "homeSortOrder": 0,
-        "homeX": 0,
-        "homeY": 0,
-        "initialize": "@if (!masks.initialized) {\n    masks.initialized = true;\n    shout('onInitialize');\n}",
-        "label": "manager",
-        "onEggHatch": "@thisBot.initialize();",
-        "onInitialize": "@gridPortalBot.tags.portalColor = \"#abdbe3\";\nconfigBot.tags.leftWristPortal = `${configBot.id}-leftWristPortal`;\nleftWristPortalBot.tags.portalGridScale = 0.025;\n",
-        "onInstJoined": "@thisBot.initialize();",
-        "system": "livekit-room-test.init"
-      }
-    },
     "livekit-room-test.buttons.leaveRoom": {
       "id": "livekit-room-test.buttons.leaveRoom",
       "space": "shared",
@@ -90,30 +53,6 @@
         "scaleY": "0.9",
         "scaleZ": "0.3",
         "system": "livekit-room-test.buttons.leaveRoom"
-      }
-    },
-    "livekit-room-test.buttons.toggleMic": {
-      "id": "livekit-room-test.buttons.toggleMic",
-      "space": "shared",
-      "tags": {
-        "cursor": "pointer",
-        "draggable": "false",
-        "home": true,
-        "homeX": "-3",
-        "homeY": "-5",
-        "homeZ": 0,
-        "label": "Microphone",
-        "labelPadding": "0.2",
-        "onClick": "@const options = await os.getRoomOptions('myRoom');\r\n\r\nlet audioEnabled = false;\r\nif (options.success) {\r\n    audioEnabled = options.options.audio;\r\n}\r\n\r\nconsole.log('setRoomOptions:', await os.setRoomOptions('myRoom', {\r\n    audio: !audioEnabled\r\n}));",
-        "onInitialize": "@masks.home = false;",
-        "onRoomJoined": "@const { roomName, options } = that;\n\nmasks.home = true;\nthisBot.setEnabledState({ enabled: options.audio });",
-        "onRoomLeave": "@masks.home = false;",
-        "onRoomOptionsChanged": "@const { roomName, options } = that;\n\nthisBot.setEnabledState({ enabled: options.audio });",
-        "scaleX": "1.9",
-        "scaleY": "0.9",
-        "scaleZ": "0.3",
-        "setEnabledState": "@const { enabled } = that;\n\nif (enabled) {\n    masks.color = null;\n} else {\n    masks.color = '#999999';\n}",
-        "system": "livekit-room-test.buttons.toggleMic"
       }
     },
     "livekit-room-test.buttons.toggleCamera": {
@@ -140,6 +79,30 @@
         "system": "livekit-room-test.buttons.toggleCamera"
       }
     },
+    "livekit-room-test.buttons.toggleMic": {
+      "id": "livekit-room-test.buttons.toggleMic",
+      "space": "shared",
+      "tags": {
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": "-3",
+        "homeY": "-5",
+        "homeZ": 0,
+        "label": "Microphone",
+        "labelPadding": "0.2",
+        "onClick": "@const options = await os.getRoomOptions('myRoom');\r\n\r\nlet audioEnabled = false;\r\nif (options.success) {\r\n    audioEnabled = options.options.audio;\r\n}\r\n\r\nconsole.log('setRoomOptions:', await os.setRoomOptions('myRoom', {\r\n    audio: !audioEnabled\r\n}));",
+        "onInitialize": "@masks.home = false;",
+        "onRoomJoined": "@const { roomName, options } = that;\n\nmasks.home = true;\nthisBot.setEnabledState({ enabled: options.audio });",
+        "onRoomLeave": "@masks.home = false;",
+        "onRoomOptionsChanged": "@const { roomName, options } = that;\n\nthisBot.setEnabledState({ enabled: options.audio });",
+        "scaleX": "1.9",
+        "scaleY": "0.9",
+        "scaleZ": "0.3",
+        "setEnabledState": "@const { enabled } = that;\n\nif (enabled) {\n    masks.color = null;\n} else {\n    masks.color = '#999999';\n}",
+        "system": "livekit-room-test.buttons.toggleMic"
+      }
+    },
     "livekit-room-test.buttons.toggleScreenShare": {
       "id": "livekit-room-test.buttons.toggleScreenShare",
       "space": "shared",
@@ -162,6 +125,65 @@
         "scaleZ": "0.3",
         "setEnabledState": "@const { enabled } = that;\n\nif (enabled) {\n    masks.color = null;\n} else {\n    masks.color = '#999999';\n}",
         "system": "livekit-room-test.buttons.toggleScreenShare"
+      }
+    },
+    "livekit-room-test.buttons.toggleXR": {
+      "id": "livekit-room-test.buttons.toggleXR",
+      "space": "shared",
+      "tags": {
+        "color": "#7B64FF",
+        "cursor": "pointer",
+        "draggable": "false",
+        "home": true,
+        "homeX": "-3",
+        "homeY": "-1",
+        "homeZ": 0,
+        "label": "WebXR",
+        "labelPadding": "0.2",
+        "onClick": "@if (configBot.tags.inAR) {\n    os.disableAR();\n} else {\n    os.enableAR();\n}",
+        "onEnterAR": "@configBot.tags.inAR = true;",
+        "onExitAR": "@configBot.tags.inAR = false;",
+        "scaleX": "1.9",
+        "scaleY": "0.9",
+        "scaleZ": "0.3",
+        "system": "livekit-room-test.buttons.toggleXR"
+      }
+    },
+    "livekit-room-test.init": {
+      "id": "livekit-room-test.init",
+      "space": "shared",
+      "tags": {
+        "home": "false",
+        "homeSortOrder": 0,
+        "homeX": 0,
+        "homeY": 0,
+        "initialize": "@if (!masks.initialized) {\n    masks.initialized = true;\n    shout('onInitialize');\n}",
+        "label": "manager",
+        "onEggHatch": "@thisBot.initialize();",
+        "onInitialize": "@gridPortalBot.tags.portalColor = \"#abdbe3\";\nconfigBot.tags.leftWristPortal = `${configBot.id}-leftWristPortal`;\nleftWristPortalBot.tags.portalGridScale = 0.025;\n",
+        "onInstJoined": "@thisBot.initialize();",
+        "system": "livekit-room-test.init"
+      }
+    },
+    "livekit-room-test.roomListener": {
+      "id": "livekit-room-test.roomListener",
+      "space": "shared",
+      "tags": {
+        "color": "#999999",
+        "onRoomJoined": "@const { roomName, options } = that;\n\nconfigBot.tags.roomName = roomName;",
+        "onRoomLeave": "@const { roomName } = that;\n\nif (roomName === configBot.tags.roomName) {\n    configBot.tags.roomName = null;\n}",
+        "onRoomTrackSubscribed": "@if (that.kind === 'video') {\r\n    const otherVideoBots = getBots('videoBot', true);\r\n\r\n    // Calculate a sort order for the new video bot.\r\n    let highestSortOrder = 0;\r\n    for (let videoBot of otherVideoBots) {\r\n        if (typeof videoBot.tags.sortOrder === 'number') {\r\n            if (videoBot.tags.sortOrder > highestSortOrder) {\r\n                highestSortOrder = videoBot.tags.sortOrder;\r\n            }\r\n        }\r\n    }\r\n\r\n    const newVideoBot = create({\r\n        space: 'tempLocal',\r\n        home: true,\r\n        formAddress: that.address,\r\n        videoBot: true,\r\n        sortOrder: highestSortOrder + 1,\r\n        room: that.roomName,\r\n        isRemote: that.isRemote,\r\n        remoteId: that.remoteId,\r\n        strokeWidth: 15,\r\n        onVideoBotCreated: `@\r\n            const { newVideoBot, videoBots } = that;\r\n            thisBot.positionRefresh({ videoBots });\r\n        `,\r\n        onVideoBotDestroyed: `@\r\n            const { videoBots } = that;\r\n            thisBot.positionRefresh({ videoBots });\r\n        `,\r\n        onRoomSpeakersChanged: `@\r\n            const { speakerIds } = that;\r\n            const speaking = speakerIds.some(id => id === tags.remoteId);\r\n            const inAR = configBot.tags.inAR;\r\n\r\n            if (speaking) {\r\n                tags.strokeColor = '#0f0';\r\n\r\n                if (inAR) {\r\n                    tags[configBot.id]\r\n                }\r\n            } else {\r\n                tags.strokeColor = null;\r\n            }\r\n        `,\r\n        positionRefresh: `@\r\n            const { videoBots } = that;\r\n\r\n            const index = videoBots.findIndex(b => b === thisBot);\r\n\r\n            tags.homeX = 10;\r\n            tags.homeY = index;\r\n        `\r\n    });\r\n\r\n    const videoBots = getBots('videoBot', true);\r\n    sortBotsAZ(videoBots, 'sortOrder');\r\n\r\n    shout('onVideoBotCreated', { newVideoBot, videoBots });\r\n}",
+        "onRoomTrackUnsubscribed": "@const bots = getBots('formAddress', that.address);\r\n\r\nif (bots && bots.length) {\r\n    destroy(bots);\r\n    \r\n    const videoBots = getBots('videoBot', true);\r\n    sortBotsAZ(videoBots, 'sortOrder');\r\n\r\n    shout('onVideoBotDestroyed', { videoBots });\r\n}",
+        "system": "livekit-room-test.roomListener"
+      }
+    },
+    "livekit-room-test.sortUtils": {
+      "id": "livekit-room-test.sortUtils",
+      "space": "shared",
+      "tags": {
+        "onDestroy": "@globalThis.sortAZ = undefined;\nglobalThis.sortBotsAZ = undefined;\nglobalThis.sortZA = undefined;\nglobalThis.sortBotsZA = undefined;",
+        "onInitialize": "@function _sort(array, propertyKey, dir) { \n    array.sort((a, b) => {\n        let valueA = Number(a[propertyKey]);\n        let valueB = Number(b[propertyKey]);\n        \n        if (Number.isNaN(valueA)) {\n            valueA = 0;\n        }\n        if (Number.isNaN(valueB)) {\n            valueB = 0;\n        }\n        \n        if (dir === 'az') {\n            return valueA > valueB ? 1 : -1;\n        } else {\n            return valueA < valueB ? 1 : -1;\n        }\n    });\n}\n\nfunction _sortBots(array, tag, dir) {\n    array.sort((a, b) => {\n        let valueA = Number(a.tags[tag]);\n        let valueB = Number(b.tags[tag]);\n        \n        if (Number.isNaN(valueA)) {\n            valueA = 0;\n        }\n        if (Number.isNaN(valueB)) {\n            valueB = 0;\n        }\n\n        if (dir === 'az') {\n            return valueA > valueB ? 1 : -1;\n        } else {\n            return valueA < valueB ? 1 : -1;\n        }\n    });\n}\n\nfunction sortAZ(array, propertyKey) {\n    return _sort(array, propertyKey, 'az');\n}\n\nfunction sortZA(array, propertyKey) {\n    return _sort(array, propertyKey, 'za');\n}\n\nfunction sortBotsAZ(array, tag) {\n    return _sortBots(array, tag, 'az');\n}\n\nfunction sortBotsZA(array, tag) {\n    return _sortBots(array, tag, 'za');\n}\n\nglobalThis.sortAZ = sortAZ;\nglobalThis.sortBotsAZ = sortBotsAZ;\nglobalThis.sortZA = sortZA;\nglobalThis.sortBotsZA = sortBotsZA;",
+        "system": "livekit-room-test.sortUtils"
       }
     },
     "livekit-room-test.stargate": {
@@ -201,28 +223,6 @@
         "homeY": -3,
         "homeZ": 0,
         "system": "livekit-room-test.wilson"
-      }
-    },
-    "livekit-room-test.buttons.toggleXR": {
-      "id": "livekit-room-test.buttons.toggleXR",
-      "space": "shared",
-      "tags": {
-        "color": "#7B64FF",
-        "cursor": "pointer",
-        "draggable": "false",
-        "home": true,
-        "homeX": "-3",
-        "homeY": "-1",
-        "homeZ": 0,
-        "label": "WebXR",
-        "labelPadding": "0.2",
-        "onClick": "@if (configBot.tags.inAR) {\n    os.disableAR();\n} else {\n    os.enableAR();\n}",
-        "onEnterAR": "@configBot.tags.inAR = true;",
-        "onExitAR": "@configBot.tags.inAR = false;",
-        "scaleX": "1.9",
-        "scaleY": "0.9",
-        "scaleZ": "0.3",
-        "system": "livekit-room-test.buttons.toggleXR"
       }
     }
   }
