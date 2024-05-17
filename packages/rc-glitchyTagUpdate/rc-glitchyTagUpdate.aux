@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "state": {
+    "rc-glitchyTagUpdate._packageInfo": {
+      "id": "rc-glitchyTagUpdate._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-glitchyTagUpdate._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2024-05-17T12:35:52.588-04:00 local"
+      }
+    },
+    "rc-glitchyTagUpdate.rgb-animateTag": {
+      "id": "rc-glitchyTagUpdate.rgb-animateTag",
+      "space": "shared",
+      "tags": {
+        "blue": 255,
+        "color": "rgb(255, 255, 255)",
+        "cursor": "pointer",
+        "duration": "2",
+        "fromColor": "🧬[255, 255, 255]",
+        "fromScale": "1",
+        "green": 255,
+        "home": true,
+        "homeX": 0,
+        "homeY": 5,
+        "homeZ": 0,
+        "label": "rgb\n(animateTag)",
+        "onBotChanged": "@const rgbChanged = that.tags.some((t) => t === 'red' || t === 'blue' || t === 'green');\n\nif (rgbChanged) {\n    const rgb = `rgb(${Math.round(tags.red)}, ${Math.round(tags.green)}, ${Math.round(tags.blue)})`\n    console.log('rgbChanged:', rgb);\n    \n    masks.color = rgb;\n}",
+        "onClick": "@if (tags.state === 'from_color') {\n    tags.state = 'to_color';\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.fromScale,\n            red: tags.fromColor[0],\n            green: tags.fromColor[1],\n            blue: tags.fromColor[2],\n        },\n        toValue: {\n            scale: tags.toScale,\n            red: tags.toColor[0],\n            green: tags.toColor[1],\n            blue: tags.toColor[2],\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n} else {\n    tags.state = 'from_color';\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.toScale,\n            red: tags.toColor[0],\n            green: tags.toColor[1],\n            blue: tags.toColor[2],\n        },\n        toValue: {\n            scale: tags.fromScale,\n            red: tags.fromColor[0],\n            green: tags.fromColor[1],\n            blue: tags.fromColor[2],\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n}",
+        "red": 255,
+        "scale": 1,
+        "scaleX": "3",
+        "state": "from_color",
+        "system": "rc-glitchyTagUpdate.rgb-animateTag",
+        "toColor": "🧬[0, 255, 255]",
+        "toScale": "4",
+        "white": "255"
+      }
+    },
+    "rc-glitchyTagUpdate.rgb-updateLoop": {
+      "id": "rc-glitchyTagUpdate.rgb-updateLoop",
+      "space": "shared",
+      "tags": {
+        "animateColor": "@const { \n    fromColor, \n    toColor,\n    duration,\n} = that;\n\nfunction lerp(start, end, t) {\n    return start + (end - start) * t;\n}\n\nfunction animateColor(startColor, endColor, duration) {\n    console.log('animateColor started');\n    let startTime = null;\n\n    function animate(timestamp) {\n        if (!startTime) startTime = timestamp;\n        const progress = Math.min((timestamp - startTime) / duration, 1);\n\n        tags.red = Math.round(lerp(startColor[0], endColor[0], progress));\n        tags.green = Math.round(lerp(startColor[1], endColor[1], progress));\n        tags.blue = Math.round(lerp(startColor[2], endColor[2], progress));\n\n        if (progress < 1) {\n            self.requestAnimationFrame(animate);\n        } else {\n            console.log('animateColor finished');\n        }\n    }\n\n    self.requestAnimationFrame(animate);\n}\n\nanimateColor(fromColor, toColor, tags.duration * 1000);\n",
+        "blue": 255,
+        "color": "rgb(255, 255, 255)",
+        "cursor": "pointer",
+        "duration": "2",
+        "fromColor": "🧬[255, 255, 255]",
+        "fromScale": "1",
+        "green": 255,
+        "home": true,
+        "homeX": 0,
+        "homeY": 1,
+        "homeZ": 0,
+        "label": "rgb\n(update loop)",
+        "onBotChanged": "@const rgbChanged = that.tags.some((t) => t === 'red' || t === 'blue' || t === 'green');\n\nif (rgbChanged) {\n    const rgb = `rgb(${Math.round(tags.red)}, ${Math.round(tags.green)}, ${Math.round(tags.blue)})`\n    console.log('rgbChanged:', rgb);\n    \n    masks.color = rgb;\n}",
+        "onClick": "@if (tags.state === 'from_color') {\n    tags.state = 'to_color';\n\n    thisBot.animateColor({\n        fromColor: tags.fromColor,\n        toColor: tags.toColor,\n        duration: tags.duration,\n    })\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.fromScale,\n        },\n        toValue: {\n            scale: tags.toScale,\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n} else {\n    tags.state = 'from_color';\n\n    thisBot.animateColor({\n        fromColor: tags.toColor,\n        toColor: tags.fromColor,\n        duration: tags.duration,\n    })\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.toScale,\n        },\n        toValue: {\n            scale: tags.fromScale,\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n}",
+        "red": 255,
+        "scale": 1,
+        "scaleX": "3",
+        "state": "from_color",
+        "system": "rc-glitchyTagUpdate.rgb-updateLoop",
+        "toColor": "🧬[0, 255, 255]",
+        "toScale": "4",
+        "white": "255"
+      }
+    }
+  }
+}
