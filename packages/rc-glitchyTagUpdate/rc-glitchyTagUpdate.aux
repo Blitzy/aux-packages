@@ -6,8 +6,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-glitchyTagUpdate._packageInfo",
-        "version": "1.0",
-        "versionDate": "📅2024-05-17T12:35:52.588-04:00 local"
+        "version": "1.1",
+        "versionDate": "📅2024-05-17T12:39:15.529-04:00 local"
       }
     },
     "rc-glitchyTagUpdate.rgb-animateTag": {
@@ -26,7 +26,7 @@
         "homeY": 5,
         "homeZ": 0,
         "label": "rgb\n(animateTag)",
-        "onBotChanged": "@const rgbChanged = that.tags.some((t) => t === 'red' || t === 'blue' || t === 'green');\n\nif (rgbChanged) {\n    const rgb = `rgb(${Math.round(tags.red)}, ${Math.round(tags.green)}, ${Math.round(tags.blue)})`\n    console.log('rgbChanged:', rgb);\n    \n    masks.color = rgb;\n}",
+        "onBotChanged": "@const rgbChanged = that.tags.some((t) => t === 'red' || t === 'blue' || t === 'green');\nif (rgbChanged) {\n    const rgb = `rgb(${Math.round(tags.red)}, ${Math.round(tags.green)}, ${Math.round(tags.blue)})`\n    console.log('rgb changed:', rgb);\n    \n    masks.color = rgb;\n}\n\nconst scaleChanged = that.tags.some((t) => t === 'scale');\nif (scaleChanged) {\n    console.log('scale changed:', tags.scale);\n}",
         "onClick": "@if (tags.state === 'from_color') {\n    tags.state = 'to_color';\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.fromScale,\n            red: tags.fromColor[0],\n            green: tags.fromColor[1],\n            blue: tags.fromColor[2],\n        },\n        toValue: {\n            scale: tags.toScale,\n            red: tags.toColor[0],\n            green: tags.toColor[1],\n            blue: tags.toColor[2],\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n} else {\n    tags.state = 'from_color';\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.toScale,\n            red: tags.toColor[0],\n            green: tags.toColor[1],\n            blue: tags.toColor[2],\n        },\n        toValue: {\n            scale: tags.fromScale,\n            red: tags.fromColor[0],\n            green: tags.fromColor[1],\n            blue: tags.fromColor[2],\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n}",
         "red": 255,
         "scale": 1,
@@ -55,7 +55,7 @@
         "homeY": 1,
         "homeZ": 0,
         "label": "rgb\n(update loop)",
-        "onBotChanged": "@const rgbChanged = that.tags.some((t) => t === 'red' || t === 'blue' || t === 'green');\n\nif (rgbChanged) {\n    const rgb = `rgb(${Math.round(tags.red)}, ${Math.round(tags.green)}, ${Math.round(tags.blue)})`\n    console.log('rgbChanged:', rgb);\n    \n    masks.color = rgb;\n}",
+        "onBotChanged": "@const rgbChanged = that.tags.some((t) => t === 'red' || t === 'blue' || t === 'green');\nif (rgbChanged) {\n    const rgb = `rgb(${Math.round(tags.red)}, ${Math.round(tags.green)}, ${Math.round(tags.blue)})`\n    console.log('rgb changed:', rgb);\n    \n    masks.color = rgb;\n}\n\nconst scaleChanged = that.tags.some((t) => t === 'scale');\nif (scaleChanged) {\n    console.log('scale changed:', tags.scale);\n}",
         "onClick": "@if (tags.state === 'from_color') {\n    tags.state = 'to_color';\n\n    thisBot.animateColor({\n        fromColor: tags.fromColor,\n        toColor: tags.toColor,\n        duration: tags.duration,\n    })\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.fromScale,\n        },\n        toValue: {\n            scale: tags.toScale,\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n} else {\n    tags.state = 'from_color';\n\n    thisBot.animateColor({\n        fromColor: tags.toColor,\n        toColor: tags.fromColor,\n        duration: tags.duration,\n    })\n\n    animateTag(thisBot, {\n        fromValue: {\n            scale: tags.toScale,\n        },\n        toValue: {\n            scale: tags.fromScale,\n        },\n        duration: tags.duration,\n        tagMaskSpace: false,\n    })\n}",
         "red": 255,
         "scale": 1,
