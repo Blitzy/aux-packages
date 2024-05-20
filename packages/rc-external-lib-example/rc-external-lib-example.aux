@@ -1,6 +1,15 @@
 {
   "version": 1,
   "state": {
+    "rc-external-lib-example._packageInfo": {
+      "id": "rc-external-lib-example._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-external-lib-example._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2024-05-20T10:29:38.223-04:00 local"
+      }
+    },
     "rc-external-lib-example.padZero": {
       "id": "rc-external-lib-example.padZero",
       "space": "shared",
@@ -11,7 +20,7 @@
         "homeY": 2,
         "homeZ": 0,
         "label": "click me",
-        "onClick": "@const padZeroImport = await import('https://cdn.skypack.dev/pad-zero');\nconst padZero = padZeroImport.padZero;\n\nconst rand = math.randomInt(1, 99999);\nconst padding = 10;\n\nmasks.label = \"number:\\n\" + padZero(padding, rand);",
+        "onClick": "@import { padZero } from 'https://cdn.jsdelivr.net/npm/pad-zero@1.0.8/+esm'\n\nconst rand = math.randomInt(1, 99999);\nconst padding = 10;\n\nmasks.label = \"number:\\n\" + padZero(padding, rand);",
         "scale": "2",
         "scaleX": "5",
         "scaleY": "3",
