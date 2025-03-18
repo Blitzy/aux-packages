@@ -1,18 +1,34 @@
 {
   "version": 1,
   "state": {
+    "rc-remote-counter._packageInfo": {
+      "id": "rc-remote-counter._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-remote-counter._packageInfo",
+        "version": "1.1",
+        "versionDate": "📅2025-03-18T16:22:35.374-04:00 local"
+      }
+    },
     "rc-remote-counter.count": {
       "id": "rc-remote-counter.count",
       "space": "shared",
       "tags": {
-        "home": "true",
+        "home": true,
+        "homeX": 2,
+        "homeY": 0,
+        "homeZ": 0,
         "label": "no remotes",
         "labelFontSize": "4",
-        "onRemoteJoined": "@if (typeof masks.remoteCount !== 'number') {\n    masks.remoteCount = 0;\n}\n\nmasks.remoteCount += 1;\nmasks.label = 'remotes: ' + masks.remoteCount;",
-        "onRemoteLeave": "@if (typeof masks.remoteCount !== 'number') {\n    masks.remoteCount = 0;\n}\n\nmasks.remoteCount -= 1;\nmasks.label = 'remotes: ' + masks.remoteCount;",
+        "onBotAdded": "@thisBot.update();",
+        "onClick": "@thisBot.update();",
+        "onInstStreaming": "@thisBot.update();",
+        "onRemoteJoined": "@thisBot.update();",
+        "onRemoteLeave": "@thisBot.update();",
         "scaleX": "10",
         "scaleY": "5",
-        "system": "rc-remote-counter.count"
+        "system": "rc-remote-counter.count",
+        "update": "@const thisUpdateId = uuid();\nmasks.updateId = thisUpdateId;\n\nconst remotes = await os.remotes();\n\nif (masks.updateId === thisUpdateId) {\n    console.log(`remotes:`, remotes);\n\n    if (remotes.length > 0) {\n        masks.label = `remotes: ` + remotes.length;\n    } else {\n        masks.label = `no remotes`;\n    }\n}"
       }
     }
   }
