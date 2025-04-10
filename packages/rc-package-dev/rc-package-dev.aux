@@ -6,8 +6,8 @@
       "space": "shared",
       "tags": {
         "system": "rc-package-dev._packageInfo",
-        "version": "3.4",
-        "versionDate": "📅2025-04-02T13:27:38.355-04:00 local"
+        "version": "3.5",
+        "versionDate": "📅2025-04-10T14:47:32.056-04:00 local"
       }
     },
     "rc-package-dev.apps.commandHelpApp": {
@@ -37,7 +37,7 @@
       "id": "rc-package-dev.apps.components",
       "space": "shared",
       "tags": {
-        "AppContainer": "@const { useCallback, useState } = os.appHooks;\n\nconst AppContainer = ({\n    id = uuid(),\n    onBackgroundClick,\n    children\n}) => {\n    const [appId, ] = useState(id);\n\n    const onClick = useCallback((e) => {\n        if (e.currentTarget.id === appId) {\n            if (onBackgroundClick) {\n                // Clicked on app background.\n                onBackgroundClick();\n            }\n        }\n    }, [appId]);\n\n    return (\n        <div id={appId} className='rc-app-bg' onClick={onClick}>\n            {children}\n        </div>\n    )\n}\n\nreturn AppContainer;",
+        "AppContainer": "@const { useCallback, useState } = os.appHooks;\n\nconst AppContainer = ({\n    id = uuid(),\n    onBackgroundClick,\n    children\n}) => {\n    const [appId, ] = useState(id);\n\n    const onClick = useCallback((e) => {\n        if (e.target.id === appId) {\n            if (onBackgroundClick) {\n                // Clicked on app background.\n                onBackgroundClick();\n            }\n        }\n    }, [appId]);\n\n    return (\n        <div id={appId} className='rc-app-bg' onClick={onClick}>\n            {children}\n        </div>\n    )\n}\n\nreturn AppContainer;",
         "BackgroundOverlay.css": ".rc-app-bg {\n    position: fixed;\n    background-color: rgba(0, 0, 0, 0.33);\n    width: 100%;\n    height: 100%;\n}",
         "TextLink": "@const TextLink = ({\n    onClick,\n    bold = false,\n    children,\n}) => {\n    return (\n        <span className='rc-app-text-link bold' onClick={onClick}>{children}</span>\n    )\n}\n\nreturn TextLink;",
         "TextLink.css": ".rc-app-text-link {\n  color: rgb(71 255 137);\n}\n\n.rc-app-text-link:hover {\n  cursor: pointer;\n  color: rgb(0 192 255);\n}\n\n.rc-app-text-link.bold {\n  font-weight: bold;\n}",
