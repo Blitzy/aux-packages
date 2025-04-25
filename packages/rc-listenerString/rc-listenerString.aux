@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "state": {
+    "rc-listenerString._packageInfo": {
+      "id": "rc-listenerString._packageInfo",
+      "space": "shared",
+      "tags": {
+        "system": "rc-listenerString._packageInfo",
+        "version": "1.0",
+        "versionDate": "📅2025-04-25T14:18:13.725-04:00 local"
+      }
+    },
+    "rc-listenerString.listenerString": {
+      "id": "rc-listenerString.listenerString",
+      "space": "shared",
+      "tags": {
+        "onBotAdded": "@/**\n * ListenerString is a function that can turn any function into a CasualOS listener tag string.\n */\nfunction ListenerString(func) {\n    if (typeof func !== 'function') {\n        throw new Error(`ListenerString can only operate on function objects.`);\n    }\n\n    const funcString = func.toString();\n    \n    if (funcString.includes('=>')) {\n        // Handle arrow functions\n        const arrowIndex = funcString.indexOf('=>');\n        const afterArrow = funcString.substring(arrowIndex + 2).trim();\n        \n        if (afterArrow.startsWith('{')) {\n            // Arrow function with block body\n            const match = afterArrow.match(/\\{([\\s\\S]*)\\}/);\n            if (match) {\n                return '@' + match[1].trim();\n            }\n        } else {\n            // Arrow function with concise body\n            return '@' + afterArrow;\n        }\n    } else {\n        // Handle regular functions\n        const match = funcString.match(/\\{([\\s\\S]*)\\}/);\n        if (match) {\n            return '@' + match[1].trim();\n        }\n    }\n}\n\n// Extend Function prototype to include a .toListenerString() function.\n// Now you can call .toListenerString() on any function and have it converted to a listener string.\nObject.defineProperty(Function.prototype, 'toListenerString', {\n    value: function() { return ListenerString(this) },\n    writable: true,\n    configurable: true,\n    enumerable: false,\n});\n\nglobalThis.ListenerString = ListenerString;",
+        "onDestroy": "@delete globalThis.ListenerString;\ndelete Function.prototype.toListenerString;",
+        "system": "rc-listenerString.listenerString"
+      }
+    }
+  }
+}
