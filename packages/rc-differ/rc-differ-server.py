@@ -128,7 +128,7 @@ def main():
     
     # Open the brandplayer URL with parameters to connect to our HTTP server
     base_url = "https://brandplayer.com"
-    url = f"{base_url}?pattern=rc-differ&studio=d5522ef2-a17e-4bed-a557-116903b1b1ed&staticInst=rc-differ-server&httpPort={port}"
+    url = f"{base_url}?pattern=rc-differ&studio=d5522ef2-a17e-4bed-a557-116903b1b1ed&staticInst=rc-differ-server&gridPortal=home&httpPort={port}"
     
     print(f"Opening diff viewer for {os.path.basename(original_file)} and {os.path.basename(modified_file)}")
     print(f"HTTP server running on: http://localhost:{port}")
