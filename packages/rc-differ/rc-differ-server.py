@@ -8,6 +8,7 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.parse
 import socket
+import datetime
 
 # Global variables
 file_data = {}
@@ -126,9 +127,13 @@ def main():
     else:
         print(f"Server already running on port {port}, updated with new diff data")
     
+    # Generate staticInst with today's date in YYYYMMDD format
+    today_str = datetime.datetime.now().strftime("%Y%m%d")
+    static_inst = f"rc-differ-server-{today_str}"
+    
     # Open the brandplayer URL with parameters to connect to our HTTP server
     base_url = "https://auxplayer.com"
-    url = f"{base_url}?ask=rc-differ&staticInst=rc-differ-server&gridPortal=home&httpPort={port}"
+    url = f"{base_url}?ask=rc-differ&staticInst={static_inst}&gridPortal=home&httpPort={port}"
     
     print(f"Opening diff viewer for {os.path.basename(original_file)} and {os.path.basename(modified_file)}")
     print(f"HTTP server running on: http://localhost:{port}")
